@@ -9,6 +9,11 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
+
+   createEvent(eventData: Partial<CalendarEvent>): Observable<CalendarEvent> {
+    return this.http.post<CalendarEvent>(this.baseUrl, eventData);
+  }
+  
   getAllEvents(): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>(this.baseUrl);
   }
