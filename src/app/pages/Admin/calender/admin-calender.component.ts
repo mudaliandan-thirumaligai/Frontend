@@ -17,7 +17,7 @@ interface CalendarEvent extends EventInput {
     location?: string;
     tamilYear?: string;
     tamilMonth?: string;
-    eventNumber?: string;
+    eventNumber?: number;
   };
 }
 
@@ -52,10 +52,10 @@ export class AdminCalenderComponent {
   isOpen = false;
 
   calendarsEvents: Record<string, string> = {
-    Danger: 'Red',
-    Success: 'Green',
-    Primary: 'Blue',
-    Warning: 'Orange'
+    Danger: 'danger',
+    Success: 'success',
+    Primary: 'primary',
+    Warning: 'warning'
   };
 
   calendarOptions!: CalendarOptions;
@@ -71,6 +71,7 @@ export class AdminCalenderComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     selectable: true,
+    allDayMaintainDuration: true,
     events: [],  // <-- keep empty initially
     select: (info) => this.handleDateSelect(info),
     eventClick: (info) => this.handleEventClick(info),
@@ -91,10 +92,13 @@ loadEventsFromAPI() {
     (data: any[]) => {
       console.log('Fetched Events from API:', data);
       const formattedEvents = data.map(event => ({
+        id: event.eventNumber.toString(),
         title: event.name,          
         start: event.startDate,     
         end: event.endDate,         
         extendedProps: {
+          // TODO the api can be changed to the type of event also (in backednd and passed as payload )
+          calendar: event.eventLevel || 'Primary',
           description: event.description,
           location: event.location,
           tamilYear: event.tamilYear,
@@ -104,7 +108,7 @@ loadEventsFromAPI() {
       }));
       console.log('Formatted Events for Calendar:', formattedEvents);
 
-      // Update only the events array
+      // Update only the events array - updating this should refresh the calendar
       this.calendarOptions.events = formattedEvents;
     },
     (error) => {
@@ -116,82 +120,111 @@ loadEventsFromAPI() {
 
   handleDateSelect(selectInfo: DateSelectArg) {
     this.resetModalFields();
-    this.eventStartDate = selectInfo.startStr;
-    this.eventEndDate = selectInfo.endStr || selectInfo.startStr;
+    
+    // Mark that this is a new event
+    this.selectedEvent = null;
+    
+    // Populate date fields from selection
+    this.eventStartDate = selectInfo.startStr.split('T')[0];
+    this.eventEndDate = selectInfo.endStr ? selectInfo.endStr.split('T')[0] : this.eventStartDate;
+
+    // Optional: default color/type
+    this.eventLevel = 'Primary'; // or leave empty if user will select via radio
+
     this.openModal();
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-  const event = clickInfo.event;
+    const event = clickInfo.event;
+    this.selectedEvent = {
+      
+      title: event.title,
+      start: event.startStr,
+      end: event.endStr,
+      extendedProps: {
+        eventNumber: event.extendedProps['eventNumber'], 
+        calendar: event.extendedProps['calendar'],
+        description: event.extendedProps['description'],
+        location: event.extendedProps['location'],
+        tamilYear: event.extendedProps['tamilYear'],
+        tamilMonth: event.extendedProps['tamilMonth']
+      }
+    };
 
-  this.selectedEvent = {
-    eventNumber: event.extendedProps['eventNumber'], // ✅ access here
-    title: event.title,
-    start: event.startStr,
-    end: event.endStr,
-    extendedProps: {
-      calendar: event.extendedProps['calendar'],
-      description: event.extendedProps['description'],
-      location: event.extendedProps['location'],
-      tamilYear: event.extendedProps['tamilYear'],
-      tamilMonth: event.extendedProps['tamilMonth']
-    }
-  };
+    this.eventNumber = event.extendedProps['eventNumber'];
+    this.eventTitle = event.title;
+    this.eventStartDate = event.startStr.split('T')[0];
+    this.eventEndDate = event.endStr ? event.endStr.split('T')[0] : '';
+    this.eventLevel = event.extendedProps['calendar'];
+    this.eventDescription = event.extendedProps['description'] || '';
+    this.eventLocation = event.extendedProps['location'] || '';
+    this.eventTamilYear = event.extendedProps['tamilYear'] || '';
+    this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
 
-  this.eventNumber = event.extendedProps['eventNumber'];
-  this.eventTitle = event.title;
-  this.eventStartDate = event.startStr.split('T')[0];
-  this.eventEndDate = event.endStr ? event.endStr.split('T')[0] : '';
-  this.eventLevel = event.extendedProps['calendar'];
-  this.eventDescription = event.extendedProps['description'] || '';
-  this.eventLocation = event.extendedProps['location'] || '';
-  this.eventTamilYear = event.extendedProps['tamilYear'] || '';
-  this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
-
-  this.openModal();
-}
+    this.openModal();
+  }
 
 
-  handleAddOrUpdateEvent() {
-  // Prepare API payload
+  // Update or Create Event
+handleAddOrUpdateEvent() {
   const apiPayload: any = {
-    eventNumber: this.selectedEvent?.extendedProps.eventNumber || Date.now().toString(), // generate if new
+    eventNumber: this.eventNumber || this.selectedEvent?.extendedProps.eventNumber,
     name: this.eventTitle,
     description: this.eventDescription,
     startDate: new Date(this.eventStartDate),
     endDate: new Date(this.eventEndDate),
     location: this.eventLocation,
     tamilYear: this.eventTamilYear,
-    tamilMonth: this.eventTamilMonth
+    tamilMonth: this.eventTamilMonth,
+    eventLevel: this.eventLevel
   };
 
   if (this.selectedEvent) {
     // UPDATE
+    console.log('Updating event:', apiPayload.eventNumber);
     this.eventService.updateEvent(apiPayload.eventNumber, apiPayload).subscribe({
       next: (updatedEvent) => {
-        // Map updated event back to CalendarEvent for frontend
-        const updatedCalendarEvent: CalendarEvent = {
-          id: updatedEvent.eventNumber,
-          title: updatedEvent.name,
-          start: updatedEvent.startDate,
-          end: updatedEvent.endDate,
-          extendedProps: {
-            calendar: this.eventLevel,
-            description: updatedEvent.description,
-            location: updatedEvent.location,
-            tamilYear: updatedEvent.tamilYear,
-            tamilMonth: updatedEvent.tamilMonth,
-            eventNumber: updatedEvent.eventNumber
-          }
-        };
+        console.log('API update response:', updatedEvent);
 
-        this.events = this.events.map(ev =>
-          ev.extendedProps.eventNumber === updatedCalendarEvent.extendedProps.eventNumber
-            ? updatedCalendarEvent
-            : ev
+        const calendarApi = this.calendarComponent.getApi();
+        const existingEvent = calendarApi.getEventById(updatedEvent.eventNumber.toString());
+
+        if (existingEvent) {
+          existingEvent.setProp('title', updatedEvent.name);
+          existingEvent.setStart(new Date(updatedEvent.startDate));
+          existingEvent.setEnd(new Date(updatedEvent.endDate));
+          existingEvent.setAllDay(true);
+          existingEvent.setExtendedProp('calendar', this.eventLevel);
+          existingEvent.setExtendedProp('description', updatedEvent.description);
+          existingEvent.setExtendedProp('location', updatedEvent.location);
+          existingEvent.setExtendedProp('tamilYear', updatedEvent.tamilYear);
+          existingEvent.setExtendedProp('tamilMonth', updatedEvent.tamilMonth);
+          existingEvent.setExtendedProp('eventNumber', Number(updatedEvent.eventNumber));
+        }
+
+        // Update local events array
+        const index = this.events.findIndex(
+          ev => ev.extendedProps.eventNumber === Number(updatedEvent.eventNumber)
         );
+        if (index > -1) {
+          this.events[index] = {
+            ...this.events[index],
+            title: updatedEvent.name,
+            start: new Date(updatedEvent.startDate),
+            end: new Date(updatedEvent.endDate),
+            extendedProps: {
+              ...this.events[index].extendedProps,
+              calendar: this.eventLevel,
+              description: updatedEvent.description,
+              location: updatedEvent.location,
+              tamilYear: updatedEvent.tamilYear,
+              tamilMonth: updatedEvent.tamilMonth,
+              eventNumber: Number(updatedEvent.eventNumber) // ensure number
+            }
+          };
+        }
 
-        this.calendarOptions.events = this.events;
+
         this.closeModal();
         this.resetModalFields();
       },
@@ -199,25 +232,30 @@ loadEventsFromAPI() {
     });
   } else {
     // CREATE
+    console.log('Creating new event...');
     this.eventService.createEvent(apiPayload).subscribe({
       next: (createdEvent) => {
+        console.log('API create response:', createdEvent);
+
         const newCalendarEvent: CalendarEvent = {
-          id: createdEvent.eventNumber,
+          id: createdEvent.eventNumber.toString(),
           title: createdEvent.name,
-          start: createdEvent.startDate,
-          end: createdEvent.endDate,
+          start: new Date(createdEvent.startDate),
+          end: new Date(createdEvent.endDate),
+          allDay: true,
           extendedProps: {
             calendar: this.eventLevel,
             description: createdEvent.description,
             location: createdEvent.location,
             tamilYear: createdEvent.tamilYear,
             tamilMonth: createdEvent.tamilMonth,
-            eventNumber: createdEvent.eventNumber
+            eventNumber: Number(createdEvent.eventNumber)
           }
         };
 
-        this.events = [...this.events, newCalendarEvent];
-        this.calendarOptions.events = this.events;
+        this.events.push(newCalendarEvent);
+        this.calendarComponent.getApi().addEvent(newCalendarEvent);
+
         this.closeModal();
         this.resetModalFields();
       },
@@ -226,25 +264,34 @@ loadEventsFromAPI() {
   }
 }
 
+// Delete Event
+handleDeleteEvent() {
+  if (!this.selectedEvent) return;
 
-
-
-  // Delete existing event
-  handleDeleteEvent() {
-    if (!this.selectedEvent) return;
-
-    this.eventService.deleteEvent(this.selectedEvent["eventNumber"].toString())
-      .subscribe({
-        next: () => {
-          // Remove from local events array
-          this.events = this.events.filter(ev => ev["eventNumber"] !== this.selectedEvent!["eventNumber"]);
-          this.calendarOptions.events = this.events;
-          this.closeModal();
-          this.resetModalFields();
-        },
-        error: (err) => console.error('Error deleting event:', err)
-      });
+  const eventNumber = this.selectedEvent.extendedProps?.eventNumber;
+  if (!eventNumber) {
+    console.error('Cannot delete event: eventNumber is missing');
+    return;
   }
+  console.log(`Attempting to delete event with eventNumber: ${eventNumber}`);
+  this.eventService.deleteEvent(eventNumber.toString()).subscribe({
+    next: () => {
+      // Remove from FullCalendar
+      console.log(`API confirmed deletion of eventNumber: ${eventNumber}`);
+      const calendarApi = this.calendarComponent.getApi();
+      const existingEvent = calendarApi.getEventById(eventNumber.toString());
+      if (existingEvent) existingEvent.remove();
+
+      // Remove from local events array
+      this.events = this.events.filter(ev => ev.extendedProps.eventNumber !== eventNumber);
+
+      this.closeModal();
+      this.resetModalFields();
+    },
+    error: (err) => console.error('Error deleting event:', err)
+  });
+}
+
 
 
   resetModalFields() {
