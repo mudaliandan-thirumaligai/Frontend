@@ -1,0 +1,90 @@
+<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+  <div class="custom-calendar">
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <app-modal
+    [isOpen]="isOpen"
+    (close)="closeModal()"
+    className="max-w-[500px] max-h-[90vh] overflow-hidden p-6 lg:p-10"
+  >
+    <div class="flex flex-col px-2 overflow-y-auto custom-scrollbar max-h-[70vh]">
+      
+      <!-- TITLE -->
+      <h5 class="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 lg:text-2xl">
+        Event Details
+      </h5>
+
+      <!-- EVENT NAME -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Name</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTitle }}</p>
+      </div>
+
+      <!-- EVENT NUMBER -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Number</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventNumber }}</p>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Description</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90 whitespace-pre-line">{{ eventDescription }}</p>
+      </div>
+
+      <!-- LOCATION -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Location</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventLocation }}</p>
+      </div>
+
+      <!-- TAMIL YEAR + MONTH -->
+      <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Tamil Year</label>
+          <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTamilYear }}</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Tamil Month</label>
+          <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTamilMonth }}</p>
+        </div>
+      </div>
+
+      <!-- EVENT COLOR -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Color</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventLevel }}</p>
+      </div>
+
+      <!-- START DATE -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Start Date</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">
+          {{ eventStartDate | date:'mediumDate' }}
+        </p>
+      </div>
+
+      <!-- END DATE -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">End Date</label>
+        <p class="mt-1 text-gray-900 dark:text-white/90">
+          {{ eventEndDate | date:'mediumDate' }}
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="flex items-center gap-3 mt-6 modal-footer sm:justify-end">
+        <button
+          (click)="closeModal()"
+          type="button"
+          class="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 sm:w-auto"
+        >
+          Close
+        </button>
+      </div>
+
+    </div>
+  </app-modal>
+</div>

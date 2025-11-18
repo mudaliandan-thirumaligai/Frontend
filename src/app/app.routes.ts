@@ -19,6 +19,13 @@ import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
 import { CalenderComponent } from './pages/calender/calender.component';
 
+
+//Admin Pages
+import { AdminCalenderComponent } from './pages/Admin/calender/admin-calender.component';
+
+//User pages
+import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
+
 export const routes: Routes = [
   {
     path:'',
@@ -31,10 +38,17 @@ export const routes: Routes = [
         title:
           'Angular Ecommerce Dashboard | TailAdmin - Angular Admin Dashboard Template',
       },
+      // Will Link this to user calender
       {
         path:'calendar',
-        component:CalenderComponent,
+        component:UserCalenderComponent,
         title:'Angular Calender | TailAdmin - Angular Admin Dashboard Template'
+      },
+      //Admin Calender
+      {
+        path:'admin/calendar',
+        component:AdminCalenderComponent,
+        title:'Calendar | Sri Dasarathy Trust'
       },
       {
         path:'profile',
