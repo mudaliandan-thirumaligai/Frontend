@@ -9,6 +9,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
 
+
+import { ToastService } from '../../../shared/services/toast.service';
+
 import { EventService } from '../../../service/event.service';
 interface CalendarEvent extends EventInput {
   extendedProps: {
@@ -35,7 +38,7 @@ interface CalendarEvent extends EventInput {
 })
 export class AdminCalenderComponent {
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private toast: ToastService) {}
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   events: CalendarEvent[] = [];
@@ -185,6 +188,7 @@ handleAddOrUpdateEvent() {
     this.eventService.updateEvent(apiPayload.eventNumber, apiPayload).subscribe({
       next: (updatedEvent) => {
         console.log('API update response:', updatedEvent);
+        this.toast.showSuccess(`Event "${updatedEvent.name}" updated successfully!`);
 
         const calendarApi = this.calendarComponent.getApi();
         const existingEvent = calendarApi.getEventById(updatedEvent.eventNumber.toString());
@@ -228,39 +232,49 @@ handleAddOrUpdateEvent() {
         this.closeModal();
         this.resetModalFields();
       },
-      error: (err) => console.error('Error updating event:', err)
+      
+      error: (err) => {console.error('Error updating event:', err);
+        this.toast.showError(err?.error?.message || 'Failed to update event');
+      }
+      
     });
   } else {
     // CREATE
     console.log('Creating new event...');
     this.eventService.createEvent(apiPayload).subscribe({
-      next: (createdEvent) => {
-        console.log('API create response:', createdEvent);
+  next: (createdEvent) => {
+    console.log('API create response:', createdEvent);
 
-        const newCalendarEvent: CalendarEvent = {
-          id: createdEvent.eventNumber.toString(),
-          title: createdEvent.name,
-          start: new Date(createdEvent.startDate),
-          end: new Date(createdEvent.endDate),
-          allDay: true,
-          extendedProps: {
-            calendar: this.eventLevel,
-            description: createdEvent.description,
-            location: createdEvent.location,
-            tamilYear: createdEvent.tamilYear,
-            tamilMonth: createdEvent.tamilMonth,
-            eventNumber: Number(createdEvent.eventNumber)
-          }
-        };
+    // Add toast message
+    this.toast.showSuccess(`Event "${createdEvent.name}" created successfully!`);
 
-        this.events.push(newCalendarEvent);
-        this.calendarComponent.getApi().addEvent(newCalendarEvent);
+    const newCalendarEvent: CalendarEvent = {
+      id: createdEvent.eventNumber.toString(),
+      title: createdEvent.name,
+      start: new Date(createdEvent.startDate),
+      end: new Date(createdEvent.endDate),
+      allDay: true,
+      extendedProps: {
+        calendar: this.eventLevel,
+        description: createdEvent.description,
+        location: createdEvent.location,
+        tamilYear: createdEvent.tamilYear,
+        tamilMonth: createdEvent.tamilMonth,
+        eventNumber: Number(createdEvent.eventNumber)
+      }
+    };
 
-        this.closeModal();
-        this.resetModalFields();
-      },
-      error: (err) => console.error('Error creating event:', err)
-    });
+    this.events.push(newCalendarEvent);
+    this.calendarComponent.getApi().addEvent(newCalendarEvent);
+
+    this.closeModal();
+    this.resetModalFields();
+  },
+    error: (err) => {
+      console.error('Error creating event:', err);
+      this.toast.showError(err?.error?.message || 'Failed to create event');
+    }
+  });
   }
 }
 
@@ -271,6 +285,7 @@ handleDeleteEvent() {
   const eventNumber = this.selectedEvent.extendedProps?.eventNumber;
   if (!eventNumber) {
     console.error('Cannot delete event: eventNumber is missing');
+    this.toast.showError('Cannot delete event: event number is missing');
     return;
   }
   console.log(`Attempting to delete event with eventNumber: ${eventNumber}`);
@@ -278,6 +293,7 @@ handleDeleteEvent() {
     next: () => {
       // Remove from FullCalendar
       console.log(`API confirmed deletion of eventNumber: ${eventNumber}`);
+      this.toast.showSuccess('Event deleted successfully!');
       const calendarApi = this.calendarComponent.getApi();
       const existingEvent = calendarApi.getEventById(eventNumber.toString());
       if (existingEvent) existingEvent.remove();
@@ -288,7 +304,19 @@ handleDeleteEvent() {
       this.closeModal();
       this.resetModalFields();
     },
-    error: (err) => console.error('Error deleting event:', err)
+    error: (err) => {console.error('Error deleting event:', err)
+        // Prefer API message + details if available
+        const apiMessage = err?.error?.message;
+        const apiDetails = err?.error?.details;
+
+        const toastMessage = apiMessage
+          ? apiDetails
+            ? `${apiMessage}: ${apiDetails}`
+            : apiMessage
+          : 'Failed to delete event';
+
+        this.toast.showError(toastMessage);
+    }
   });
 }
 
