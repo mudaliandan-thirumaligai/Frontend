@@ -23,6 +23,10 @@ import { CalenderComponent } from './pages/calender/calender.component';
 //Admin Pages
 import { AdminCalenderComponent } from './pages/Admin/calender/admin-calender.component';
 
+//Admin Auth Pages
+import { AddNewAdmin } from './pages/Admin/Auth/signup-form/new-admin.component';
+import { ChangePasswordComponent } from './pages/Admin/Auth/signin-form/change-pwd.component';
+
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 
@@ -127,6 +131,18 @@ export const routes: Routes = [
   {
     path:'signup',
     component:SignUpComponent,
+    title:'Sign Up | Sri Dasarathy Trust'
+  },
+
+  // Admin Auth Pages
+  {
+    path:'change-pwd',
+    component:ChangePasswordComponent,
+    title:'Sign In | Sri Dasarathy Trust'
+  },
+  {
+    path:'admin/addUser',
+    component:AddNewAdmin,
     title:'Sign Up | Sri Dasarathy Trust'
   },
   // error pages
