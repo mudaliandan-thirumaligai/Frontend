@@ -29,6 +29,7 @@ import { ChangePasswordComponent } from './pages/Admin/Auth/Change-Password/chan
 
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -52,7 +53,8 @@ export const routes: Routes = [
       {
         path:'admin/calendar',
         component:AdminCalenderComponent,
-        title:'Calendar | Sri Dasarathy Trust'
+        title:'Calendar | Sri Dasarathy Trust',
+        //canActivate: [adminGuard]
       },
       {
         path:'profile',
@@ -138,12 +140,15 @@ export const routes: Routes = [
   {
     path:'change-pwd',
     component:ChangePasswordComponent,
-    title:'Sign In | Sri Dasarathy Trust'
+    title:'Sign In | Sri Dasarathy Trust',
+    //TODO actiavte after JWT
+    //canActivate: [adminGuard]
   },
   {
     path:'admin/addUser',
     component:AddNewAdmin,
-    title:'Sign Up | Sri Dasarathy Trust'
+    title:'Sign Up | Sri Dasarathy Trust',
+    //canActivate: [adminGuard]
   },
   // error pages
   {
