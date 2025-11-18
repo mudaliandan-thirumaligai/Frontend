@@ -18,4 +18,7 @@ export class ToastService {
   showError(text: string) {
     this.toastSubject.next({ type: 'error', text });
   }
+  showInfo(text: string) {
+    this.toastSubject.next({ type: 'info', text });
+  }
 }

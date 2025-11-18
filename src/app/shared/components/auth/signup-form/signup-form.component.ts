@@ -6,7 +6,6 @@ import { InputFieldComponent } from '../../form/input/input-field.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-// TODO to make this an admin page only page in future
 @Component({
   selector: 'app-signup-form',
   imports: [
