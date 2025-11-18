@@ -24,7 +24,7 @@ import { CalenderComponent } from './pages/calender/calender.component';
 import { AdminCalenderComponent } from './pages/Admin/calender/admin-calender.component';
 
 //Admin Auth Pages
-import { AddNewAdmin } from './pages/Admin/Auth/signup-form/new-admin.component';
+import { AddNewAdmin } from './pages/Admin/Auth/Add-New-Admin/new-admin.component';
 import { ChangePasswordComponent } from './pages/Admin/Auth/Change-Password/change-pwd.component';
 
 //User pages

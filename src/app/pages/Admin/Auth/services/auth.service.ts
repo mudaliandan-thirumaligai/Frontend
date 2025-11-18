@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environment/environment';
+import { EmailValidator } from '@angular/forms';
 
 export interface ChangePasswordPayload {
   oldPassword: string;
@@ -12,6 +13,7 @@ export interface ChangePasswordPayload {
 export interface RegisterPayload {
   username: string;
   password: string;
+  email: string;
 }
 
 @Injectable({

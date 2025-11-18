@@ -32,7 +32,6 @@ export class SigninFormComponent {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-  // TODO need to add api calling here 
 
   onSignIn() {
     console.log('Username:', this.username);
