@@ -22,7 +22,7 @@ export interface RegisterPayload {
 export class AuthService {
 
   // TODO: Replace this with actual JWT from login in future
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTBmNjA2NjE1MjVmMDUxN2M2ZWJiMjYiLCJ1c2VybmFtZSI6InVzZXI3Iiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNDQzMzE1LCJleHAiOjE3NjM0NDY5MTV9.-HO3qFVgtsYIDLzkPI9SoMPCrFdrmWg6pzNKMERYpp0';
+  private token = 'MY-TOKEN';
 
   constructor(private http: HttpClient) {}
 

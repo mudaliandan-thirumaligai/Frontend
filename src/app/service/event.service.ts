@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class EventService {
   private baseUrl = 'http://localhost:8080/events';
   //TODO REMOVE THIS TOKEN - JWT from ROLE
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OTBmNjA2NjE1MjVmMDUxN2M2ZWJiMjYiLCJ1c2VybmFtZSI6InVzZXI3Iiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNDM4MzUzLCJleHAiOjE3NjM0NDE5NTN9.H-b1ko5mJN0H0wJ5M2Ujk8qIad1bVI9aDHcARHom7QQ';
+  private token = 'MY-TOKEN';
   
   private getHttpOptions() {
     return {
