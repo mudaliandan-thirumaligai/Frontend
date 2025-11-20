@@ -26,11 +26,13 @@ import { AdminCalenderComponent } from './pages/Admin/calender/admin-calender.co
 //Admin Auth Pages
 import { AddNewAdmin } from './pages/Admin/Auth/Add-New-Admin/new-admin.component';
 import { ChangePasswordComponent } from './pages/Admin/Auth/Change-Password/change-pwd.component';
+import { adminGuard } from './guards/admin.guard';
 
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
-import { adminGuard } from './guards/admin.guard';
 import { LandingComponent } from './pages/User/Landing/landing.component';
+import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
+
 
 export const routes: Routes = [
   {
@@ -63,10 +65,12 @@ export const routes: Routes = [
         title:'Calendar | Sri Dasarathy Trust',
         //canActivate: [adminGuard]
       },
+
+      // User Feature Pages
       {
-        path:'profile',
-        component:ProfileComponent,
-        title:'Angular Profile Dashboard | TailAdmin - Angular Admin Dashboard Template'
+        path:'thirumaaligais',
+        component:ThirumaaligaisComponent,
+        title:'Thirumaaligais | Sri Dasarathy Trust'
       },
       {
         path:'form-elements',

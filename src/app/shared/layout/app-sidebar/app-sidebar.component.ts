@@ -153,6 +153,19 @@ export class AppSidebarComponent {
         { name: "Change Password", path: "/change-pwd", pro: false },
         { name: "Sign Up", path: "/admin/addUser", pro: false },
       ],
+    },
+
+    // User Features
+    {
+      icon: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.5C8.686 2.5 6 5.186 6 8.5c0 4.438 5.25 10.254 5.48 10.52a.7.7 0 0 0 1.04 0C12.75 18.754 18 12.938 18 8.5c0-3.314-2.686-6-6-6z"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="8.5" r="2.25"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`,
+      name: "Our Thirumaaligais",
+      path: "/thirumaaligais",
     }
   ];
 

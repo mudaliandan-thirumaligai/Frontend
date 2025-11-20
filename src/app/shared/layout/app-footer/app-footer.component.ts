@@ -9,5 +9,5 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   templateUrl: './app-footer.component.html',
 })
 export class AppFooterComponent {
-  
+   currentYear = new Date().getFullYear();
 }
