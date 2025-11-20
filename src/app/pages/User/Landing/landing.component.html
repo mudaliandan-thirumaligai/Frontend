@@ -1,80 +1,67 @@
-<!-- <div>
-   <div class="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-    <div class="mx-auto w-full max-w-[630px] text-center">
-      <h3 class="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
-        Card Title Here
-      </h3>
+<div class="min-h-screen bg-gradient-secondary">
+  <!-- Page Header -->
+  <section class="py-20 px-6">
+    <div class="container mx-auto max-w-6xl">
+      <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold mb-4 text-foreground">About SkyBlue</h1>
+        <div class="w-24 h-1 bg-gradient-primary mx-auto rounded-full"></div>
+        <p class="text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+          We're a team of innovators, creators, and problem-solvers dedicated to excellence.
+        </p>
+      </div>
 
-      <p class="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
-        Start putting content on grids or panels, you can also use different
-        combinations of grids.Please check out the dashboard and other pages
-      </p>
+      <!-- Mission, Vision, Values Cards -->
+      <div class="grid md:grid-cols-3 gap-8 mb-16">
+        <div class="p-8 backdrop-blur-sm bg-card/50 border border-border rounded-xl shadow-soft hover:shadow-glow transition-all">
+          <div class="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold mb-3 text-card-foreground">Our Mission</h3>
+          <p class="text-muted-foreground">
+            To deliver cutting-edge solutions that transform businesses and create lasting impact in our community.
+          </p>
+        </div>
+
+        <div class="p-8 backdrop-blur-sm bg-card/50 border border-border rounded-xl shadow-soft hover:shadow-glow transition-all">
+          <div class="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold mb-3 text-card-foreground">Our Vision</h3>
+          <p class="text-muted-foreground">
+            To be the leading innovator in our industry, setting new standards for excellence and customer satisfaction.
+          </p>
+        </div>
+
+        <div class="p-8 backdrop-blur-sm bg-card/50 border border-border rounded-xl shadow-soft hover:shadow-glow transition-all">
+          <div class="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-semibold mb-3 text-card-foreground">Our Values</h3>
+          <p class="text-muted-foreground">
+            Integrity, innovation, and dedication to our clients drive everything we do at SkyBlue.
+          </p>
+        </div>
+      </div>
+
+      <!-- Team Section -->
+      <div class="mt-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-foreground">Meet Our Team</h2>
+        <div class="grid md:grid-cols-4 gap-8">
+          <div *ngFor="let member of teamMembers" class="text-center">
+            <div class="w-32 h-32 mx-auto rounded-full bg-gradient-primary flex items-center justify-center text-white text-2xl font-bold mb-4">
+              {{member.initials}}
+            </div>
+            <h4 class="font-semibold text-lg text-card-foreground">{{member.name}}</h4>
+            <p class="text-primary text-sm">{{member.role}}</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div> -->
-<div class="relative isolate px-6 pt-14 lg:px-8 
-            bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-  
-  <!-- Top gradient shape -->
-  <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-    <div style="clip-path: polygon(
-    74.1% 44.1%, 
-    100% 50%, 
-    97% 100%, 
-    50% 90%, 
-    0% 100%, 
-    3% 50%, 
-    26% 16%, 
-    74.1% 44.1%
-);" 
-     class="relative left-[calc(50% - 11rem)] aspect-[1155/678] w-[144.5rem] -translate-x-1/2 rotate-30
-            bg-gradient-to-tr from-pink-200 to-indigo-400 opacity-30
-            dark:from-pink-800 dark:to-indigo-700 dark:opacity-50
-            sm:left-[calc(50% - 30rem)] sm:w-[288.75rem]">
+  </section>
 </div>
-
-  </div>
-
-  <!-- Hero content -->
-  <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 text-center">
-    <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight
-               text-gray-900 dark:text-white">
-      Data to enrich your online business
-    </h1>
-    <p class="mt-6 text-lg sm:text-xl text-gray-500 dark:text-gray-300">
-      Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
-    </p>
-    <div class="mt-10 flex items-center justify-center gap-x-6">
-      <a href="#" class="rounded-md px-3.5 py-2.5 text-sm font-semibold
-                        bg-indigo-600 hover:bg-indigo-500 text-white
-                        dark:bg-indigo-500 dark:hover:bg-indigo-400">
-        Get started
-      </a>
-      <a href="#" class="text-sm font-semibold text-gray-900 dark:text-white">
-        Learn more <span aria-hidden="true">→</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Bottom gradient shape -->
-  <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-    <div style="clip-path: polygon(
-  74.1% 44.1%, 
-  100% 50%, 
-  97% 100%, 
-  50% 90%, 
-  0% 100%, 
-  3% 50%, 
-  26% 16%, 
-  74.1% 44.1%
-);" 
-     class="relative left-[calc(50% + 3rem)] aspect-[1155/678] w-[144.5rem] -translate-x-1/2
-            bg-gradient-to-tr from-pink-200 to-indigo-400 opacity-30
-            dark:from-pink-800 dark:to-indigo-700 dark:opacity-50
-            sm:left-[calc(50% + 36rem)] sm:w-[288.75rem]">
-</div>
-
-  </div>
-</div>
-
-

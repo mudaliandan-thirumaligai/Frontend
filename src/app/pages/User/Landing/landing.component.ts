@@ -11,5 +11,11 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class LandingComponent {
+  teamMembers = [
+    { name: 'John Doe', role: 'CEO', initials: 'JD' },
+    { name: 'Jane Smith', role: 'CTO', initials: 'JS' },
+    { name: 'Mike Johnson', role: 'CFO', initials: 'MJ' },
+    { name: 'Sarah Wilson', role: 'CMO', initials: 'SW' }
+  ];
 
 }
