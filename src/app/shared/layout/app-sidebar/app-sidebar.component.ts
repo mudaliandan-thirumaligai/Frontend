@@ -4,7 +4,8 @@ import { SidebarService } from '../../services/sidebar.service';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
 import { SidebarWidgetComponent } from './app-sidebar-widget.component';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, filter, Subscription } from 'rxjs';
+import { ThemeToggleButtonComponent } from '../../components/common/theme-toggle/theme-toggle-button.component';
 
 type NavItem = {
   name: string;
@@ -20,7 +21,8 @@ type NavItem = {
     CommonModule,
     RouterModule,
     SafeHtmlPipe,
-    SidebarWidgetComponent
+    SidebarWidgetComponent,
+    ThemeToggleButtonComponent
   ],
   templateUrl: './app-sidebar.component.html',
 })
@@ -99,6 +101,13 @@ export class AppSidebarComponent {
   // New section added to 'navItems' or 'othersItems'
   adminItems: NavItem[] = [
     {
+      name: "Pages",
+      icon: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.50391 4.25C8.50391 3.83579 8.83969 3.5 9.25391 3.5H15.2777C15.4766 3.5 15.6674 3.57902 15.8081 3.71967L18.2807 6.19234C18.4214 6.333 18.5004 6.52376 18.5004 6.72268V16.75C18.5004 17.1642 18.1646 17.5 17.7504 17.5H16.248V17.4993H14.748V17.5H9.25391C8.83969 17.5 8.50391 17.1642 8.50391 16.75V4.25ZM14.748 19H9.25391C8.01126 19 7.00391 17.9926 7.00391 16.75V6.49854H6.24805C5.83383 6.49854 5.49805 6.83432 5.49805 7.24854V19.75C5.49805 20.1642 5.83383 20.5 6.24805 20.5H13.998C14.4123 20.5 14.748 20.1642 14.748 19.75L14.748 19ZM7.00391 4.99854V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2777C15.8745 2 16.4468 2.23705 16.8687 2.659L19.3414 5.13168C19.7634 5.55364 20.0004 6.12594 20.0004 6.72268V16.75C20.0004 17.9926 18.9931 19 17.7504 19H16.248L16.248 19.75C16.248 20.9926 15.2407 22 13.998 22H6.24805C5.00541 22 3.99805 20.9926 3.99805 19.75V7.24854C3.99805 6.00589 5.00541 4.99854 6.24805 4.99854H7.00391Z" fill="currentColor"></path></svg>`,
+      subItems: [
+        { name: "Blank Page", path: "/blank1", pro: false },
+      ],
+    },
+    {
       icon: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z" fill="currentColor"></path></svg>`,
       name: "Admin Calendar",
       path: "/admin/calendar",
@@ -119,131 +128,144 @@ export class AppSidebarComponent {
   ];
 
 
-  openSubmenu: string | null | number = null;
-  subMenuHeights: { [key: string]: number } = {};
-  @ViewChildren('subMenu') subMenuRefs!: QueryList<ElementRef>;
+openSubmenu: string | null | number = null;
+subMenuHeights: { [key: string]: number } = {};
+@ViewChildren('subMenu') subMenuRefs!: QueryList<ElementRef>;
 
-  readonly isExpanded$;
-  readonly isMobileOpen$;
-  readonly isHovered$;
+readonly isExpanded$;
+readonly isMobileOpen$;
+readonly isHovered$;
 
-  private subscription: Subscription = new Subscription();
+private subscription: Subscription = new Subscription();
 
-  constructor(
-    public sidebarService: SidebarService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.isExpanded$ = this.sidebarService.isExpanded$;
-    this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
-    this.isHovered$ = this.sidebarService.isHovered$;
-  }
+constructor(
+  public sidebarService: SidebarService,
+  private router: Router,
+  private cdr: ChangeDetectorRef
+) {
+  this.isExpanded$ = this.sidebarService.isExpanded$;
+  this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
+  this.isHovered$ = this.sidebarService.isHovered$;
+}
 
-  ngOnInit() {
-    // Subscribe to router events
-    this.subscription.add(
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          this.setActiveMenuFromRoute(this.router.url);
+ngOnInit() {
+  // Handle highlighting active route
+  this.subscription.add(
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.setActiveMenuFromRoute(this.router.url);
+      }
+    })
+  );
+
+  // Auto-close sidebar when route changes (mobile view)
+  this.subscription.add(
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.sidebarService.mobileState) {
+          this.sidebarService.setMobileOpen(false);
         }
       })
-    );
+  );
 
-    // Subscribe to combined observables to close submenus when all are false
-    this.subscription.add(
-      combineLatest([this.isExpanded$, this.isMobileOpen$, this.isHovered$]).subscribe(
-        ([isExpanded, isMobileOpen, isHovered]) => {
-          if (!isExpanded && !isMobileOpen && !isHovered) {
-            // this.openSubmenu = null;
-            // this.savedSubMenuHeights = { ...this.subMenuHeights };
-            // this.subMenuHeights = {};
-            this.cdr.detectChanges();
-          } else {
-            // Restore saved heights when reopening
-            // this.subMenuHeights = { ...this.savedSubMenuHeights };
-            // this.cdr.detectChanges();
-          }
+  // Close submenus when needed
+  this.subscription.add(
+    combineLatest([this.isExpanded$, this.isMobileOpen$, this.isHovered$])
+      .subscribe(([isExpanded, isMobileOpen, isHovered]) => {
+        if (!isExpanded && !isMobileOpen && !isHovered) {
+          this.cdr.detectChanges();
         }
-      )
-    );
+      })
+  );
 
-    // Initial load
-    this.setActiveMenuFromRoute(this.router.url);
-  }
+  // Initial highlight
+  this.setActiveMenuFromRoute(this.router.url);
+}
 
-  ngOnDestroy() {
-    // Clean up subscriptions
-    this.subscription.unsubscribe();
-  }
 
-  isActive(path: string): boolean {
-    return this.router.url === path;
-  }
+ngOnDestroy() {
+  // Clean up subscriptions
+  this.subscription.unsubscribe();
+}
 
-  toggleSubmenu(section: string | number, index: string | number) {
-    const key = `${section}-${index}`;
+isActive(path: string): boolean {
+  return this.router.url === path;
+}
 
-    if (this.openSubmenu === key) {
-      this.openSubmenu = null;
-      this.subMenuHeights[key] = 0;
-    } else {
-      this.openSubmenu = key;
+toggleSubmenu(section: string | number, index: string | number) {
+  const key = `${section}-${index}`;
 
-      setTimeout(() => {
-        const el = document.getElementById(key);
-        if (el) {
-          this.subMenuHeights[key] = el.scrollHeight;
-          this.cdr.detectChanges(); // Ensure UI updates
-        }
-      });
-    }
-  }
+  if (this.openSubmenu === key) {
+    this.openSubmenu = null;
+    this.subMenuHeights[key] = 0;
+  } else {
+    this.openSubmenu = key;
 
-  onSidebarMouseEnter() {
-    this.isExpanded$.subscribe(expanded => {
-      if (!expanded) {
-        this.sidebarService.setHovered(true);
+    setTimeout(() => {
+      const el = document.getElementById(key);
+      if (el) {
+        this.subMenuHeights[key] = el.scrollHeight;
+        this.cdr.detectChanges(); // Ensure UI updates
       }
-    }).unsubscribe();
-  }
-
-  private setActiveMenuFromRoute(currentUrl: string) {
-    const menuGroups = [
-      { items: this.adminItems, prefix: 'Admin' },
-      { items: this.navItems, prefix: 'main' },
-      { items: this.othersItems, prefix: 'others' },
-    ];
-
-    menuGroups.forEach(group => {
-      group.items.forEach((nav, i) => {
-        if (nav.subItems) {
-          nav.subItems.forEach(subItem => {
-            if (currentUrl === subItem.path) {
-              const key = `${group.prefix}-${i}`;
-              this.openSubmenu = key;
-
-              setTimeout(() => {
-                const el = document.getElementById(key);
-                if (el) {
-                  this.subMenuHeights[key] = el.scrollHeight;
-                  this.cdr.detectChanges(); // Ensure UI updates
-                }
-              });
-            }
-          });
-        }
-      });
     });
   }
+}
 
-  onSubmenuClick() {
-    console.log('click submenu');
-    this.isMobileOpen$.subscribe(isMobile => {
-      if (isMobile) {
-        this.sidebarService.setMobileOpen(false);
+onSidebarMouseEnter() {
+  this.isExpanded$.subscribe(expanded => {
+    if (!expanded) {
+      this.sidebarService.setHovered(true);
+    }
+  }).unsubscribe();
+}
+
+private setActiveMenuFromRoute(currentUrl: string) {
+  const menuGroups = [
+    { items: this.adminItems, prefix: 'Admin' },
+    { items: this.navItems, prefix: 'main' },
+    { items: this.othersItems, prefix: 'others' },
+  ];
+
+  menuGroups.forEach(group => {
+    group.items.forEach((nav, i) => {
+      if (nav.subItems) {
+        nav.subItems.forEach(subItem => {
+          if (currentUrl === subItem.path) {
+            const key = `${group.prefix}-${i}`;
+            this.openSubmenu = key;
+
+            setTimeout(() => {
+              const el = document.getElementById(key);
+              if (el) {
+                this.subMenuHeights[key] = el.scrollHeight;
+                this.cdr.detectChanges(); // Ensure UI updates
+              }
+            });
+          }
+        });
       }
-    }).unsubscribe();
-  }  
+    });
+  });
+}
 
-  
+onSubmenuClick() {
+  console.log('click submenu');
+  this.isMobileOpen$.subscribe(isMobile => {
+    if (isMobile) {
+      this.sidebarService.setMobileOpen(false);
+    }
+  }).unsubscribe();
+}  
+toggleSidebar() {
+  if (window.innerWidth < 1280) {
+    this.sidebarService.toggleMobileOpen();
+  } else {
+    this.sidebarService.toggleExpanded();
+  }
+}
+
+
+
+
 }

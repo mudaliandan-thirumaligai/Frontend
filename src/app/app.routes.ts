@@ -30,6 +30,7 @@ import { ChangePasswordComponent } from './pages/Admin/Auth/Change-Password/chan
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 import { adminGuard } from './guards/admin.guard';
+import { LandingComponent } from './pages/User/Landing/landing.component';
 
 export const routes: Routes = [
   {
@@ -75,6 +76,11 @@ export const routes: Routes = [
         path:'blank',
         component:BlankComponent,
         title:'Angular Blank Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      },
+      {
+        path:'blank1',
+        component:LandingComponent,
+        title:'Sri Dasarathy Trust | Blank Page'
       },
       // support tickets
       {
