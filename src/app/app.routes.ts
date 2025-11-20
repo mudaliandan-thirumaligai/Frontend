@@ -38,11 +38,17 @@ export const routes: Routes = [
     component:AppLayoutComponent,
     children:[
       {
-        path: '',
+        path: 'ecommerce',
         component: EcommerceComponent,
         pathMatch: 'full',
         title:
           'Angular Ecommerce Dashboard | TailAdmin - Angular Admin Dashboard Template',
+      },
+      // Landing page for users
+      {
+        path:'',
+        component:LandingComponent,
+        title:'Sri Dasarathy Trust | Landing Page'
       },
       // Will Link this to user calender
       {
@@ -78,8 +84,8 @@ export const routes: Routes = [
         title:'Angular Blank Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
       {
-        path:'blank1',
-        component:LandingComponent,
+        path:'blank',
+        component:BlankComponent,
         title:'Sri Dasarathy Trust | Blank Page'
       },
       // support tickets
