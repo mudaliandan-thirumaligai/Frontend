@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { CommonModule } from '@angular/common';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BackdropComponent } from '../backdrop/backdrop.component';
 import { RouterModule } from '@angular/router';
-import { AppHeaderComponent } from '../app-header/app-header.component';
+import { AppFooterComponent } from '../app-footer/app-footer.component';
 
 @Component({
   selector: 'app-layout',
   imports: [
     CommonModule,
     RouterModule,
-    AppHeaderComponent,
     AppSidebarComponent,
-    BackdropComponent
+    BackdropComponent,
+    AppFooterComponent
   ],
   templateUrl: './app-layout.component.html',
 })
@@ -22,6 +22,14 @@ export class AppLayoutComponent {
   readonly isExpanded$;
   readonly isHovered$;
   readonly isMobileOpen$;
+
+  scrollPercent = 0;
+  @HostListener('window:scroll', [])
+  onScroll() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    this.scrollPercent = (scrollTop / docHeight) * 100;
+  }
 
   constructor(public sidebarService: SidebarService) {
     this.isExpanded$ = this.sidebarService.isExpanded$;

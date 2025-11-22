@@ -1,3 +1,10 @@
+<div class="fixed top-6 right-6 w-14 h-14 rounded-full bg-card shadow-soft
+            flex items-center justify-center text-primary font-bold"
+     [style.background]="
+       'conic-gradient(var(--primary) ' + scrollPercent + '%, var(--muted) ' + scrollPercent + '%)'
+     ">
+  {{ scrollPercent | number:'1.0-0' }}%
+</div>
 <div class="min-h-screen xl:flex">
   <div>
     <app-sidebar></app-sidebar>
@@ -12,10 +19,11 @@
       }"
   >
     <!-- app header start -->
-    <app-header/>
+    <!-- <app-header/> -->
     <!-- app header end -->
-    <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+    <div class="mx-auto max-w-(--breakpoint-2xl)">
       <router-outlet></router-outlet>
+      <app-footer></app-footer>
     </div>
   </div>
 </div>
