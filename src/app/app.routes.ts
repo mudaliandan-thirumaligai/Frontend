@@ -33,7 +33,8 @@ import { UserCalenderComponent } from './pages/User/calender/user-calender.compo
 import { LandingComponent } from './pages/User/Landing/landing.component';
 import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
 import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
-import { ResetPasswordComponent } from './pages/Admin/Auth/Reset-Password/reset-pwd.component';
+import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
+import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
 
 export const routes: Routes = [
   {
@@ -171,6 +172,11 @@ export const routes: Routes = [
     component:AddNewAdmin,
     title:'Sign Up | Sri Dasarathy Trust',
     //canActivate: [adminGuard]
+  },
+  {
+    path:'forgot-password',
+    component:ForgotPasswordComponent,
+    title:'Forgot Password | Sri Dasarathy Trust',
   },
   {
     path:'reset-password',
