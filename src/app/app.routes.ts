@@ -33,7 +33,6 @@ import { UserCalenderComponent } from './pages/User/calender/user-calender.compo
 import { LandingComponent } from './pages/User/Landing/landing.component';
 import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
 
-
 export const routes: Routes = [
   {
     path:'',
@@ -142,7 +141,7 @@ export const routes: Routes = [
   },
   // auth pages
   {
-    path:'signin',
+    path:'signin12',
     component:SignInComponent,
     title:'Sign In | Sri Dasarathy Trust'
   },

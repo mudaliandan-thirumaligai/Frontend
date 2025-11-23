@@ -5,7 +5,7 @@ import { CheckboxComponent } from '../../../../shared/components/form/input/chec
 import { InputFieldComponent } from '../../../../shared/components/form/input/input-field.component';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService, RegisterPayload } from '../../Auth/services/auth.service';
+import { AuthService, RegisterPayload } from '../../../../shared/services/Auth/auth.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { finalize } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export class AddNewAdmin {
       this.toast.showError('Please fill in all required fields!');
       return;
     }
-    // Check if user agreed to terms
+
     if (!this.isChecked) {
       this.toast.showError('You must agree to the terms and conditions!');
       return;
@@ -66,25 +66,23 @@ export class AddNewAdmin {
     this.authService.register(payload)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.toast.showSuccess(`User "${this.username}" registered successfully!`);
+
+          // Reset form
           this.username = '';
           this.email = '';
           this.password = '';
           this.isChecked = false;
+
+          // Redirect to login page or home
           this.router.navigate(['/']);
         },
         error: (err) => {
-          const apiMessage = err?.error?.message;
-          const apiDetails = err?.error?.details;
+          const message = err?.error?.message ?? 'Failed to register user';
+          const details = err?.error?.details;
 
-          const toastMessage = apiMessage
-            ? apiDetails
-              ? `${apiMessage}: ${apiDetails}`
-              : apiMessage
-            : 'Failed to register user';
-
-          this.toast.showError(toastMessage);
+          this.toast.showError(details ? `${message}: ${details}` : message);
           console.error('Registration error:', err);
         }
       });
