@@ -32,6 +32,7 @@ import { adminGuard } from './guards/admin.guard';
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 import { LandingComponent } from './pages/User/Landing/landing.component';
 import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
+import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
 
 export const routes: Routes = [
   {
@@ -141,8 +142,13 @@ export const routes: Routes = [
   },
   // auth pages
   {
-    path:'signin12',
+    path:'signin123',
     component:SignInComponent,
+    title:'Sign In | Sri Dasarathy Trust'
+  },
+  {
+    path:'signin',
+    component:UserSignInComponent,
     title:'Sign In | Sri Dasarathy Trust'
   },
   {
