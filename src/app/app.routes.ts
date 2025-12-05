@@ -32,7 +32,9 @@ import { adminGuard } from './guards/admin.guard';
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 import { LandingComponent } from './pages/User/Landing/landing.component';
 import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
-
+import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
+import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
+import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
 
 export const routes: Routes = [
   {
@@ -63,7 +65,7 @@ export const routes: Routes = [
         path:'admin/calendar',
         component:AdminCalenderComponent,
         title:'Calendar | Sri Dasarathy Trust',
-        //canActivate: [adminGuard]
+        canActivate: [adminGuard]
       },
 
       // User Feature Pages
@@ -142,14 +144,20 @@ export const routes: Routes = [
   },
   // auth pages
   {
-    path:'signin',
+    path:'signin123',
     component:SignInComponent,
+    title:'Sign In | Sri Dasarathy Trust'
+  },
+  {
+    path:'signin',
+    component:UserSignInComponent,
     title:'Sign In | Sri Dasarathy Trust'
   },
   {
     path:'signup',
     component:SignUpComponent,
-    title:'Sign Up | Sri Dasarathy Trust'
+    title:'Sign Up | Sri Dasarathy Trust',
+    canActivate: [adminGuard]
   },
 
   // Admin Auth Pages
@@ -157,14 +165,23 @@ export const routes: Routes = [
     path:'change-pwd',
     component:ChangePasswordComponent,
     title:'Sign In | Sri Dasarathy Trust',
-    //TODO actiavte after JWT
-    //canActivate: [adminGuard]
+    canActivate: [adminGuard]
   },
   {
     path:'admin/addUser',
     component:AddNewAdmin,
     title:'Sign Up | Sri Dasarathy Trust',
-    //canActivate: [adminGuard]
+    canActivate: [adminGuard]
+  },
+  {
+    path:'forgot-password',
+    component:ForgotPasswordComponent,
+    title:'Forgot Password | Sri Dasarathy Trust',
+  },
+  {
+    path:'reset-password',
+    component:ResetPasswordComponent,
+    title:'Reset Password | Sri Dasarathy Trust',
   },
   // error pages
   {

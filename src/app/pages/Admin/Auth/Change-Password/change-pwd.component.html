@@ -21,7 +21,7 @@
       </p>
     </div>
     <!-- Form -->
-    <form (ngSubmit)="onSignIn()" class="space-y-6">
+    <form (ngSubmit)="onChangePassword()" class="space-y-6">
       <div>
         <app-label>Old Password <span class="text-error-500">*</span></app-label>
         <div class="relative">
@@ -75,7 +75,7 @@
       <app-button
         className="w-full"
         size="sm"
-        (btnClick)="onSignIn()"
+        (btnClick)="onChangePassword()"
       >
         Change Password
       </app-button>

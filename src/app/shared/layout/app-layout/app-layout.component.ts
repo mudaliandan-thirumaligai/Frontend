@@ -1,19 +1,21 @@
 import { Component, HostListener } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { CommonModule } from '@angular/common';
-import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
+// import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BackdropComponent } from '../backdrop/backdrop.component';
 import { RouterModule } from '@angular/router';
 import { AppFooterComponent } from '../app-footer/app-footer.component';
+import { AppSidebarComponentNew } from '../app-sidebar/app-sidebar-new';
 
 @Component({
   selector: 'app-layout',
   imports: [
     CommonModule,
     RouterModule,
-    AppSidebarComponent,
+    // AppSidebarComponent,
     BackdropComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    AppSidebarComponentNew
   ],
   templateUrl: './app-layout.component.html',
 })

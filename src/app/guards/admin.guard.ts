@@ -10,7 +10,7 @@ interface DecodedToken {
 
 export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   if (!token) {
     router.navigate(['*']); // redirect to landing page if not logged in
@@ -22,7 +22,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
 
     // Check token expiry
     if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       router.navigate(['/']); // landing page
       return false;
     }
@@ -36,7 +36,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
     }
 
   } catch (err) {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     router.navigate(['/']); // landing page
     return false;
   }
