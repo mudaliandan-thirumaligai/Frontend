@@ -7,6 +7,7 @@ import { SidebarWidgetComponent } from './app-sidebar-widget.component';
 import { combineLatest, filter, Subscription } from 'rxjs';
 import { ThemeToggleButtonComponent } from '../../components/common/theme-toggle/theme-toggle-button.component';
 import { AuthService } from '../../services/Auth/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 export interface SubItem {
   name: string;
@@ -60,8 +61,7 @@ adminItems: NavItem[] = [
       { name: "Calendar", path: "/admin/calendar" },
       { name: "Add User", path: "/admin/addUser" },
       { name: "Change Password", path: "/change-pwd" },
-      {name  :this.logout.name, action: () => this.logout()}
-      // Add other admin pages here
+     // Add other admin pages here
     ]
   },
   {
@@ -118,7 +118,8 @@ othersItems: NavItem[] = [
     private authService: AuthService,
     public sidebarService: SidebarService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toast : ToastService
   ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
@@ -205,6 +206,7 @@ othersItems: NavItem[] = [
   }
   logout(): void {
     this.authService.logout();
+    this.toast.showSuccess('Logged out successfully!');
 }
 
 

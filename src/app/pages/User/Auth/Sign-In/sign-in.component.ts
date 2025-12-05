@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthPageLayoutComponent } from '../../../../shared/layout/auth-page-layout/auth-page-layout.component';
 import { SigninFormComponent } from '../../../../shared/components/auth/signin-form/signin-form.component';
 import { AuthService } from '../../../../shared/services/Auth/auth.service';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,20 +16,31 @@ import { AuthService } from '../../../../shared/services/Auth/auth.service';
 })
 export class UserSignInComponent {
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private toast : ToastService) {}
+
+  isLoading = false;
 
   onFormSubmitted(data: { username: string; password: string }) {
-    console.log("RECEIVED IN PARENT:", data);
+    if (!data.username || !data.password) {
+      this.toast.showError('Please enter both username and password');
+      return;
+    }
 
-    // Call auth service login
-    this.authService.login(data.username, data.password).subscribe({
-      next: (res) => {
-        console.log("Login success:", res);
-        // JWT + username + role already stored inside AuthService
-      },
-      error: (err) => {
-        console.error("Login failed:", err);
-      }
-    });
+    this.isLoading = true;
+    this.toast.showInfo('Logging in...');
+
+    this.authService.login(data.username, data.password)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (res) => this.toast.showSuccess('Logged in successfully!'),
+        error: (err) => {
+          const apiMessage = err?.error?.message;
+          const apiDetails = err?.error?.details;
+          const toastMessage = apiMessage ? (apiDetails ? `${apiMessage}: ${apiDetails}` : apiMessage)
+                                          : 'Login failed. Please try again.';
+          this.toast.showError(toastMessage);
+        }
+      });
   }
+
 }
