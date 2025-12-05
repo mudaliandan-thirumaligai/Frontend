@@ -10,9 +10,10 @@ import { AuthService } from '../../services/Auth/auth.service';
 
 export interface SubItem {
   name: string;
-  path: string;
+  path?: string;
   pro?: boolean;
   new?: boolean;
+  action?: () => void;
 }
 
 export interface NavItem {
@@ -41,53 +42,65 @@ export class AppSidebarComponentNew {
 
   /* --------------------------- SIDEBAR MENU ITEMS --------------------------- */
   navItems: NavItem[] = [
-    {
-      icon: `<svg width="1em" height="1em"...></svg>`,
-      name: "Dashboard",
-      subItems: [
-        { name: "Home", path: "/" }
-      ]
-    }
-  ];
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "Dashboard",
+    subItems: [
+      { name: "Home", path: "/" },
+      { name: "Calendar", path: "/calendar" }
+    ]
+  }
+];
 
-  adminItems: NavItem[] = [
-    {
-      icon: `<svg width="1em" height="1em"...></svg>`,
-      name: "Admin",
-      subItems: [
-        { name: "Calendar", path: "/admin/calendar" },
-        { name: "Vehicles", path: "/admin/vehicles" },
-        { name: "Bookings", path: "/admin/bookings" },
-        { name: "Reports", path: "/admin/reports" },
-      ]
-    },
-    { icon: `<svg width="1em" height="1em"...></svg>`,name: "Logout", action: () => this.logout() }
-  ];
-  userItems: NavItem[] = [
-    {
-      icon: `<svg width="1em" height="1em"...></svg>`,
-      name: "User",
-      subItems: [
-        { name: "My Bookings", path: "/user/my-bookings" },
-        { name: "Profile", path: "/user/profile" },
-      ]
-    },
-    {
-      icon: `<svg width="1em" height="1em"...></svg>`,
-      name: "Authentication",
-      path: "/signin",
-    }
-  ];
+adminItems: NavItem[] = [
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "Admin",
+    subItems: [
+      { name: "Calendar", path: "/admin/calendar" },
+      { name: "Add User", path: "/admin/addUser" },
+      { name: "Change Password", path: "/change-pwd" },
+      {name  :this.logout.name, action: () => this.logout()}
+      // Add other admin pages here
+    ]
+  },
+  {
+    icon: `<svg class="w-5 h-5 text-red-500 dark:text-red-400" fill="currentColor" ...></svg>`,
+    name: "Logout",
+    action: () => this.logout()
+  }
+];
 
-  othersItems: NavItem[] = [
-    {
-      icon: `<svg width="1em" height="1em"...></svg>`,
-      name: "Misc",
-      subItems: [
-        { name: "Help", path: "/help" }
-      ]
-    }
-  ];
+userItems: NavItem[] = [
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "User",
+    subItems: [
+      { name: "My Bookings", path: "/user/my-bookings" },
+      { name: "Profile", path: "/user/profile" },
+      { name: "Thirumaaligais", path: "/thirumaaligais" },
+      {name : "Calendar", path:"/calendar"}
+    ]
+  },
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "Authentication",
+    subItems: [
+      { name: "Sign In", path: "/signin" }
+    ]
+  }
+];
+
+othersItems: NavItem[] = [
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "Misc",
+    subItems: [
+      { name: "Help", path: "/help" }
+    ]
+  }
+];
+
 
   /* --------------------------- LOGIC PROPERTIES --------------------------- */
   openSubmenu: string | null = null;

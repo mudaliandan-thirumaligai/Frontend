@@ -1,8 +1,8 @@
 <!-- Mobile Sidebar Toggle Button (always visible on mobile) -->
 <button
   class="xl:hidden fixed top-4 left-4 z-[9999] 
-         bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg
-         text-gray-700 dark:text-gray-200"
+         bg-white dark:bg-gray-900 p-2 rounded-lg shadow-lg
+         text-gray-700 dark:text-gray-300"
   (click)="sidebarService.toggleMobileOpen()"
 >
   <svg 
@@ -45,7 +45,9 @@
   >
     <button 
       (click)="toggleSidebar()" 
-      class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+      class="flex items-center justify-center w-10 h-10 rounded-lg 
+         text-gray-700 dark:text-gray-300 
+         hover:bg-gray-100 dark:hover:bg-gray-800 transition"
     >
       <!-- Hamburger icon -->
       <svg 
@@ -120,34 +122,51 @@
 
         <!-- Submenu -->
         <ng-container *ngIf="nav.subItems; else singleItem">
-          <button
-            (click)="toggleSubmenu(group.title, i)"
-            class="menu-item group cursor-pointer"
-            [class.menu-item-active]="openSubmenu === group.title + '-' + i"
-            [class.menu-item-inactive]="openSubmenu !== group.title + '-' + i"
-          >
-            <span class="menu-item-icon-size" [innerHTML]="nav.icon | safeHtml"></span>
-            <span *ngIf="(isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)"
-              class="menu-item-text">
-              {{ nav.name }}
-            </span>
-          </button>
+  <button
+    (click)="toggleSubmenu(group.title, i)"
+    class="menu-item group cursor-pointer flex items-center justify-between w-full"
+    [class.menu-item-active]="openSubmenu === group.title + '-' + i"
+    [class.menu-item-inactive]="openSubmenu !== group.title + '-' + i"
+  >
+    <div class="flex items-center gap-3">
+      <!-- Icon -->
+      <span class="menu-item-icon-size" [innerHTML]="nav.icon | safeHtml"></span>
 
-          <div
-            #subMenu
-            [id]="group.title + '-' + i"
-            class="overflow-hidden transition-all duration-300"
-            [ngStyle]="{ height: openSubmenu === group.title + '-' + i ? (subMenuHeights[group.title + '-' + i] || 0) + 'px' : '0px' }"
-          >
-            <ul class="mt-2 space-y-1 ml-9">
-              <li *ngFor="let subItem of nav.subItems">
-                <a [routerLink]="subItem.path" class="menu-dropdown-item">
-                  {{ subItem.name }}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </ng-container>
+      <!-- Text (only when sidebar is expanded) -->
+      <span *ngIf="(isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)"
+            class="menu-item-text">
+        {{ nav.name }}
+      </span>
+    </div>
+
+    <!-- Chevron / Down arrow -->
+    <svg *ngIf="nav.subItems"
+         class="w-4 h-4 text-gray-500 dark:text-gray-300 transition-transform duration-200"
+         [ngClass]="{'rotate-90': openSubmenu === group.title + '-' + i}"
+         fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Submenu -->
+  <div
+    #subMenu
+    [id]="group.title + '-' + i"
+    class="overflow-hidden transition-all duration-300"
+    [ngStyle]="{ height: openSubmenu === group.title + '-' + i ? (subMenuHeights[group.title + '-' + i] || 0) + 'px' : '0px' }"
+  >
+    <ul class="mt-2 space-y-1 ml-9">
+      <li *ngFor="let subItem of nav.subItems">
+        <a [routerLink]="subItem.path" 
+           class="menu-dropdown-item text-gray-700 dark:text-gray-300
+                  hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 block transition-colors duration-200">
+          {{ subItem.name }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</ng-container>
+
 
         <!-- Single item -->
         <ng-template #singleItem>

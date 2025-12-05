@@ -156,7 +156,8 @@ export const routes: Routes = [
   {
     path:'signup',
     component:SignUpComponent,
-    title:'Sign Up | Sri Dasarathy Trust'
+    title:'Sign Up | Sri Dasarathy Trust',
+    canActivate: [adminGuard]
   },
 
   // Admin Auth Pages
