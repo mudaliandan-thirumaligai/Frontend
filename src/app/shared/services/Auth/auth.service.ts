@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environment/environment';
 
-
 export interface RegisterPayload {
   username: string;
   password: string;
@@ -19,44 +18,36 @@ export interface ChangePasswordPayload {
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
+
+  // FIX 1: Make sure initial values always come from sessionStorage
+  private loggedInSubject = new BehaviorSubject<boolean>(!!sessionStorage.getItem('token'));
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  private roleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  private roleSubject = new BehaviorSubject<string | null>(sessionStorage.getItem('role'));
   role$ = this.roleSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-
   register(payload: RegisterPayload): Observable<any> {
-    console.log('AuthService: Registering user', payload);
-
     return this.http.post(`${environment.apiUrl}/auth/register`, payload).pipe(
-      tap((res: any) => {
-        console.log('AuthService: Registration successful', res);
-      }),
-      catchError(err => {
-        console.error('AuthService: Registration failed', err);
-        return throwError(() => err);
-      })
+      tap(res => console.log('Registration successful')),
+      catchError(err => throwError(() => err))
     );
   }
 
   login(username: string, password: string): Observable<any> {
-    console.log('AuthService: Initiating login for', username, password);
     return this.http.post(`${environment.apiUrl}/auth/signin`, { username, password }).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('username', res.username);
-        localStorage.setItem('role', res.role);
-        console.log('AuthService: Stored token in localStorage');
 
-        // Broadcast changes
+        // FIX 2: store values in sessionStorage
+        sessionStorage.setItem('token', res.token);
+        sessionStorage.setItem('username', res.username);
+        sessionStorage.setItem('role', res.role);
+
+        // FIX 3: broadcast login + role
         this.loggedInSubject.next(true);
         this.roleSubject.next(res.role);
 
-        
-      console.log('AuthService: Navigating to /admin/events');
         this.router.navigate(['/admin/calendar']);
       }),
       catchError(err => throwError(() => err))
@@ -64,38 +55,27 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.clear();
+    // FIX 4: fully reset UI state
+    sessionStorage.clear();
     this.loggedInSubject.next(false);
     this.roleSubject.next(null);
-    this.router.navigate(['']);       //navigate to home page after logout
+    this.router.navigate(['']);
   }
 
-  
   forgotPassword(username: string): Observable<any> {
-    const url = `${environment.apiUrl}/auth/forgot-password`;
-    return this.http.post(url, { username });
+    return this.http.post(`${environment.apiUrl}/auth/forgot-password`, { username });
   }
 
   resetPassword(token: string, newPassword: string): Observable<any> {
-    const url = `${environment.apiUrl}/auth/reset-password`;
-    return this.http.post(url, { token, newPassword });
+    return this.http.post(`${environment.apiUrl}/auth/reset-password`, { token, newPassword });
   }
 
   changePassword(payload: { oldPassword: string; newPassword: string }) {
-    const token = localStorage.getItem('token');
-
-    return this.http.put<any>(
+    const token = sessionStorage.getItem('token');
+    return this.http.put(
       `${environment.apiUrl}/auth/change-password`,
       payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
   }
-
-
-
-
 }

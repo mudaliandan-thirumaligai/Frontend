@@ -59,7 +59,7 @@ export class ChangePasswordComponent {
     this.authService.changePassword(payload)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
-        next: (res) => {
+        next: (res: { message?: string }) => {
           this.toast.showSuccess(res?.message || 'Password changed successfully!');
 
           // Clear fields

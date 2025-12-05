@@ -65,7 +65,7 @@ export const routes: Routes = [
         path:'admin/calendar',
         component:AdminCalenderComponent,
         title:'Calendar | Sri Dasarathy Trust',
-        //canActivate: [adminGuard]
+        canActivate: [adminGuard]
       },
 
       // User Feature Pages
@@ -164,14 +164,13 @@ export const routes: Routes = [
     path:'change-pwd',
     component:ChangePasswordComponent,
     title:'Sign In | Sri Dasarathy Trust',
-    //TODO actiavte after JWT
-    //canActivate: [adminGuard]
+    canActivate: [adminGuard]
   },
   {
     path:'admin/addUser',
     component:AddNewAdmin,
     title:'Sign Up | Sri Dasarathy Trust',
-    //canActivate: [adminGuard]
+    canActivate: [adminGuard]
   },
   {
     path:'forgot-password',
@@ -182,8 +181,6 @@ export const routes: Routes = [
     path:'reset-password',
     component:ResetPasswordComponent,
     title:'Reset Password | Sri Dasarathy Trust',
-    //TODO actiavte after JWT
-    //canActivate: [adminGuard]
   },
   // error pages
   {
