@@ -87,6 +87,7 @@ userItems: NavItem[] = [
     name: "Our Thirumaaligai",
     subItems: [
       { name: "Contact Us", path: "/contact-us" },
+      { name: "Bank Details", path: "/bank-info" },
       { name: "Profile", path: "/user/profile" },
       { name: "Thirumaaligais", path: "/thirumaaligais" },
       {name : "Calendar", path:"/calendar"}

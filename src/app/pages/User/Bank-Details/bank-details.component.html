@@ -1,0 +1,89 @@
+<div>
+  <app-page-breadcrumb pageTitle="Bank Details" />
+  <div class="p-4 md:p-8 max-w-7xl mx-auto">
+
+    <!-- Tabs -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button
+        *ngFor="let tab of tabs"
+        (click)="selectTab(tab)"
+        class="px-4 py-2 rounded-xl transition-colors duration-300
+               border border-gray-300 dark:border-gray-600
+               bg-white dark:bg-gray-800
+               text-gray-700 dark:text-gray-200
+               hover:bg-gray-100 dark:hover:bg-gray-700
+               shadow-sm"
+        [class.font-bold]="selectedTab === tab"
+      >
+        {{ tab.title }}
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-all duration-500"
+    >
+
+      <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        {{ selectedTab.title }}
+      </h2>
+
+      <p class="mb-6 whitespace-pre-line text-gray-700 dark:text-gray-300">
+        {{ selectedTab.description }}
+      </p>
+
+      <!-- Bank Details -->
+      <div *ngIf="selectedTab.bankDetails" class="grid md:grid-cols-2 gap-4 mb-6">
+
+        <!-- Bank Box -->
+        <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-800">
+          <h3 class="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">Bank Details</h3>
+          <p class="text-gray-800 dark:text-gray-200"><span class="font-medium">Bank:</span> {{ selectedTab.bankDetails.bank }}</p>
+          <p class="text-gray-800 dark:text-gray-200"><span class="font-medium">Account Name:</span> {{ selectedTab.bankDetails.name }}</p>
+          <p class="text-gray-800 dark:text-gray-200"><span class="font-medium">Account No:</span> {{ selectedTab.bankDetails.account }}</p>
+          <p class="text-gray-800 dark:text-gray-200"><span class="font-medium">IFSC:</span> {{ selectedTab.bankDetails.ifsc }}</p>
+          <p *ngIf="selectedTab.bankDetails.type" class="text-gray-800 dark:text-gray-200"><span class="font-medium">Type:</span> {{ selectedTab.bankDetails.type }}</p>
+          <p *ngIf="selectedTab.bankDetails.micr" class="text-gray-800 dark:text-gray-200"><span class="font-medium">MICR:</span> {{ selectedTab.bankDetails.micr }}</p>
+          <p *ngIf="selectedTab.bankDetails.branch" class="text-gray-800 dark:text-gray-200"><span class="font-medium">Branch:</span> {{ selectedTab.bankDetails.branch }}</p>
+          <p *ngIf="selectedTab.bankDetails.address" class="text-gray-800 dark:text-gray-200"><span class="font-medium">Address:</span> {{ selectedTab.bankDetails.address }}</p>
+        </div>
+
+        <!-- Instructions Box -->
+        <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-800">
+          <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">Instructions & Contact</h3>
+
+          <!-- Existing Notes -->
+          <p *ngIf="selectedTab.notes" class="mb-3 text-gray-800 dark:text-gray-200">
+            {{ selectedTab.notes }}
+          </p>
+
+          <!-- NEW CONTENT (added by you) -->
+          <div class="space-y-2 text-gray-800 dark:text-gray-200">
+            <p>- Money Orders also accepted</p>
+
+            <p>- Send Cheque or DD in favor of:</p>
+
+            <p class="font-semibold text-lg">"SRI DASARATHY TRUST"</p>
+
+            <p>4/345, Sannadhi Street,<br>
+               Singaperumal Koil,<br>
+               Chengalpattu District,<br>
+               Tamil Nadu,<br>
+               Pin 603 204.
+            </p>
+          </div>
+
+          <!-- Contact (if present) -->
+          <div class="mt-3 space-y-1" *ngIf="selectedTab.contact">
+            <p *ngIf="selectedTab.contact.name"> {{ selectedTab.contact.name }}</p>
+            <p *ngIf="selectedTab.contact.phone">📞 {{ selectedTab.contact.phone }}</p>
+            <p *ngIf="selectedTab.contact.email">📧 {{ selectedTab.contact.email }}</p>
+            <p *ngIf="selectedTab.contact.message">{{ selectedTab.contact.message }}</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,6 +36,7 @@ import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component
 import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
 import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
 import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
+import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.component';
 
 export const routes: Routes = [
   {
@@ -79,7 +80,12 @@ export const routes: Routes = [
       {
         path:'contact-us',
         component:ContactUsComponent,
-        title:'Sri Dasarathy Trust | Blank Page'
+        title:'Contact Us |Sri Dasarathy Trust'
+      },
+      {
+        path:'bank-info',
+        component:BankDetailsComponent,
+        title:'Bank Details | Sri Dasarathy Trust'
       },
       {
         path:'form-elements',
