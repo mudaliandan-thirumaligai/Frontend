@@ -1,46 +1,89 @@
-<footer class="py-10 mt-20 border-t border-sky-200">
-  <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
+<footer class="py-12 mt-20 border-t border-yellow-400 
+               bg-white dark:bg-gray-900 transition-colors duration-300">
+
+  <div class="container mx-auto px-6 grid md:grid-cols-3 gap-10">
 
     <!-- Brand -->
     <div>
-      <h2 class="text-3xl font-bold text-sky-600 mb-2">SkyBlue</h2>
-      <p class="text-sm text-muted-foreground">
-        Bringing clarity, creativity, and innovation to every project.
+      <h2 class="text-3xl font-extrabold text-yellow-600 dark:text-yellow-400 mb-3">
+        Sri Dasarathi Trust
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+        Serving the community with devotion, transparency, and continued dedication 
+        towards temple welfare and spiritual enrichment.
       </p>
     </div>
 
     <!-- Quick Links -->
     <div>
-      <h3 class="font-semibold text-xl text-sky-600 mb-3">Quick Links</h3>
+      <h3 class="font-semibold text-xl text-yellow-600 dark:text-yellow-400 mb-3">
+        Quick Links
+      </h3>
       <ul class="space-y-2">
-        <li><a routerLink="/" class="hover:underline text-foreground/80">Home</a></li>
-        <li><a routerLink="/about" class="hover:underline text-foreground/80">About Us</a></li>
-        <li><a routerLink="/gallery" class="hover:underline text-foreground/80">Portfolio</a></li>
-        <li><a routerLink="/contact" class="hover:underline text-foreground/80">Contact</a></li>
+
+        <li>
+          <a routerLink="" 
+             class="hover:text-yellow-600 dark:hover:text-yellow-400 transition text-gray-700 dark:text-gray-300">
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/about" 
+             class="hover:text-yellow-600 dark:hover:text-yellow-400 transition text-gray-700 dark:text-gray-300">
+            About Us
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/gallery" 
+             class="hover:text-yellow-600 dark:hover:text-yellow-400 transition text-gray-700 dark:text-gray-300">
+            Gallery / Portfolio
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/contact-us" 
+             class="hover:text-yellow-600 dark:hover:text-yellow-400 transition text-gray-700 dark:text-gray-300">
+            Contact
+          </a>
+        </li>
+
       </ul>
     </div>
 
     <!-- Social Media -->
     <div>
-      <h3 class="font-semibold text-xl text-sky-600 mb-3">Follow Us</h3>
+      <h3 class="font-semibold text-xl text-yellow-600 dark:text-yellow-400 mb-3">
+        Follow Us
+      </h3>
+
       <div class="flex space-x-4">
 
-        <!-- Facebook -->
-        <a href="#" class="w-10 h-10 border border-sky-300 rounded-full 
-                          flex items-center justify-center hover:bg-sky-50 transition">
-          <i class="bi bi-facebook text-sky-600 text-xl"></i>
+        <!-- WhatsApp -->
+        <a href="https://wa.me/0000000000"
+           target="_blank"
+           class="w-10 h-10 rounded-full border border-yellow-400 dark:border-yellow-500 
+                  flex items-center justify-center hover:bg-yellow-50 dark:hover:bg-gray-800
+                  transition">
+          <i class="bi bi-whatsapp text-yellow-600 dark:text-yellow-400 text-xl"></i>
         </a>
 
         <!-- Instagram -->
-        <a href="#" class="w-10 h-10 border border-sky-300 rounded-full 
-                          flex items-center justify-center hover:bg-sky-50 transition">
-          <i class="bi bi-instagram text-sky-600 text-xl"></i>
+        <a href="https://instagram.com/"
+           target="_blank"
+           class="w-10 h-10 rounded-full border border-yellow-400 dark:border-yellow-500 
+                  flex items-center justify-center hover:bg-yellow-50 dark:hover:bg-gray-800
+                  transition">
+          <i class="bi bi-instagram text-yellow-600 dark:text-yellow-400 text-xl"></i>
         </a>
 
-        <!-- Twitter/X -->
-        <a href="#" class="w-10 h-10 border border-sky-300 rounded-full 
-                          flex items-center justify-center hover:bg-sky-50 transition">
-          <i class="bi bi-twitter text-sky-600 text-xl"></i>
+        <!-- Email -->
+        <a href="mailto:dasarathi@gmail.com"
+           class="w-10 h-10 rounded-full border border-yellow-400 dark:border-yellow-500 
+                  flex items-center justify-center hover:bg-yellow-50 dark:hover:bg-gray-800
+                  transition">
+          <i class="bi bi-envelope text-yellow-600 dark:text-yellow-400 text-xl"></i>
         </a>
 
       </div>
@@ -48,8 +91,8 @@
 
   </div>
 
-  <!-- Bottom -->
-  <div class="text-center text-sm text-muted-foreground mt-10">
-    © {{ currentYear }} SkyBlue. All rights reserved.
+  <!-- Bottom text -->
+  <div class="text-center text-sm text-gray-600 dark:text-gray-400 mt-10">
+    © {{ currentYear }} Sri Dasarathi Trust. All rights reserved.
   </div>
 </footer>
