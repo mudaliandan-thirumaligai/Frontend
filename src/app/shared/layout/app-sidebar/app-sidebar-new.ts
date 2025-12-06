@@ -84,6 +84,16 @@ userItems: NavItem[] = [
   },
   {
     icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
+    name: "Our Thirumaaligai",
+    subItems: [
+      { name: "Contact Us", path: "/contact-us" },
+      { name: "Profile", path: "/user/profile" },
+      { name: "Thirumaaligais", path: "/thirumaaligais" },
+      {name : "Calendar", path:"/calendar"}
+    ]
+  },
+  {
+    icon: `<svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" ...></svg>`,
     name: "Authentication",
     subItems: [
       { name: "Sign In", path: "/signin" }

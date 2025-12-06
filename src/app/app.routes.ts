@@ -35,6 +35,7 @@ import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaalig
 import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
 import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
 import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
+import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,12 @@ export const routes: Routes = [
         path:'thirumaaligais',
         component:ThirumaaligaisComponent,
         title:'Thirumaaligais | Sri Dasarathy Trust'
+      },
+      // Contact us page for users
+      {
+        path:'contact-us',
+        component:ContactUsComponent,
+        title:'Sri Dasarathy Trust | Blank Page'
       },
       {
         path:'form-elements',
