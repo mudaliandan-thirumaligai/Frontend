@@ -1,15 +1,84 @@
-<div>
-  <app-page-breadcrumb pageTitle="Blank Page" />
-  <div class="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-    <div class="mx-auto w-full max-w-[630px] text-center">
-      <h3 class="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
-        Card Title Here
-      </h3>
+<app-page-breadcrumb pageTitle="Contact Us" />
 
-      <p class="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
-        Start putting content on grids or panels, you can also use different
-        combinations of grids.Please check out the dashboard and other pages
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+  <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl max-w-6xl w-full flex overflow-hidden">
+
+    <!-- Left Side Image + Text -->
+    <div class="hidden md:flex flex-col w-1/2 items-center justify-center p-4">
+      <img src="images/mudaliandan/aachariyan.png" alt="Contact Us" 
+           class="h-96 w-auto object-cover rounded-xl" />
+      <div class="mt-4 text-center text-gray-700 dark:text-gray-300">
+        <p class="italic">padhuke yathi rajasya kathayanthi yadhakh yaya |</p>
+        <p class="italic">thasya daasarathe: paadav Sirasa dhaarayaam yaham ||</p>
+        <p class="mt-2 text-sm">
+          <strong>Meaning:</strong> Yathiraja paduka (Swami Ramanujar's Lotus feet) is what he is known as. Hence we pay our respect to Daasarathi's (Mudaliandan) Lotus feet.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Side Form -->
+    <div class="w-full md:w-1/2 p-8 md:p-12">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Contact Us</h2>
+      <p class="text-gray-600 dark:text-gray-300 mb-6">
+        We would love to hear from you! Fill out the form and we'll get in touch.
       </p>
+
+      <form (ngSubmit)="submitForm()" [formGroup]="contactForm" class="space-y-4">
+        <!-- Name -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">Name *</label>
+          <input type="text" formControlName="name" placeholder="Your Name"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Type Dropdown -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">Choose Type *</label>
+          <select formControlName="type"
+                  class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled>Select Type</option>
+            <option value="shishya">Shishya</option>
+            <option value="abhimani">Abhimani</option>
+          </select>
+        </div>
+
+        <!-- Mobile -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">Mobile</label>
+          <input type="text" formControlName="mobile" placeholder="+91 9876543210"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">Email *</label>
+          <input type="email" formControlName="email" placeholder="you@example.com"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- WhatsApp -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">WhatsApp Number</label>
+          <input type="text" formControlName="whatsappNumber" placeholder="+91 9876543210"
+                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
+        <!-- Postal Address -->
+        <div>
+          <label class="block text-gray-700 dark:text-gray-200 mb-1">Postal Address</label>
+          <textarea formControlName="postalAddress" rows="3" placeholder="Your address"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button type="submit" 
+                  [disabled]="contactForm.invalid || loading"
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ loading ? 'Submitting...' : 'Submit' }}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
