@@ -35,7 +35,53 @@
       <!-- Bank Details -->
       <!-- Bank Details + Image -->
 <div *ngIf="selectedTab.bankDetails" class="grid md:grid-cols-2 gap-6 mb-6">
+      <!-- Bank Details + Image -->
+<div *ngIf="selectedTab.bankDetails" class="grid md:grid-cols-2 gap-6 mb-6">
 
+  <!-- LEFT: Bank Box -->
+  <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm 
+              bg-gray-50 dark:bg-gray-800">
+    <h3 class="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
+      Bank Details
+    </h3>
+
+    <p class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Bank:</span> {{ selectedTab.bankDetails.bank }}
+    </p>
+    <p class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Account Name:</span> {{ selectedTab.bankDetails.name }}
+    </p>
+    <p class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Account No:</span> {{ selectedTab.bankDetails.account }}
+    </p>
+    <p class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">IFSC:</span> {{ selectedTab.bankDetails.ifsc }}
+    </p>
+
+    <p *ngIf="selectedTab.bankDetails.type" class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Type:</span> {{ selectedTab.bankDetails.type }}
+    </p>
+    <p *ngIf="selectedTab.bankDetails.micr" class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">MICR:</span> {{ selectedTab.bankDetails.micr }}
+    </p>
+    <p *ngIf="selectedTab.bankDetails.branch" class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Branch:</span> {{ selectedTab.bankDetails.branch }}
+    </p>
+    <p *ngIf="selectedTab.bankDetails.address" class="text-gray-800 dark:text-gray-200">
+      <span class="font-medium">Address:</span> {{ selectedTab.bankDetails.address }}
+    </p>
+  </div>
+
+  <!-- RIGHT: Image -->
+  <div class="flex items-center justify-center">
+    <img
+      [src]="selectedTab.image"
+      alt="Bank Image"
+      class="rounded-xl shadow-md max-h-72 object-cover"
+    />
+  </div>
+
+</div>
   <!-- LEFT: Bank Box -->
   <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm 
               bg-gray-50 dark:bg-gray-800">
@@ -89,7 +135,18 @@
   <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">
     Instructions & Contact
   </h3>
+<!-- Instructions Box BELOW both -->
+<div
+  class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm
+         bg-gray-50 dark:bg-gray-800 mb-6"
+>
+  <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">
+    Instructions & Contact
+  </h3>
 
+  <p *ngIf="selectedTab.notes" class="mb-3 text-gray-800 dark:text-gray-200">
+    {{ selectedTab.notes }}
+  </p>
   <p *ngIf="selectedTab.notes" class="mb-3 text-gray-800 dark:text-gray-200">
     {{ selectedTab.notes }}
   </p>
@@ -97,9 +154,21 @@
   <div class="space-y-2 text-gray-800 dark:text-gray-200">
     <p>- Money Orders also accepted</p>
     <p>- Send Cheque or DD in favor of:</p>
+  <div class="space-y-2 text-gray-800 dark:text-gray-200">
+    <p>- Money Orders also accepted</p>
+    <p>- Send Cheque or DD in favor of:</p>
 
     <p class="font-semibold text-lg">"SRI DASARATHY TRUST"</p>
+    <p class="font-semibold text-lg">"SRI DASARATHY TRUST"</p>
 
+    <p>
+      4/345, Sannadhi Street,<br />
+      Singaperumal Koil,<br />
+      Chengalpattu District,<br />
+      Tamil Nadu,<br />
+      Pin 603 204.
+    </p>
+  </div>
     <p>
       4/345, Sannadhi Street,<br />
       Singaperumal Koil,<br />
