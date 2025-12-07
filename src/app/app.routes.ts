@@ -37,6 +37,7 @@ import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-p
 import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
 import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
 import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.component';
+import { GalleryComponent } from './pages/User/Gallery/gallery.component';
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
@@ -82,6 +83,11 @@ export const routes: Routes = [
         path:'registration',
         component:ContactUsComponent,
         title:'Contact Us |Sri Dasarathy Trust'
+      },
+      {
+        path:'gallery',
+        component:GalleryComponent,
+        title:'Gallery |Sri Dasarathy Trust'
       },
       {
         path:'bank-info',

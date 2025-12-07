@@ -70,7 +70,7 @@ export class AppLayoutComponent {
     label: 'Media',
     open: false,
     children: [
-      { label: 'Photo Gallery', route: '/media/photos' },
+      { label: 'Photo Gallery', route: '/gallery' },
       { label: 'Videos', route: '/media/videos' },
       { label: 'Publications', route: '/media/publications' }
     ]
