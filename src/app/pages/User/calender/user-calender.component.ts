@@ -10,6 +10,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
 
 import { EventService } from '../../../service/event.service';
+import { auto } from '@popperjs/core';
 interface CalendarEvent extends EventInput {
   extendedProps: {
     calendar: string;
@@ -71,6 +72,9 @@ export class UserCalenderComponent {
     },
     selectable: true,
     allDayMaintainDuration: true,
+    height:'auto',
+    contentHeight: 'auto',
+    aspectRatio: 1.2,
     events: [],  // <-- keep empty initially
     eventClick: (info) => this.handleEventClick(info),
     eventContent: (arg) => this.renderEventContent(arg)
