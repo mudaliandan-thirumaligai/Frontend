@@ -6,7 +6,6 @@ interface DecodedToken {
   role?: string;
   exp?: number;
 }
-//TODO need to actiavte it
 
 export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);

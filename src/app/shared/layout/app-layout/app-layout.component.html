@@ -1,27 +1,119 @@
-<!-- 🔹 Header -->
+<!-- 🔹 Modern Spiritual Header -->
 <div
-  class="w-full py-4 px-6 bg-yellow-50 dark:bg-neutral-900 shadow-sm flex items-center fixed top-0 left-0 right-0 z-50"
+  class="w-full py-4 px-6 shadow-sm flex items-center fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md
+         bg-gradient-to-r from-indigo-50/80 to-blue-100/80
+         dark:from-neutral-900/80 dark:to-neutral-800/80"
   [ngClass]="(containerClasses$ | async) || []"
 >
-  <div class="text-3xl font-bold text-red-700 dark:text-red-400 whitespace-nowrap">
-    Mudaliandan Swami Thirumaligai
+
+  <!-- 🔵 Title -->
+  <div class="text-2xl md:text-3xl font-bold 
+              text-indigo-700 dark:text-indigo-300 
+              whitespace-nowrap tracking-wide">
+    Sri Mudhaliandan Swami Thirumaligai
   </div>
 
+  <!-- 🔱 Center Logo -->
   <div class="flex-1 flex justify-center">
-    <img src="images/mudaliandan/thiruman.png" alt="Logo" class="h-20 object-contain" />
+    <img
+      src="images/mudaliandan/thiruman.png"
+      alt="Logo"
+      class="h-16 md:h-20 object-contain drop-shadow-md
+             transition-transform duration-300 hover:scale-105"
+    />
+  </div>
+
+
+<div *ngIf="!(isAdmin$ | async)">
+  <div class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
+
+    <!-- 🔽 About Dropdown -->
+    <div class="relative group">
+      <button class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">
+        About
+      </button>
+
+      <div
+        class="absolute left-0 mt-2 w-48
+              bg-white dark:bg-neutral-800
+              text-indigo-700 dark:text-indigo-300
+              rounded-xl shadow-md
+              opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100
+              transform transition-all duration-300 origin-top">
+        <p class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg">About Swami</p>
+        <p class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg">Mission</p>
+        <p class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg">History</p>
+      </div>
+
+    </div>
+
+    <!-- 🔽 Events Dropdown -->
+    <div class="relative group">
+      <button class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">
+        Events
+      </button>
+      <div
+        class="absolute left-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-xl shadow-md
+              opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100
+              transform transition duration-300 origin-top">
+        <p class="px-4 py-2 hover:bg-indigo-50 dark:hover:bg-neutral-700 rounded-lg">Upcoming Events</p>
+        <p class="px-4 py-2 hover:bg-indigo-50 dark:hover:bg-neutral-700 rounded-lg">Past Events</p>
+      </div>
+    </div>
+
+    <p class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">Media</p>
+    <p class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">Leadership</p>
+    <p class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">Contact</p>
+
+  </div>
+  <!-- Mobile Hamburger -->
+  <button
+    (click)="isMenuOpen = !isMenuOpen"
+    class="md:hidden text-indigo-600 dark:text-indigo-300 text-3xl">
+    ☰
+  </button>
+
+  <!-- 🔽 Mobile Slide-down Menu -->
+  <div *ngIf="isMenuOpen" class="md:hidden mt-4 space-y-3 text-indigo-700 dark:text-indigo-300 font-medium">
+
+    <!-- About -->
+    <div>
+      <button (click)="openAbout = !openAbout" class="w-full text-left py-2">
+        About ▼
+      </button>
+      <ul *ngIf="openAbout" class="pl-4 space-y-2 text-gray-700 dark:text-gray-300">
+        <li>About Swami</li>
+        <li>Mission</li>
+        <li>History</li>
+      </ul>
+    </div>
+
+    <!-- Events -->
+    <div>
+      <button (click)="openEvents = !openEvents" class="w-full text-left py-2">
+        Events ▼
+      </button>
+      <ul *ngIf="openEvents" class="pl-4 space-y-2 text-gray-700 dark:text-gray-300">
+        <li>Upcoming Events</li>
+        <li>Past Events</li>
+      </ul>
+    </div>
+
+    <div>Media</div>
+    <div>Leadership</div>
+    <div>Contact</div>
+  </div>
+  </div> 
+</div>
+<br><br><br><br>
+<!-- 🔹 Scroll Progress Indicator -->
+<div class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50">
+  <div
+    class="h-1 bg-blue-800 dark:bg-blue-500 transition-all duration-150"
+    [style.width]="scrollPercent + '%'">
   </div>
 </div>
 
-<br><br><br><br><br>
-
-<!-- 🔹 Scroll Progress Indicator -->
-<div class="fixed top-6 right-6 w-14 h-14 rounded-full bg-card shadow-soft
-            flex items-center justify-center text-primary font-bold"
-     [style.background]="
-       'conic-gradient(var(--primary) ' + scrollPercent + '%, var(--muted) ' + scrollPercent + '%)'
-     ">
-  {{ scrollPercent | number:'1.0-0' }}%
-</div>
 
 <!-- 🔹 Main Wrapper -->
 <div class="min-h-screen xl:flex">

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
     CommonModule,
   ],
   templateUrl: './landing.component.html',
-  styles: ``
+  styleUrl: './landing.component.css'
 })
 export class LandingComponent {
   teamMembers = [

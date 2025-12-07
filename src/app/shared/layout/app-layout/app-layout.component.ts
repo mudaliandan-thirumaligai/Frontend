@@ -20,6 +20,7 @@ import { map } from 'rxjs/operators';
     AppSidebarComponentNew
   ],
   templateUrl: './app-layout.component.html',
+  styleUrl: './app-layout.component.css'
 })
 export class AppLayoutComponent {
   // Sidebar observables (from service)
@@ -35,6 +36,9 @@ export class AppLayoutComponent {
 
   // scroll percent
   scrollPercent = 0;
+  isMenuOpen = false;
+  openAbout = false;
+  openEvents = false;
 
   // A reactive computed observable that yields the container classes (string[] or string)
   containerClasses$: Observable<string[]>;
