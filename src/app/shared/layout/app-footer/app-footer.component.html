@@ -19,80 +19,88 @@
       <h3 class="font-semibold text-xl text-indigo-700 dark:text-indigo-300 mb-3">
         Quick Links
       </h3>
-      <ul class="space-y-2">
 
+      <ul class="space-y-3">
         <li>
-          <a routerLink="" 
-             class="hover:text-indigo-800 dark:hover:text-indigo-400 transition text-gray-700 dark:text-gray-400">
+          <button routerLink="/"
+            class="w-full text-left px-2 py-1 rounded-lg text-gray-700 dark:text-gray-300
+            hover:text-indigo-800 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900
+            transition font-body">
             Home
-          </a>
+          </button>
         </li>
 
         <li>
-          <a routerLink="/about" 
-             class="hover:text-indigo-800 dark:hover:text-indigo-400 transition text-gray-700 dark:text-gray-400">
-            About Us
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/gallery" 
-             class="hover:text-indigo-800 dark:hover:text-indigo-400 transition text-gray-700 dark:text-gray-400">
-            Gallery / Portfolio
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/contact-us" 
-             class="hover:text-indigo-800 dark:hover:text-indigo-400 transition text-gray-700 dark:text-gray-400">
+          <button routerLink="/registration"
+            class="w-full text-left px-2 py-1 rounded-lg text-gray-700 dark:text-gray-300
+            hover:text-indigo-800 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900
+            transition font-body">
             Contact
-          </a>
+          </button>
         </li>
 
+        <li>
+          <button routerLink="/gallery"
+            class="w-full text-left px-2 py-1 rounded-lg text-gray-700 dark:text-gray-300
+            hover:text-indigo-800 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900
+            transition font-body">
+            Gallery
+          </button>
+        </li>
+
+        <li>
+          <button routerLink="/calendar"
+            class="w-full text-left px-2 py-1 rounded-lg text-gray-700 dark:text-gray-300
+            hover:text-indigo-800 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900
+            transition font-body">
+            Calendar
+          </button>
+        </li>
       </ul>
     </div>
 
-    <!-- Social Media -->
+    <!-- Connect Section -->
     <div>
-      <h3 class="font-semibold text-xl text-indigo-700 dark:text-indigo-300 mb-3">
-        Follow Us
+      <h3 class="text-lg md:text-xl font-semibold
+                 text-indigo-700 dark:text-indigo-300
+                 tracking-wide leading-tight mb-3">
+        Connect With Us
       </h3>
 
-      <div class="flex space-x-4">
-
-        <!-- WhatsApp -->
-        <a href="https://wa.me/0000000000"
-           target="_blank"
-           class="w-10 h-10 rounded-full border border-indigo-400 dark:border-indigo-600
-                  flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-900
-                  transition">
-          <i class="bi bi-whatsapp text-indigo-700 dark:text-indigo-300 text-xl"></i>
-        </a>
-
-        <!-- Instagram -->
-        <a href="https://instagram.com/"
-           target="_blank"
-           class="w-10 h-10 rounded-full border border-indigo-400 dark:border-indigo-600
-                  flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-900
-                  transition">
-          <i class="bi bi-instagram text-indigo-700 dark:text-indigo-300 text-xl"></i>
-        </a>
-
-        <!-- Email -->
+      <div class="flex flex-col space-y-3">
         <a href="mailto:dasarathi@gmail.com"
-           class="w-10 h-10 rounded-full border border-indigo-400 dark:border-indigo-600
-                  flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-900
-                  transition">
-          <i class="bi bi-envelope text-indigo-700 dark:text-indigo-300 text-xl"></i>
+           class="px-4 py-2 rounded-lg border border-indigo-400 dark:border-indigo-600
+                  text-gray-700 dark:text-gray-300 
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900 transition">
+          Email Us
         </a>
 
+        <a href="https://wa.me/0000000000" target="_blank"
+           class="px-4 py-2 rounded-lg border border-indigo-400 dark:border-indigo-600
+                  text-gray-700 dark:text-gray-300 
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900 transition">
+          WhatsApp
+        </a>
+
+        <a href="https://facebook.com" target="_blank"
+           class="px-4 py-2 rounded-lg border border-indigo-400 dark:border-indigo-600
+                  text-gray-700 dark:text-gray-300 
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900 transition">
+          Facebook
+        </a>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom text -->
+  <!-- Footer Bottom -->
   <div class="text-center text-sm text-gray-600 dark:text-gray-400 mt-10">
-    © {{ currentYear }} Sri Dasarathi Trust. All rights reserved.
-  </div>
+  © {{ currentYear }} Sri Dasarathi Trust —
+  <button
+    routerLink="/signin"
+    class="text-indigo-700 dark:text-indigo-300 hover:underline ml-1">
+    Admin Login
+  </button>
+</div>
+
 </footer>
