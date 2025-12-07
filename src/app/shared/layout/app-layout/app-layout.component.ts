@@ -9,6 +9,12 @@ import { AuthService } from '../../services/Auth/auth.service';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+interface MenuItem {
+  label: string;
+  route?: string; // optional
+  open?: boolean; // for mobile dropdown
+  children?: { label: string; route: string }[];
+}
 
 @Component({
   selector: 'app-layout',
@@ -36,9 +42,59 @@ export class AppLayoutComponent {
 
   // scroll percent
   scrollPercent = 0;
+  //  Header state variables for submenu toggles
   isMenuOpen = false;
   openAbout = false;
   openEvents = false;
+  openContact = false;
+  menu: MenuItem[] = [
+  {
+    label: 'About',
+    open: false,
+    children: [
+      { label: 'About Swami', route: '/about-swami' },
+      { label: 'Mission', route: '/mission' },
+      { label: 'History', route: '/history' }
+    ]
+  },
+  {
+    label: 'Events',
+    open: false,
+    children: [
+      { label: 'Upcoming Events', route: '/upcoming-events' },
+      { label: 'Past Events', route: '/past-events' },
+      { label: 'Event Calendar', route: '/calendar' }
+    ]
+  },
+  {
+    label: 'Media',
+    open: false,
+    children: [
+      { label: 'Photo Gallery', route: '/media/photos' },
+      { label: 'Videos', route: '/media/videos' },
+      { label: 'Publications', route: '/media/publications' }
+    ]
+  },
+  {
+    label: 'Leadership',
+    open: false,
+    children: [
+      { label: 'Swami & Team', route: '/leadership/team' },
+      { label: 'Organization Structure', route: '/leadership/structure' }
+    ]
+  },
+  {
+    label: 'Contact',
+    open: false,
+    children: [
+      { label: 'Enquiry Form', route: '/contact/form' },
+      { label: 'Bank Details', route: '/bank-info' },
+      { label: 'Registration', route: '/registration' }
+    ]
+  }
+];
+
+
 
   // A reactive computed observable that yields the container classes (string[] or string)
   containerClasses$: Observable<string[]>;

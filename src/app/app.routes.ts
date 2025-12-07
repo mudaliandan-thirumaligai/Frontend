@@ -79,7 +79,7 @@ export const routes: Routes = [
       },
       // Contact us page for users
       {
-        path:'contact-us',
+        path:'registration',
         component:ContactUsComponent,
         title:'Contact Us |Sri Dasarathy Trust'
       },
