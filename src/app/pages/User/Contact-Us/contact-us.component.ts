@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule
   ],
   templateUrl: './contact-us.component.html',
-  styles: ``
+  styleUrl: `./contact-us.component.css`
 })
 export class ContactUsComponent {
   contactForm: FormGroup;
