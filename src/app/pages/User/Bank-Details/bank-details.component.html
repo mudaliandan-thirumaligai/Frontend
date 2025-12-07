@@ -1,215 +1,157 @@
-<div>
-  <app-page-breadcrumb pageTitle= "Bank Details" />
+<div class="min-h-screen bg-indigo-50 dark:bg-indigo-950">
+
+  <app-page-breadcrumb pageTitle="Bank Details" />
+
   <div class="p-4 md:p-8 max-w-7xl mx-auto">
 
-    <!-- Tabs -->
-    <div class="flex flex-wrap gap-2 mb-6">
-      <button
-        *ngFor="let tab of tabs"
-        (click)="selectTab(tab)"
-        class="px-4 py-2 rounded-xl transition-colors duration-300
-               border border-gray-300 dark:border-gray-600
-               bg-white dark:bg-gray-800
-               text-gray-700 dark:text-gray-200
-               hover:bg-gray-100 dark:hover:bg-gray-700
-               shadow-sm"
-        [class.font-bold]="selectedTab === tab"
-      >
-        {{ tab.title }}
-      </button>
-    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-    <!-- Tab Content -->
-    <div
-      class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg transition-all duration-500"
-    >
+      <!-- ======================================= -->
+      <!--                CONTENT                  -->
+      <!-- ======================================= -->
+      <div class="lg:col-span-3 space-y-6">
 
-      <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-        {{ selectedTab.title }}
-      </h2>
+        <!-- Page Title -->
+        <h2 class="text-3xl font-bold text-indigo-900 dark:text-indigo-200">
+          {{ selectedTab.title }}
+        </h2>
 
-      <p class="mb-6 whitespace-pre-line text-gray-700 dark:text-gray-300">
-        {{ selectedTab.description }}
-      </p>
+        <!-- Description -->
+        <p class="whitespace-pre-line text-gray-700 dark:text-gray-300">
+          {{ selectedTab.description }}
+        </p>
 
-      <!-- Bank Details -->
-      <!-- Bank Details + Image -->
-<div *ngIf="selectedTab.bankDetails" class="grid md:grid-cols-2 gap-6 mb-6">
-      <!-- Bank Details + Image -->
-<div *ngIf="selectedTab.bankDetails" class="grid md:grid-cols-2 gap-6 mb-6">
+        <!-- ============ BANK DETAILS ============ -->
+        <div *ngIf="selectedTab.bankDetails"
+             class="grid md:grid-cols-2 gap-6">
 
-  <!-- LEFT: Bank Box -->
-  <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm 
-              bg-gray-50 dark:bg-gray-800">
-    <h3 class="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
-      Bank Details
-    </h3>
+          <!-- Bank Box -->
+          <div class="p-5 rounded-2xl shadow-md 
+                      bg-white dark:bg-gray-900
+                      border border-indigo-200 dark:border-indigo-700 
+                      space-y-2">
 
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Bank:</span> {{ selectedTab.bankDetails.bank }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Account Name:</span> {{ selectedTab.bankDetails.name }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Account No:</span> {{ selectedTab.bankDetails.account }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">IFSC:</span> {{ selectedTab.bankDetails.ifsc }}
-    </p>
+            <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-3">
+              Bank Details
+            </h3>
 
-    <p *ngIf="selectedTab.bankDetails.type" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Type:</span> {{ selectedTab.bankDetails.type }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.micr" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">MICR:</span> {{ selectedTab.bankDetails.micr }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.branch" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Branch:</span> {{ selectedTab.bankDetails.branch }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.address" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Address:</span> {{ selectedTab.bankDetails.address }}
-    </p>
-  </div>
+            <ng-container *ngFor="let item of [
+              {label:'Bank', value:selectedTab.bankDetails.bank},
+              {label:'Account Name', value:selectedTab.bankDetails.name},
+              {label:'Account No', value:selectedTab.bankDetails.account},
+              {label:'IFSC', value:selectedTab.bankDetails.ifsc},
+              {label:'Type', value:selectedTab.bankDetails.type},
+              {label:'MICR', value:selectedTab.bankDetails.micr},
+              {label:'Branch', value:selectedTab.bankDetails.branch},
+              {label:'Address', value:selectedTab.bankDetails.address}
+            ]">
+              <p *ngIf="item.value" class="text-gray-800 dark:text-gray-200">
+                <span class="font-medium">{{ item.label }}:</span> {{ item.value }}
+              </p>
+            </ng-container>
 
-  <!-- RIGHT: Image -->
-  <div class="flex items-center justify-center">
-    <img
-      [src]="selectedTab.image"
-      alt="Bank Image"
-      class="rounded-xl shadow-md max-h-72 object-cover"
-    />
-  </div>
+          </div>
 
-</div>
-  <!-- LEFT: Bank Box -->
-  <div class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm 
-              bg-gray-50 dark:bg-gray-800">
-    <h3 class="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
-      Bank Details
-    </h3>
+          <!-- Image -->
+          <div class="flex items-center justify-center">
+            <img
+              [src]="selectedTab.image"
+              alt="Bank Image"
+              class="rounded-2xl shadow-lg max-h-72 object-cover border border-indigo-200 dark:border-indigo-700"
+            />
+          </div>
 
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Bank:</span> {{ selectedTab.bankDetails.bank }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Account Name:</span> {{ selectedTab.bankDetails.name }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Account No:</span> {{ selectedTab.bankDetails.account }}
-    </p>
-    <p class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">IFSC:</span> {{ selectedTab.bankDetails.ifsc }}
-    </p>
+        </div>
 
-    <p *ngIf="selectedTab.bankDetails.type" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Type:</span> {{ selectedTab.bankDetails.type }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.micr" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">MICR:</span> {{ selectedTab.bankDetails.micr }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.branch" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Branch:</span> {{ selectedTab.bankDetails.branch }}
-    </p>
-    <p *ngIf="selectedTab.bankDetails.address" class="text-gray-800 dark:text-gray-200">
-      <span class="font-medium">Address:</span> {{ selectedTab.bankDetails.address }}
-    </p>
-  </div>
+        <!-- ============ INSTRUCTIONS ============ -->
+        <div class="p-5 rounded-2xl shadow-md
+                    bg-white dark:bg-gray-900
+                    border border-indigo-200 dark:border-indigo-700">
 
-  <!-- RIGHT: Image
-  <div class="flex items-center justify-center">
-    <img
-      [src]="selectedTab.image"
-      alt="Bank Image"
-      class="rounded-xl shadow-md max-h-72 object-cover"
-    />
-  </div> -->
+          <h3 class="text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-3">
+            Instructions & Contact
+          </h3>
 
-</div>
+          <p *ngIf="selectedTab.notes" class="text-gray-800 dark:text-gray-200 mb-3">
+            {{ selectedTab.notes }}
+          </p>
 
-<!-- Instructions Box BELOW both -->
-<div
-  class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm
-         bg-gray-50 dark:bg-gray-800 mb-6"
->
-  <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">
-    Instructions & Contact
-  </h3>
-<!-- Instructions Box BELOW both -->
-<div
-  class="p-4 border rounded-xl border-gray-200 dark:border-gray-700 shadow-sm
-         bg-gray-50 dark:bg-gray-800 mb-6"
->
-  <h3 class="font-semibold text-lg mb-3 text-gray-900 dark:text-gray-100">
-    Instructions & Contact
-  </h3>
+          <div class="space-y-2 text-gray-800 dark:text-gray-200">
 
-  <p *ngIf="selectedTab.notes" class="mb-3 text-gray-800 dark:text-gray-200">
-    {{ selectedTab.notes }}
-  </p>
-  <p *ngIf="selectedTab.notes" class="mb-3 text-gray-800 dark:text-gray-200">
-    {{ selectedTab.notes }}
-  </p>
+            <p>- Money Orders also accepted</p>
+            <p>- Send Cheque or DD in favor of:</p>
 
-  <div class="space-y-2 text-gray-800 dark:text-gray-200">
-    <p>- Money Orders also accepted</p>
-    <p>- Send Cheque or DD in favor of:</p>
-  <div class="space-y-2 text-gray-800 dark:text-gray-200">
-    <p>- Money Orders also accepted</p>
-    <p>- Send Cheque or DD in favor of:</p>
+            <p class="font-semibold text-lg text-indigo-700 dark:text-indigo-400">
+              "SRI DASARATHY TRUST"
+            </p>
 
-    <p class="font-semibold text-lg">"SRI DASARATHY TRUST"</p>
+            <p>
+              4/345, Sannadhi Street,<br />
+              Singaperumal Koil,<br />
+              Chengalpattu District,<br />
+              Tamil Nadu,<br />
+              Pin 603 204.
+            </p>
 
-    <p>
-      4/345, Sannadhi Street,<br />
-      Singaperumal Koil,<br />
-      Chengalpattu District,<br />
-      Tamil Nadu,<br />
-      Pin 603 204.
-    </p>
-  </div>
-    <p>
-      4/345, Sannadhi Street,<br />
-      Singaperumal Koil,<br />
-      Chengalpattu District,<br />
-      Tamil Nadu,<br />
-      Pin 603 204.
-    </p>
-  </div>
+          </div>
 
- <div
-      class="mt-4 space-y-1 p-4 rounded-xl transition-all duration-300
-            bg-gray-100 text-gray-800
-            dark:bg-gray-700 dark:text-gray-100"
-      *ngIf="selectedTab.contact"
-    >
-      <p
-        *ngIf="selectedTab.contact.name"
-        class="font-semibold text-lg text-gray-900 dark:text-white"
-      >
-        {{ selectedTab.contact.name }}
-      </p>
+          <!-- Contact Block -->
+          <div *ngIf="selectedTab.contact"
+               class="mt-4 p-4 rounded-xl 
+                      bg-indigo-100 dark:bg-indigo-900 
+                      text-gray-900 dark:text-gray-200 space-y-2">
 
-      <p *ngIf="selectedTab.contact.phone" class="flex items-center gap-2">
-        <span class="text-green-600 dark:text-green-400">📞</span>
-        <span>{{ selectedTab.contact.phone }}</span>
-      </p>
+            <p *ngIf="selectedTab.contact.name" class="font-semibold text-lg">
+              {{ selectedTab.contact.name }}
+            </p>
 
-      <p *ngIf="selectedTab.contact.email" class="flex items-center gap-2">
-        <span class="text-blue-600 dark:text-blue-400">📧</span>
-        <span>{{ selectedTab.contact.email }}</span>
-      </p>
+            <p *ngIf="selectedTab.contact.phone" class="flex items-center gap-2">
+              📞 {{ selectedTab.contact.phone }}
+            </p>
 
-      <p
-        *ngIf="selectedTab.contact.message"
-        class="italic text-gray-700 dark:text-gray-300"
-      >
-        {{ selectedTab.contact.message }}
-      </p>
-    </div>
+            <p *ngIf="selectedTab.contact.email" class="flex items-center gap-2">
+              📧 {{ selectedTab.contact.email }}
+            </p>
 
-    </div>
+            <p *ngIf="selectedTab.contact.message" class="italic">
+              {{ selectedTab.contact.message }}
+            </p>
+
+          </div>
 
         </div>
       </div>
+
+
+      <!-- ======================================= -->
+      <!--          RIGHT SIDEBAR TABS             -->
+      <!-- ======================================= -->
+      <div class="lg:col-span-1">
+
+        <div class="flex flex-col gap-3 sticky top-24">
+
+          <button
+            *ngFor="let tab of tabs"
+            (click)="selectTab(tab)"
+            class="w-full px-4 py-3 rounded-xl shadow-sm border
+                  border-indigo-200 dark:border-indigo-700
+                  bg-white dark:bg-gray-900
+                  text-left transition-all duration-300"
+
+            [ngClass]="{
+              'bg-indigo-200 dark:bg-indigo-800 text-indigo-900 dark:text-indigo-200 font-semibold':
+                selectedTab === tab,
+              'text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-800':
+                selectedTab !== tab
+            }"
+          >
+            {{ tab.title }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>

@@ -1,10 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-footer',
-  imports: [
+  imports: [RouterModule
   ],
   templateUrl: './app-footer.component.html',
 })
