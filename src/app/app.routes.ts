@@ -38,6 +38,7 @@ import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgo
 import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
 import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.component';
 
+// TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
   {
     path:'',

@@ -38,6 +38,8 @@ export interface NavItem {
   ],
   templateUrl: './app-sidebar.component.html',
 })
+
+// TODO need to refine and remove the user pages
 export class AppSidebarComponentNew {
     role: 'admin' | 'user' = 'user';
 
