@@ -11,42 +11,41 @@
   <div class="flex items-center space-x-6">
     <!-- DESKTOP MENU -->
     <div *ngIf="!(isAdmin$ | async)" 
-         class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
+        class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
 
-      <!-- GENERIC DROPDOWN -->
       <ng-container *ngFor="let item of menu">
 
-        <!-- If has dropdown -->
-        <div class="relative group" *ngIf="item.children?.length; else singleLink">
-          <button class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">
-            {{ item.label }}
-          </button>
+        <!-- DROPDOWN -->
+        <div class="relative">
 
-          <div
-            class="absolute left-0 mt-2 w-48
-                   bg-white dark:bg-neutral-800
-                   text-indigo-700 dark:text-indigo-300
-                   rounded-xl shadow-md
-                   opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100
-                   transform transition-all duration-300 origin-top">
-            <p *ngFor="let child of item.children"
-               [routerLink]="child.route"
-               class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg cursor-pointer">
-              {{ child.label }}
-            </p>
-          </div>
-        </div>
+          <!-- Make hover active ONLY on the text -->
+          <div class="inline-block relative"
+        (mouseenter)="openDropdown(item)"
+        (mouseleave)="closeDropdown(item)">
+      <button class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">
+        {{ item.label }}
+      </button>
 
-        <!-- If single link -->
-        <ng-template #singleLink>
-          <p [routerLink]="item.route"
-             class="hover:text-indigo-800 dark:hover:text-indigo-400 transition cursor-pointer">
-            {{ item.label }}
-          </p>
-        </ng-template>
-
-      </ng-container>
+      <!-- DROPDOWN -->
+      <div *ngIf="item.isOpen"
+          class="absolute left-0 mt-2 w-48
+                  bg-white dark:bg-neutral-800
+                  text-indigo-700 dark:text-indigo-300
+                  rounded-xl shadow-md
+                  transform transition-all duration-300 origin-top z-[9999]">
+        <p *ngFor="let child of item.children"
+          [routerLink]="child.route"
+          class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg cursor-pointer">
+          {{ child.label }}
+        </p>
+      </div>
     </div>
+
+    </div>
+
+  </ng-container>
+</div>
+
 
     <!-- MOBILE HAMBURGER -->
     <button *ngIf="!(isAdmin$ | async)"
@@ -74,9 +73,13 @@
   <!-- 🔵 RIGHT: TITLE -->
   <div class="text-lg md:text-xl font-semibold
               text-indigo-700 dark:text-indigo-300
-              tracking-wide leading-tight text-right">
+              tracking-wide leading-tight text-right
+              hidden sm:block"> <!-- hide on xs screens -->
     Sri Mudhaliandan Swami Thirumaligai
   </div>
+
+
+
 
 </div>
 

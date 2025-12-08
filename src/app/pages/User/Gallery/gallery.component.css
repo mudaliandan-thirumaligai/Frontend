@@ -1,0 +1,98 @@
+  /* Layout */
+  .gallery-container { display: flex; width: 100%; padding-right: 260px; position: relative; }
+  .gallery-content { width: 100%; padding: 20px; }
+
+  /* Desktop sidebar */
+.sidebar {
+  width: 240px;
+  position: fixed;
+  right: 0;
+  top: 120px;
+  padding: 20px;
+  background: #ffffffd9;
+  border-left: 1px solid #ddd;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+/* Tablet & smaller: hide sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .gallery-container {
+    padding-right: 0; /* remove space reserved for sidebar */
+  }
+}
+
+
+  /* Folder titles */
+  .folder-title { font-size: 22px; padding: 12px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .arrow { font-size: 18px; transition: transform .3s ease; }
+  .arrow.open { transform: rotate(180deg); }
+
+  /* Grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; padding-bottom: 18px; }
+  .grid img { width: 100%; border-radius: 8px; transition: transform .3s ease; }
+  .grid img:hover { transform: scale(1.04); }
+
+  /* Fade animation */
+  .fade { animation: fadeIn .4s ease-in-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Modal animations */
+  .modal-enter { animation: fadeScaleIn .25s ease-out forwards; }
+  .modal-exit { animation: fadeScaleOut .25s ease-in forwards; }
+  @keyframes fadeScaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes fadeScaleOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+
+  /* Modal container (already existing) */
+.modal-enter,
+.modal-exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Close button styling */
+.modal-enter button,
+.modal-exit button {
+  position: absolute;
+  top: 8px;          /* smaller top padding for mobile */
+  right: 8px;        /* smaller right padding for mobile */
+  z-index: 9999;     /* make sure it's above everything */
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-enter button:hover,
+.modal-exit button:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* Optional: adjust modal image on smaller screens */
+@media (max-width: 640px) {
+  .modal-enter img,
+  .modal-exit img {
+    max-width: 90vw;
+    max-height: 80vh;
+  }
+
+  .modal-enter button,
+  .modal-exit button {
+    top: 6px;
+    right: 6px;
+    padding: 4px 8px;
+    font-size: 16px;
+  }
+}

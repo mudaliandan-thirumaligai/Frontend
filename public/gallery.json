@@ -1,0 +1,16 @@
+{
+  "Carousel Images": [
+    "images/carousel/carousel-01.png",
+    "images/carousel/carousel-02.png",
+    "images/carousel/carousel-03.png",
+    "images/carousel/carousel-04.png"
+  ],
+  "Grid Images": [
+    "images/grid-image/image-01.png",
+    "images/grid-image/image-02.png",
+    "images/grid-image/image-03.png",
+    "images/grid-image/image-04.png",
+    "images/grid-image/image-05.png",
+    "images/grid-image/image-06.png"
+  ]
+}

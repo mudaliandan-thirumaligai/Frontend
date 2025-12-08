@@ -87,7 +87,7 @@ export const routes: Routes = [
       {
         path:'gallery',
         component:GalleryComponent,
-        title:'Gallery |Sri Dasarathy Trust'
+        title:'Gallery | Sri Dasarathy Trust'
       },
       {
         path:'bank-info',

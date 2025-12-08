@@ -13,6 +13,8 @@ interface MenuItem {
   label: string;
   route?: string; // optional
   open?: boolean; // for mobile dropdown
+  isOpen?: boolean;
+  closeTimeout?: any; // store timeout
   children?: { label: string; route: string }[];
 }
 
@@ -47,6 +49,19 @@ export class AppLayoutComponent {
   openAbout = false;
   openEvents = false;
   openContact = false;
+  openDropdown(item: MenuItem) {
+  // cancel any previous close timeout
+  if (item.closeTimeout) clearTimeout(item.closeTimeout);
+  item.isOpen = true;
+}
+
+closeDropdown(item: MenuItem) {
+  // wait 300ms before closing
+  item.closeTimeout = setTimeout(() => {
+    item.isOpen = false;
+  }, 150);
+}
+
   menu: MenuItem[] = [
   {
     label: 'About',
