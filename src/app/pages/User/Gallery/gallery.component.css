@@ -38,7 +38,10 @@
   /* Grid */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; padding-bottom: 18px; }
   .grid img { width: 100%; border-radius: 8px; transition: transform .3s ease; }
-  .grid img:hover { transform: scale(1.04); }
+  .grid img:hover {
+  transform: scale(1.06); /* slightly bigger */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* optional: adds depth */
+}
 
   /* Fade animation */
   .fade { animation: fadeIn .4s ease-in-out; }
@@ -96,3 +99,20 @@
     font-size: 16px;
   }
 }
+/* Navigation buttons */
+button {
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+/* Optional: hide buttons on mobile if needed */
+@media (max-width: 640px) {
+  .modal-enter button:nth-child(1), /* left */
+  .modal-enter button:nth-child(3) { /* right */
+    display: none;
+  }
+}
+

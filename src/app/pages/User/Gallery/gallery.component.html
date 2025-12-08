@@ -30,7 +30,7 @@
       <div class="grid fade" *ngIf="folder.expanded">
         <div class="grid-item" *ngFor="let img of folder.images">
           <img [src]="img" loading="lazy" 
-               (click)="openImage(img)" 
+               (click)="openImage(img, folder)" 
                class="cursor-pointer hover:scale-105 transition" />
         </div>
       </div>
@@ -45,9 +45,8 @@
                  text-indigo-700 dark:text-indigo-300
                  hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer rounded-md" 
           *ngFor="let folder of folders" 
-          (click)="toggleFolder(folder)">
+          (click)="scrollToFolder(folder)">
         {{ folder.name }}
-        <span class="arrow-small">▶</span>
       </li>
     </ul>
   </div>
