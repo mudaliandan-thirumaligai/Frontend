@@ -1,0 +1,70 @@
+<br><br><br>
+<app-page-breadcrumb pageTitle="Gallery" />
+<!-- 🌟 PAGE HEADER -->
+<div class="w-full mb-4 text-left"> <!-- reduced mb-8 → mb-4 -->
+  <div class="text-xl md:text-2xl font-semibold
+              text-indigo-700 dark:text-indigo-300
+              tracking-wide leading-tight">
+    Gallery
+  </div>
+  <div class="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-1">
+    Explore spiritual archives, images, and collections of swamy organized neatly by category.
+  </div>
+</div>
+
+<!-- 🌟 GALLERY CONTENT -->
+<div class="gallery-container">
+
+  <!-- Main content -->
+  <div class="gallery-content">
+    <div *ngFor="let folder of folders" class="folder-section" [id]="folder.name">
+
+      <h2 class="folder-title flex justify-between items-center 
+           text-lg font-medium text-indigo-700 dark:text-indigo-300
+           cursor-pointer mt-2 pb-1 border-b border-gray-200 dark:border-gray-700"
+          (click)="toggleFolder(folder)">
+        {{ folder.name }}
+        <span class="arrow" [class.open]="folder.expanded">▼</span>
+      </h2>
+
+      <div class="grid fade" *ngIf="folder.expanded">
+        <div class="grid-item" *ngFor="let img of folder.images">
+          <img [src]="img" loading="lazy" 
+               (click)="openImage(img, folder)" 
+               class="cursor-pointer hover:scale-105 transition" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li class="px-3 py-2 flex justify-between items-center
+                 text-indigo-700 dark:text-indigo-300
+                 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer rounded-md" 
+          *ngFor="let folder of folders" 
+          (click)="scrollToFolder(folder)">
+        {{ folder.name }}
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- 🌟 IMAGE POPUP MODAL -->
+<div *ngIf="selectedImage"
+     [ngClass]="{ 'modal-enter': !isClosing, 'modal-exit': isClosing }"
+     class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+
+  <div class="relative">
+    <img [src]="selectedImage" 
+         class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl" />
+
+    <!-- Close button -->
+    <button (click)="closeImage()"
+            class="absolute top-2 right-2 text-white bg-black/60 rounded-full px-3 py-1 text-lg">
+      ✕
+    </button>
+  </div>
+</div>

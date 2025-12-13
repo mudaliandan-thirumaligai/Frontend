@@ -38,6 +38,7 @@ import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgo
 import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
 import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.component';
 import { GalleryComponent } from './pages/User/Gallery/gallery.component';
+import { HistoryComponent } from './pages/User/History/history.component';
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
@@ -88,6 +89,11 @@ export const routes: Routes = [
         path:'gallery',
         component:GalleryComponent,
         title:'Gallery | Sri Dasarathy Trust'
+      },
+      {
+        path:'history',
+        component:HistoryComponent,
+        title:'History | Sri Dasarathy Trust'
       },
       {
         path:'bank-info',
