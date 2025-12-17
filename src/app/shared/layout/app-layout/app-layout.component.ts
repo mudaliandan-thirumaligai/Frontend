@@ -86,7 +86,7 @@ closeDropdown(item: MenuItem) {
     open: false,
     children: [
       { label: 'Photo Gallery', route: '/gallery' },
-      { label: 'Videos', route: '/media/videos' },
+      { label: 'Videos', route: '/videos' },
       { label: 'Publications', route: '/media/publications' }
     ]
   },
