@@ -40,6 +40,7 @@ import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.com
 import { GalleryComponent } from './pages/User/Gallery/gallery.component';
 import { HistoryComponent } from './pages/User/History/history.component';
 import { VideosComponent } from './pages/User/Videos/videos.component';
+import { DocumentsComponent } from './pages/User/Documents/documents.component';
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
@@ -100,6 +101,11 @@ export const routes: Routes = [
         path:'videos',
         component:VideosComponent,
         title:'Videos | Sri Dasarathy Trust'
+      },
+      {
+        path:'documents',
+        component:DocumentsComponent,
+        title:'Documents | Sri Dasarathy Trust'
       },
       {
         path:'bank-info',

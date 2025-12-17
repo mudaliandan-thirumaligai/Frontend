@@ -1,0 +1,72 @@
+<br><br><br>
+<app-page-breadcrumb pageTitle="Documents" />
+
+<!-- 🔹 PAGE TITLE -->
+<div class="pt-4 pb-6 px-6 max-w-6xl mx-auto">
+  <h1
+    class="text-xl md:text-2xl font-semibold
+           text-indigo-700 dark:text-indigo-300
+           tracking-wide">
+    Documents & Books
+  </h1>
+</div>
+
+<!-- 📚 DOCUMENT GRID -->
+<section
+  class="max-w-6xl mx-auto px-6 pb-16
+         grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <div
+    *ngFor="let doc of documents"
+    class="group cursor-pointer rounded-2xl
+           bg-white dark:bg-neutral-900
+           shadow-sm hover:shadow-md
+           transition-all duration-300
+           flex flex-col justify-between h-64">
+
+    <!-- Icon / Cover Placeholder -->
+    <div
+      class="relative h-40 rounded-t-2xl overflow-hidden
+             bg-gradient-to-br from-sky-100 to-blue-50
+             dark:from-indigo-900 dark:to-neutral-800
+             flex items-center justify-center">
+
+      <div
+        class="w-16 h-16 rounded-xl
+               bg-indigo-600/90
+               flex items-center justify-center
+               text-white text-2xl font-semibold">
+        📄
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="p-4 flex flex-col justify-between h-full">
+      <div>
+        <h3
+          class="text-sm md:text-base font-semibold
+                 text-indigo-700 dark:text-indigo-300">
+          {{ doc.title }}
+        </h3>
+
+        <p
+          class="mt-1 text-xs md:text-sm
+                 text-slate-600 dark:text-slate-400">
+          {{ doc.language }}
+        </p>
+      </div>
+
+      <!-- Open Button -->
+      <a [href]="doc.url" target="_blank"
+         class="mt-4 inline-block px-4 py-2
+                text-white bg-indigo-700 dark:bg-indigo-500
+                rounded-lg text-xs font-medium
+                hover:bg-indigo-800 dark:hover:bg-indigo-600
+                transition">
+        Open
+      </a>
+    </div>
+
+  </div>
+
+</section>

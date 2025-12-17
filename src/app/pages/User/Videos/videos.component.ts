@@ -47,11 +47,6 @@ export class VideosComponent {
   closeVideo() {
     this.selectedVideo = null;
   }
-
-  // @HostListener('document:keydown.escape')
-  // onEsc() {
-  //   this.closeVideo();
-  // }
    // 🔑 ESC KEY BINDING
   @HostListener('document:keydown.escape', ['$event'])
   onEscPressed(event: KeyboardEvent) {

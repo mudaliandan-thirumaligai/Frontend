@@ -1,0 +1,42 @@
+/* Layout */
+.gallery-container {
+  display: flex;
+  width: 100%;
+  padding-right: 260px; /* space for sidebar if present */
+  position: relative;
+}
+
+.gallery-content {
+  width: 100%;
+  padding: 20px;
+}
+
+/* Desktop sidebar */
+.sidebar {
+  width: 240px;
+  position: fixed;
+  right: 0;
+  top: 120px;
+  padding: 20px;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+/* Tablet & smaller: hide sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .gallery-container {
+    padding-right: 0; /* remove space reserved for sidebar */
+  }
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+  padding-bottom: 18px;
+}
