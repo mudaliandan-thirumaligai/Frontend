@@ -69,16 +69,16 @@ closeDropdown(item: MenuItem) {
     children: [
       { label: 'About Swami', route: '/about-swami' },
       { label: 'Mission', route: '/mission' },
-      { label: 'History', route: '/history' }
+      { label: 'History', route: '/history' },
+      { label: 'Our Thirumaligais', route: '/thirumaligais' }
     ]
   },
   {
     label: 'Events',
     open: false,
     children: [
-      { label: 'Upcoming Events', route: '/upcoming-events' },
-      { label: 'Past Events', route: '/past-events' },
-      { label: 'Event Calendar', route: '/calendar' }
+      { label: 'Event Calendar', route: '/calendar' },
+      { label: 'Past Events', route: '/past-events' }
     ]
   },
   {
@@ -102,9 +102,8 @@ closeDropdown(item: MenuItem) {
     label: 'Contact',
     open: false,
     children: [
-      { label: 'Enquiry Form', route: '/contact/form' },
       { label: 'Bank Details', route: '/bank-info' },
-      { label: 'Registration', route: '/registration' }
+      { label: 'Receive Communication', route: '/registration' }
     ]
   }
 ];
