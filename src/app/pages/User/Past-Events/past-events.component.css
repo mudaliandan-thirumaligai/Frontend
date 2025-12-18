@@ -15,30 +15,42 @@
   padding: 0;
 }
 .accordion-content.open {
-  max-height: 2000px; /* big enough to fit content */
+  max-height: 2000px;
   padding: 5px 0;
 }
 
-/* Events inside month */
-.accordion-content.events {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+/* Year card */
+.year-card {
+  transition: all 0.3s ease;
 }
-@media(min-width: 768px) {
-  .accordion-content.events {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media(min-width: 1024px) {
-  .accordion-content.events {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.year-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
 }
 
-/* Event card hover */
+/* Month card */
+.month-card {
+  transition: all 0.3s ease;
+}
+.month-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* Event cards */
 .event-card:hover {
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   transform: translateY(-5px);
   transition: all 0.3s ease;
+}
+
+/* Events inside month */
+.events {
+  display: block;
+  margin-left: 1rem;
+}
+
+/* Spacing and rounding */
+.year-header, .month-header {
+  user-select: none;
 }

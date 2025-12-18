@@ -13,51 +13,50 @@
     {{ errorMsg }}
   </div>
 
+  <!-- Years -->
   <div *ngIf="!loading && !errorMsg">
-
     <ng-container *ngFor="let year of years">
-      <!-- Year Header -->
-      <h2 (click)="toggleYear(year)"
-          class="year-header text-2xl font-bold text-indigo-700 dark:text-indigo-300 mt-6 cursor-pointer select-none">
-        {{ year }}
-        <span class="arrow" [class.rotate]="expandedYears[year]">▼</span>
-      </h2>
+      <div class="year-card rounded-xl shadow-md bg-indigo-50 dark:bg-indigo-900/20 mt-6 border">
+        <!-- Year Header -->
+        <div class="year-header flex justify-between items-center p-4 cursor-pointer" (click)="toggleYear(year)">
+          <h2 class="text-2xl font-bold text-indigo-700 dark:text-indigo-300">{{ year }}</h2>
+          <span class="arrow text-indigo-600 dark:text-indigo-300 text-xl" [class.rotate]="expandedYears[year]">▼</span>
+        </div>
 
-      <!-- Months -->
-      <div class="accordion-content" [class.open]="expandedYears[year]">
-        <ng-container *ngFor="let month of monthsForYear(year)">
-          <h3 (click)="toggleMonth(year, month)"
-              class="month-header text-xl font-semibold text-indigo-600 dark:text-indigo-200 mt-4 cursor-pointer select-none">
-            {{ month }}
-            <span class="arrow" [class.rotate]="expandedMonths[year][month]">▼</span>
-          </h3>
+        <!-- Months Accordion -->
+        <div class="accordion-content" [class.open]="expandedYears[year]">
+          <ng-container *ngFor="let month of monthsForYear(year)">
+            <div class="month-card border-l-4 border-indigo-400 bg-white dark:bg-indigo-800/20 rounded-md my-2 mx-4 shadow-sm">
+              <!-- Month Header -->
+              <div class="month-header flex justify-between items-center p-3 cursor-pointer" (click)="toggleMonth(year, month)">
+                <h3 class="text-lg font-semibold text-indigo-600 dark:text-indigo-200">{{ month }}</h3>
+                <span class="arrow text-indigo-600 dark:text-indigo-300" [class.rotate]="expandedMonths[year][month]">▼</span>
+              </div>
 
-          <!-- Events -->
-          <div class="accordion-content events" [class.open]="expandedMonths[year][month]">
-            <div *ngFor="let event of groupedEvents[year][month]"
-                 class="event-card p-4 border rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30">
-              
-              <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">{{ event.name }}</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-300">
-                {{ event.startDate | date:'dd MMM yyyy' }} - {{ event.endDate | date:'dd MMM yyyy' }}
-              </p>
-              <p *ngIf="event.location" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Location: {{ event.location }}
-              </p>
-              <p *ngIf="!event.googleDriveLink" class="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                Google Drive link has not been updated.
-              </p>
-              <a *ngIf="event.googleDriveLink" [href]="event.googleDriveLink" target="_blank"
-                 class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 mt-2 inline-block">
-                Open Link
-              </a>
+              <!-- Events -->
+              <div class="accordion-content events" [class.open]="expandedMonths[year][month]">
+                <div *ngFor="let event of groupedEvents[year][month]"
+                     class="event-card p-4 my-2 border rounded-lg shadow-md bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30">
+                  <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">{{ event.name }}</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">
+                    {{ event.startDate | date:'dd MMM yyyy' }} - {{ event.endDate | date:'dd MMM yyyy' }}
+                  </p>
+                  <p *ngIf="event.location" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Location: {{ event.location }}
+                  </p>
+                  <p *ngIf="!event.googleDriveLink" class="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                    Google Drive link has not been updated.
+                  </p>
+                  <a *ngIf="event.googleDriveLink" [href]="event.googleDriveLink" target="_blank"
+                     class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 mt-2 inline-block">
+                    Open Link
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </ng-container>
-
   </div>
 </div>
-
