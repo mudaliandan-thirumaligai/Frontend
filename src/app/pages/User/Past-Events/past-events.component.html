@@ -1,5 +1,6 @@
 <br><br><br>
-<app-page-breadcrumb pageTitle="Past Events" />
+<app-page-breadcrumb pageTitle="Past Events"></app-page-breadcrumb>
+
 <div class="px-6 py-8 max-w-5xl mx-auto">
 
   <!-- Loading -->
@@ -7,42 +8,43 @@
     Loading past events...
   </div>
 
-  <!-- Error / No Events -->
+  <!-- Error -->
   <div *ngIf="!loading && errorMsg" class="text-center text-red-500 font-medium py-10">
     {{ errorMsg }}
   </div>
 
-  <!-- Past Events List -->
-  <ul *ngIf="!loading && pastEvents.length > 0" class="space-y-4">
-    <li *ngFor="let event of pastEvents" 
-        class="p-4 border rounded-lg shadow-sm bg-white dark:bg-neutral-800 flex justify-between items-start transition hover:shadow-md">
+  <!-- Grouped Past Events -->
+  <div *ngIf="!loading && !errorMsg">
 
-      <!-- Event Info -->
-      <div>
-        <h2 class="text-lg md:text-xl font-semibold text-indigo-700 dark:text-indigo-300">
-          {{ event.name }}
-        </h2>
-        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-          {{ event.startDate | date:'dd MMM yyyy' }} - {{ event.endDate | date:'dd MMM yyyy' }}
-        </p>
-        <p *ngIf="event.location" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Location: {{ event.location }}
-        </p>
-        <p *ngIf="!event.googleDriveLink" class="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
-          Google Drive link has not been updated.
-        </p>
-      </div>
+    <ng-container *ngFor="let year of years">
+      <h2 class="text-2xl font-bold text-indigo-700 dark:text-indigo-300 mt-6">{{ year }}</h2>
 
-      <!-- Link if exists -->
-      <div *ngIf="event.googleDriveLink">
-        <a [href]="event.googleDriveLink" target="_blank" 
-           class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 transition">
-          Open Link
-        </a>
-      </div>
+      <ng-container *ngFor="let month of monthsForYear(year)">
+        <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-200 mt-4">{{ month }}</h3>
 
-    </li>
-  </ul>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
+          <div *ngFor="let event of groupedEvents[year][month]"
+               class="p-4 border rounded-lg shadow-sm bg-blue-50 dark:bg-blue-900/20">
+            
+            <h4 class="text-lg font-semibold text-indigo-700 dark:text-indigo-300">{{ event.name }}</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-300">
+              {{ event.startDate | date:'dd MMM yyyy' }} - {{ event.endDate | date:'dd MMM yyyy' }}
+            </p>
+            <p *ngIf="event.location" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Location: {{ event.location }}
+            </p>
+            <p *ngIf="!event.googleDriveLink" class="text-sm text-blue-600 dark:text-blue-400 mt-1">
+              Google Drive link has not been updated.
+            </p>
+            <a *ngIf="event.googleDriveLink" [href]="event.googleDriveLink" target="_blank"
+               class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 mt-2 inline-block">
+              Open Link
+            </a>
+          </div>
+        </div>
 
+      </ng-container>
+    </ng-container>
+
+  </div>
 </div>
-
