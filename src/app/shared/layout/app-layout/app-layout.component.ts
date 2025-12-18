@@ -67,7 +67,7 @@ closeDropdown(item: MenuItem) {
     label: 'About',
     open: false,
     children: [
-      { label: 'About Swami', route: '/about-swami' },
+      { label: 'About Swami', route: '/about-swamy' },
       { label: 'Mission', route: '/mission' },
       { label: 'History', route: '/history' },
       { label: 'Our Thirumaligais', route: '/thirumaligais' }

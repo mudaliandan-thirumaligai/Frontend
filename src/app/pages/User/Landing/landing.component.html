@@ -1,57 +1,92 @@
-<!-- 🔶 HERO SECTION -->
-<section
-  class="pt-32 pb-20 px-6 md:px-12 text-center relative overflow-hidden
-         bg-gradient-to-b from-indigo-100 to-blue-50
-         dark:from-neutral-900 dark:to-neutral-800">
 
-  <!-- 🌫 Soft Parallax Background Glow -->
-  <div class="absolute inset-0 -z-10 opacity-30 dark:opacity-20">
-    <div class="w-[600px] h-[600px] bg-indigo-300 dark:bg-indigo-700
-                rounded-full blur-3xl absolute top-[-200px] left-[-150px]"></div>
-    <div class="w-[500px] h-[500px] bg-blue-200 dark:bg-blue-800
-                rounded-full blur-3xl absolute bottom-[-200px] right-[-150px]"></div>
-  </div>
-
-  <!-- 🕉 Spiritual Symbol / Logo -->
-  <div class="flex justify-center mb-6 fade-in-slow">
-    <img
-      src="images/mudaliandan/thiruman.png"
-      alt="Divine Symbol"
-      class="h-28 md:h-36 object-contain drop-shadow-lg
-             transition-transform duration-700 hover:scale-105"
-    />
-  </div>
-
-  <!-- 🔵 Hero Heading -->
-  <h1
-    class="text-4xl md:text-6xl font-extrabold tracking-wide 
-           text-indigo-800 dark:text-indigo-300 mb-4 fade-in">
-    Sri Mudhaliandan Swami Thirumaligai
-  </h1>
-
-  <!-- ✨ Subtext -->
-  <p
-    class="text-lg md:text-xl max-w-3xl mx-auto
-           text-gray-700 dark:text-gray-300 leading-relaxed fade-in-delay">
-    A sacred space dedicated to the divine legacy of Sri Mudhaliandan Swamy —  
-    celebrating tradition, devotion, spiritual knowledge, and service.
-  </p>
-
-  <!-- 🔘 Call-to-Action Buttons -->
-  <div class="mt-8 flex justify-center gap-4 fade-in-delay2">
-    <button
-      class="px-6 py-3 text-white bg-indigo-700 hover:bg-indigo-800
-             dark:bg-indigo-600 dark:hover:bg-indigo-500
-             rounded-xl shadow-lg transition-all duration-300">
-      Learn More
-    </button>
-
-    <button
-      class="px-6 py-3 bg-white text-indigo-700 shadow-md border border-indigo-200
-             hover:bg-indigo-50 rounded-xl transition
-             dark:bg-neutral-800 dark:text-indigo-300 dark:border-neutral-700
-             dark:hover:bg-neutral-700">
-      Upcoming Events
-    </button>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Sri Mudhaliandan Swamy Thirumadapalli</h1>
+    <p class="hero-subtitle">
+      A sacred lineage dedicated to dharma, kainkaryam, and spiritual guidance.
+    </p>
+    <div class="hero-buttons">
+      <a routerLink="/about-swamy" class="btn primary-btn">Learn More</a>
+      <a routerLink="/calendar" class="btn secondary-btn">Upcoming Events</a>
+      <a routerLink="/bank-info" class="btn accent-btn">Contribute / Donate</a>
+    </div>
   </div>
 </section>
+
+<!-- About Section -->
+<section class="about">
+  <div class="about-container">
+    <div class="about-image">
+      <img src="assets/images/temple.jpg" alt="Temple/Swamiji">
+    </div>
+    <div class="about-text">
+      <h2>About the Organization</h2>
+      <p>
+        Sri Mudhaliandan Swamy Thirumadapalli is dedicated to preserving spiritual
+        values, promoting dharma, and guiding devotees through sacred practices
+        and teachings.
+      </p>
+      <a routerLink="/about-swamy" class="btn primary-btn">Read More</a>
+    </div>
+  </div>
+</section>
+
+<!-- Events Section -->
+<section class="events">
+  <h2>Upcoming Events</h2>
+  <div class="events-grid">
+    <div class="event-card" *ngFor="let event of events">
+      <div class="event-date">{{ event.date | date:'mediumDate' }}</div>
+      <h3 class="event-title">{{ event.title }}</h3>
+      <p class="event-location">{{ event.location }}</p>
+      <a [routerLink]="['/calendar']" class="btn secondary-btn">View More</a>
+    </div>
+  </div>
+</section>
+
+<!-- Media Section -->
+<section class="media">
+  <h2>Media Highlights</h2>
+  <div class="media-grid">
+    <div class="media-card" *ngFor="let media of mediaItems">
+      <img [src]="media.image" [alt]="media.title">
+      <h4>{{ media.title }}</h4>
+    </div>
+  </div>
+  <a routerLink="/gallery" class="btn primary-btn">See All Media</a>
+</section>
+
+<!-- Gallery Preview Section -->
+<section class="gallery">
+  <h2>Gallery Preview</h2>
+  <div class="gallery-carousel">
+    <div class="gallery-item" *ngFor="let image of galleryImages">
+      <img [src]="image" alt="Gallery Image">
+    </div>
+  </div>
+  <a routerLink="/gallery" class="btn primary-btn">View Full Gallery</a>
+</section>
+
+<!-- Contact Section -->
+<section class="contact">
+  <h2>Contact / Location</h2>
+  <div class="contact-container">
+    <div class="map">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!..." 
+        width="100%" 
+        height="300" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy"></iframe>
+    </div>
+    <form class="contact-form" (ngSubmit)="submitForm()">
+      <input type="text" placeholder="Name" [(ngModel)]="contact.name" name="name" required>
+      <input type="email" placeholder="Email" [(ngModel)]="contact.email" name="email" required>
+      <textarea placeholder="Message" [(ngModel)]="contact.message" name="message" required></textarea>
+      <button type="submit" class="btn primary-btn">Send Message</button>
+    </form>
+  </div>
+</section>
+

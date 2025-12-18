@@ -42,6 +42,7 @@ import { HistoryComponent } from './pages/User/History/history.component';
 import { VideosComponent } from './pages/User/Videos/videos.component';
 import { DocumentsComponent } from './pages/User/Documents/documents.component';
 import { PastEventsComponent } from './pages/User/Past-Events/past-events.component';
+import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
 
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
@@ -113,6 +114,11 @@ export const routes: Routes = [
         path:'past-events',
         component:PastEventsComponent,
         title:'Past Events | Sri Dasarathy Trust'
+      },
+      {
+        path:'about-swamy',
+        component:AboutSwamyComponent,
+        title:'About Swamy | Sri Dasarathy Trust'
       },
       {
         path:'bank-info',
