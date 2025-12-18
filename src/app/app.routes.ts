@@ -31,7 +31,7 @@ import { adminGuard } from './guards/admin.guard';
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 import { LandingComponent } from './pages/User/Landing/landing.component';
-import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
+import { ThirumalagaiComponent } from './pages/User/Thirumaligai/thirumaligai.component';
 import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
 import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
 import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
@@ -42,6 +42,7 @@ import { HistoryComponent } from './pages/User/History/history.component';
 import { VideosComponent } from './pages/User/Videos/videos.component';
 import { DocumentsComponent } from './pages/User/Documents/documents.component';
 import { PastEventsComponent } from './pages/User/Past-Events/past-events.component';
+
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
@@ -78,8 +79,8 @@ export const routes: Routes = [
 
       // User Feature Pages
       {
-        path:'thirumaaligais',
-        component:ThirumaaligaisComponent,
+        path:'thirumaligais',
+      component:ThirumalagaiComponent,
         title:'Thirumaaligais | Sri Dasarathy Trust'
       },
       // Contact us page for users

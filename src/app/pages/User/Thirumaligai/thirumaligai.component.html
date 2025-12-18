@@ -1,0 +1,72 @@
+<br><br><br>
+<app-page-breadcrumb pageTitle="Thirumaligai Locations" />
+
+<div class="max-w-6xl mx-auto px-6">
+
+  <!-- 🌟 PAGE HEADER -->
+  <div class="pt-4 pb-6">
+    <h1
+      class="text-xl md:text-2xl font-semibold
+             text-indigo-700 dark:text-indigo-300
+             tracking-wide">
+      Our Thirumaligai Locations
+    </h1>
+
+    <p
+      class="mt-1 text-sm md:text-base
+             text-indigo-700 dark:text-indigo-300">
+      Sacred locations where our Thirumaligais stand as centers of devotion and peace.
+    </p>
+  </div>
+
+  <!-- 🛕 LOCATIONS GRID (same style as Documents) -->
+  <section
+    class="pb-16
+           grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
+           gap-4">
+
+    <div
+      *ngFor="let place of thirumaligais"
+      class="group rounded-xl
+             bg-white dark:bg-neutral-900
+             shadow-sm hover:shadow-md
+             transition-all duration-300
+             flex flex-col justify-between
+             p-4 min-h-[160px]">
+
+      <!-- Info -->
+      <div>
+        <h3
+          class="text-sm md:text-base font-semibold
+                 text-indigo-700 dark:text-indigo-300">
+          {{ place.name }}
+        </h3>
+
+        <p
+          class="mt-1 text-xs md:text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 leading-snug">
+          {{ place.description }}
+        </p>
+      </div>
+
+      <!-- Map Button -->
+      <a
+        [href]="place.mapLink"
+        target="_blank"
+        class="mt-4 inline-flex items-center justify-center
+               px-3 py-1.5
+               text-xs md:text-sm font-medium
+               text-white
+               bg-indigo-700 dark:bg-indigo-500
+               rounded-md
+               hover:bg-indigo-800 dark:hover:bg-indigo-600
+               transition">
+        📍 View on Maps
+      </a>
+
+    </div>
+
+  </section>
+
+</div>
