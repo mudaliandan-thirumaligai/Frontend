@@ -1,2 +1,48 @@
 <br><br><br>
 <app-page-breadcrumb pageTitle="Past Events" />
+<div class="px-6 py-8 max-w-5xl mx-auto">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center text-indigo-700 dark:text-indigo-300 font-medium py-10">
+    Loading past events...
+  </div>
+
+  <!-- Error / No Events -->
+  <div *ngIf="!loading && errorMsg" class="text-center text-red-500 font-medium py-10">
+    {{ errorMsg }}
+  </div>
+
+  <!-- Past Events List -->
+  <ul *ngIf="!loading && pastEvents.length > 0" class="space-y-4">
+    <li *ngFor="let event of pastEvents" 
+        class="p-4 border rounded-lg shadow-sm bg-white dark:bg-neutral-800 flex justify-between items-start transition hover:shadow-md">
+
+      <!-- Event Info -->
+      <div>
+        <h2 class="text-lg md:text-xl font-semibold text-indigo-700 dark:text-indigo-300">
+          {{ event.name }}
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+          {{ event.startDate | date:'dd MMM yyyy' }} - {{ event.endDate | date:'dd MMM yyyy' }}
+        </p>
+        <p *ngIf="event.location" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Location: {{ event.location }}
+        </p>
+        <p *ngIf="!event.googleDriveLink" class="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
+          Google Drive link has not been updated.
+        </p>
+      </div>
+
+      <!-- Link if exists -->
+      <div *ngIf="event.googleDriveLink">
+        <a [href]="event.googleDriveLink" target="_blank" 
+           class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 transition">
+          Open Link
+        </a>
+      </div>
+
+    </li>
+  </ul>
+
+</div>
+
