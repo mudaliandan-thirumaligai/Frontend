@@ -17,7 +17,7 @@ export class RequestLogger implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const started = Date.now();
-
+    console.log('Interceptor hit:', req.method, req.url);
     return next.handle(req).pipe(
       tap({
         next: (event) => {

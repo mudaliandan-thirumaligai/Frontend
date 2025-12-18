@@ -1,40 +1,27 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { register as registerSwiperElements } from 'swiper/element/bundle';
+import { appConfig } from './app/app.config';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi
+} from '@angular/common/http';
+
 import { RequestLogger } from './app/interceptor/network.interceptor';
-
-// Save original method
-// const originalAddEventListener = EventTarget.prototype.addEventListener;
-
-// // Override
-// EventTarget.prototype.addEventListener = function (
-//   type: string,
-//   listener: EventListenerOrEventListenerObject,
-//   options?: boolean | AddEventListenerOptions
-// ) {
-//   // Force passive: false for specific events
-//   const needsPassiveFalse = ['touchstart', 'touchmove', 'wheel'].includes(type);
-
-//   if (needsPassiveFalse) {
-//     if (typeof options === 'boolean' || options === undefined) {
-//       options = { passive: false };
-//     } else if (typeof options === 'object') {
-//       options.passive = false;
-//     }
-//   }
-
-//   return originalAddEventListener.call(this, type, listener, options);
-// };
-
-registerSwiperElements();
+import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
     ...(appConfig.providers || []),
-    provideHttpClient(),
-    { provide: HTTP_INTERCEPTORS, useClass: RequestLogger, multi: true } 
+
+    // 🔥 IMPORTANT
+    provideHttpClient(withInterceptorsFromDi()),
+
+    // 🔐 Auth first
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+
+    // 📡 Logger next
+    { provide: HTTP_INTERCEPTORS, useClass: RequestLogger, multi: true }
   ]
 }).catch(err => console.error(err));
