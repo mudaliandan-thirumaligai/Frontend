@@ -1,42 +1,25 @@
-/* Layout */
-.gallery-container {
-  display: flex;
-  width: 100%;
-  padding-right: 260px; /* space for sidebar if present */
-  position: relative;
+/* Mild hover effect for the entire card */
+.group {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gallery-content {
-  width: 100%;
-  padding: 20px;
+.group:hover {
+  transform: translateY(-3px); /* slight lift */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* soft shadow */
 }
 
-/* Desktop sidebar */
-.sidebar {
-  width: 240px;
-  position: fixed;
-  right: 0;
-  top: 120px;
-  padding: 20px;
-  height: calc(100vh - 140px);
-  overflow-y: auto;
+/* Slight zoom on the icon area */
+.group:hover .relative {
+  transform: scale(1.02); /* subtle zoom */
+  transition: transform 0.3s ease;
 }
 
-/* Tablet & smaller: hide sidebar */
-@media (max-width: 1024px) {
-  .sidebar {
-    display: none;
-  }
-
-  .gallery-container {
-    padding-right: 0; /* remove space reserved for sidebar */
-  }
+/* Smooth hover effect for the Open button */
+.group a {
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 14px;
-  padding-bottom: 18px;
+.group a:hover {
+  transform: translateY(-1px); /* tiny lift */
+  background-color: #4f46e5; /* Indigo-600 hover */
 }

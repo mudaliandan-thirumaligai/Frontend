@@ -12,36 +12,37 @@
 </div>
 
 <!-- 📚 DOCUMENT GRID -->
+<!-- 📚 DOCUMENT GRID -->
 <section
   class="max-w-6xl mx-auto px-6 pb-16
-         grid grid-cols-1 md:grid-cols-2 gap-6">
-
+         grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+         
   <div
     *ngFor="let doc of documents"
-    class="group cursor-pointer rounded-2xl
+    class="group cursor-pointer rounded-xl
            bg-white dark:bg-neutral-900
            shadow-sm hover:shadow-md
            transition-all duration-300
-           flex flex-col justify-between h-64">
-
+           flex flex-col justify-between h-48">
+           
     <!-- Icon / Cover Placeholder -->
     <div
-      class="relative h-40 rounded-t-2xl overflow-hidden
+      class="relative h-28 rounded-t-xl overflow-hidden
              bg-gradient-to-br from-sky-100 to-blue-50
              dark:from-indigo-900 dark:to-neutral-800
              flex items-center justify-center">
 
       <div
-        class="w-16 h-16 rounded-xl
+        class="w-12 h-12 rounded-lg
                bg-indigo-600/90
                flex items-center justify-center
-               text-white text-2xl font-semibold">
+               text-white text-xl font-semibold">
         📄
       </div>
     </div>
 
     <!-- Info -->
-    <div class="p-4 flex flex-col justify-between h-full">
+    <div class="p-3 flex flex-col justify-between h-full">
       <div>
         <h3
           class="text-sm md:text-base font-semibold
@@ -58,15 +59,14 @@
 
       <!-- Open Button -->
       <a [href]="doc.url" target="_blank"
-         class="mt-4 inline-block px-4 py-2
+         class="mt-2 inline-block px-3 py-1.5
                 text-white bg-indigo-700 dark:bg-indigo-500
-                rounded-lg text-xs font-medium
+                rounded-md text-sm font-medium
                 hover:bg-indigo-800 dark:hover:bg-indigo-600
                 transition">
         Open
       </a>
     </div>
-
   </div>
-
 </section>
+
