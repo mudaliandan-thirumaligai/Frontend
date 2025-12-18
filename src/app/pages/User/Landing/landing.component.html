@@ -22,6 +22,53 @@
   </div>
 </section>
 
+<!-- 🌟 Upcoming Event Card -->
+<div class="max-w-md mx-auto mt-10 animate-on-scroll">
+
+  <!-- Loading -->
+  <div *ngIf="loadingEvent" class="p-4 text-center text-gray-500">
+    Loading upcoming event...
+  </div>
+
+  <!-- No Event -->
+  <div *ngIf="noUpcomingEvent && !loadingEvent"
+       class="p-6 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
+    <p class="text-gray-600 dark:text-gray-300">
+      No upcoming events at the moment 🙏
+    </p>
+  </div>
+
+  <!-- Event Card -->
+  <div *ngIf="nextEvent"
+       class="bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+
+    <h3 class="text-xl font-semibold text-indigo-700 dark:text-indigo-300">
+      {{ nextEvent.name }}
+    </h3>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+      📍 {{ nextEvent.location }}
+    </p>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400">
+      📅 {{ nextEvent.startDate | date:'fullDate' }}
+    </p>
+
+    <p class="mt-3 text-gray-700 dark:text-gray-300 line-clamp-3">
+      {{ nextEvent.description }}
+    </p>
+
+    <a
+      routerLink="/calendar"
+      class="inline-block mt-4 px-5 py-2 rounded-lg
+             bg-indigo-600 text-white hover:bg-indigo-700 transition">
+      View in Calendar →
+    </a>
+  </div>
+</div>
+
+
+
 <!-- About Section -->
 <section class="about">
   <div class="about-container">
