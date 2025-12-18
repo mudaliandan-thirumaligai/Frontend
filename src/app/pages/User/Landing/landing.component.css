@@ -1,206 +1,165 @@
-/* Variables for light/dark mode */
-:root {
-  --primary: #3B5BA9;
-  --secondary: #6379C8;
-  --accent: #B49CFF;
-  --bg: #ffffff;
-  --text: #1a1a1a;
-}
-
-.dark-mode {
-  --primary: #8FA8FF;
-  --secondary: #5362A8;
-  --accent: #C6B8FF;
-  --bg: #0C0F16;
-  --text: #EAEAEA;
-}
-
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Source Sans Pro', sans-serif;
-}
-
-/* Hero Section */
+/* =========================
+   HERO SECTION
+========================= */
 .hero {
-  height: 90vh;
-  background: linear-gradient(to bottom right, #3B5BA9, #6E87D6);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  position: relative;
+  padding: 1.5rem 0;
 }
 
-.hero-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 15px rgba(255,255,255,0.6);
-  animation: fadeIn 1.5s ease-in;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  animation: fadeIn 2s ease-in;
-}
-
-.hero-buttons .btn {
-  margin: 0.5rem;
-  transition: 0.3s all ease;
-}
-
-.hero-buttons .btn:hover {
-  box-shadow: 0 0 15px var(--accent);
-  transform: translateY(-2px);
-}
-
-/* About Section */
-.about {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 5rem 2rem;
-  align-items: center;
-  gap: 2rem;
-}
-
-.about-image img {
+.hero-image-container {
   width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.about-text h2 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-.about-text p {
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+/* =========================
+   SECTIONS & LAYOUT
+========================= */
+.section {
+  padding: 4rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Events Section */
-.events {
-  padding: 5rem 2rem;
-  background: var(--surface, #F4F6FB);
+.bg-soft {
+  background: linear-gradient(
+    to right,
+    rgba(238, 242, 255, 0.6),
+    rgba(219, 234, 254, 0.6)
+  );
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
-.events-grid {
+/* =========================
+   CARDS
+========================= */
+.card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.event-card {
-  background: var(--bg);
-  padding: 1.5rem;
-  border-radius: 10px;
-  transition: 0.3s transform ease;
-}
-
-.event-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-/* Media Section */
-.media {
-  padding: 5rem 2rem;
-  text-align: center;
-}
-
-.media-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
 
-.media-card img {
-  width: 100%;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-}
-
-.media-card img:hover {
-  transform: scale(1.05);
-}
-
-/* Gallery Section */
-.gallery {
-  padding: 5rem 2rem;
-  text-align: center;
-}
-
-.gallery-carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  scroll-snap-type: x mandatory;
-}
-
-.gallery-item {
-  flex: 0 0 auto;
-  width: 250px;
-  scroll-snap-align: start;
-  border-radius: 10px;
+.card {
+  border-radius: 12px;
   overflow: hidden;
-}
-
-.gallery-item img {
-  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease;
 }
 
-.gallery-item img:hover {
-  transform: scale(1.05);
+.card:hover {
+  transform: translateY(-6px);
 }
 
-/* Contact Section */
-.contact {
-  padding: 5rem 2rem;
-  background: var(--surface, #F4F6FB);
-}
-
-.contact-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.contact-form input,
-.contact-form textarea {
+.card img {
   width: 100%;
-  padding: 1rem;
+  height: 180px;
+  object-fit: cover;
+}
+
+.info-card {
+  padding: 1.5rem;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.info-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.info-card p {
+  font-size: 0.9rem;
   margin-bottom: 1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  background: var(--bg);
-  color: var(--text);
 }
 
-.contact-form button {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 10px;
-  background: var(--primary);
-  color: #fff;
-  cursor: pointer;
-  transition: 0.3s all ease;
+/* =========================
+   CTA CARDS
+========================= */
+.cta-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
-.contact-form button:hover {
-  background: var(--accent);
-  box-shadow: 0 0 15px var(--accent);
+/* =========================
+   BUTTON
+========================= */
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+  background: #4338ca;
+  border-radius: 6px;
+  transition: background 0.3s ease;
 }
 
-/* Animations */
+.primary-btn:hover {
+  background: #3730a3;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
 @keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 1s ease forwards;
+}
+
+.animate-slide-up-delay {
+  animation: slideUp 1s ease 0.5s forwards;
+}
+
+/* Scroll reveal */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
