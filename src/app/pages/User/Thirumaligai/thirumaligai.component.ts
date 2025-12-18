@@ -35,7 +35,7 @@ export class ThirumalagaiComponent {
     {
       name: 'SP Koil',
       description: 'A spiritually significant location known for its ancient temple and devotional practices.',
-      mapLink: 'https://www.google.com/maps?q=Sriperumbudur,Tamil+Nadu'
+      mapLink: 'https://www.google.com/maps?q=SingaPerumal Kovil,Tamil+Nadu'
     },
     {
       name: 'Srirangam',
