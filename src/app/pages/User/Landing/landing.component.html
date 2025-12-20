@@ -1,34 +1,105 @@
 <br><br><br>
 
 <!-- Hero Section -->
-<section class="hero hero-gradient">
-  <div class="hero-content animate-fade-in">
+<section
+  class="relative hero hero-gradient
+         flex items-center justify-center
+         py-28 px-4 overflow-hidden">
 
-    <h1 class="hero-title">
+  <!-- 🌸 Subtle Sacred Background Motif -->
+  <div
+    class="absolute inset-0
+           bg-center bg-no-repeat
+           bg-[length:520px]
+           opacity-[0.035]
+           pointer-events-none">
+  </div>
+
+  <!-- 🌫️ Soft Gradient Overlay (keeps it light) -->
+  <div
+    class="absolute inset-0
+           bg-gradient-to-b
+           from-white
+           via-indigo-50/70
+           to-indigo-100/60">
+  </div>
+
+  <!-- Hero Content -->
+  <div class="relative z-10 hero-content animate-fade-in text-center max-w-3xl">
+
+    <!-- 🪔 Sacred Emblem -->
+    <!-- <div class="flex justify-center ">
+      <img
+        src="images/mudaliandan/thiruman.png"
+        alt="Sacred Symbol"
+        class="w-10 h-10 opacity-80">
+    </div> -->
+
+    <!-- ✨ Hero Title -->
+    <h1 class="hero-title mb-4">
       <span class="static-text">Preserving </span>
       <span class="typewriter">{{ typedText }}</span>
       <span class="cursor">|</span>
     </h1>
 
-    <p class="text-indigo-700 dark:text-indigo-300">
-      Sri Mudhaliandan Swamy Thirumaligai —  
-      guiding devotees through dharma, tradition, and timeless wisdom.
-    </p><br>
+    <!-- 🕉️ Tamil / Sanskrit Line -->
+    <p
+      class="text-sm md:text-base
+             italic
+             text-indigo-600
+             opacity-80
+             mb-4">
+      “அறம் காக்கும், காக்கப்படுவோர் அறம்”
+    </p>
 
-    <div class="hero-buttons animate-slide-up-delay">
-      <a routerLink="/about-swamy" class="primary-btn">
+    <!-- 📜 Subtitle -->
+    <p
+      class="text-lg md:text-xl
+             font-semibold
+             tracking-wide
+             leading-tight
+             text-indigo-700
+             max-w-3xl
+             mx-auto
+             mb-10">
+      Sri Mudhaliandan Swamy Thirumaligai —
+      guiding devotees through dharma, tradition, and timeless wisdom.
+    </p>
+
+    <!-- 🔘 Action Buttons -->
+    <div
+      class="hero-buttons
+             flex flex-wrap justify-center
+             gap-4 animate-slide-up-delay">
+
+      <a
+        routerLink="/about-swamy"
+        class="primary-btn">
         Learn More
       </a>
-      <a routerLink="/calendar" class="outline-btn">
+
+      <a
+        routerLink="/calendar"
+        class="outline-btn">
         Upcoming Events
       </a>
-      <a routerLink="/bank-info" class="ghost-btn">
+
+      <a
+        routerLink="/bank-info"
+        class="ghost-btn">
         🙏 Contribute
       </a>
+
+    </div>
+
+    <!-- ↓ Scroll Indicator -->
+    <div class="mt-16 text-indigo-400 opacity-60 animate-bounce">
+      ↓
     </div>
 
   </div>
 </section>
+
 
 
 <!-- 🌟 Upcoming Event Card -->

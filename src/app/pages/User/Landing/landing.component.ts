@@ -42,6 +42,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
         this.nextEvent = events.length ? events[0] : null;
         this.noUpcomingEvent = !this.nextEvent;
         this.loadingEvent = false;
+        setTimeout(() => this.initScrollAnimations());
       },
       error: (err: HttpErrorResponse) => {
         console.warn('No upcoming events:', err.error?.message);
@@ -54,7 +55,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.startTypingEffect();
     this.initScrollAnimations();
-    const elements = document.querySelectorAll('.animate-on-scroll');
+    // const elements = document.querySelectorAll('.animate-on-scroll');
 
     const observer = new IntersectionObserver(
       entries => {
@@ -67,7 +68,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
       { threshold: 0.15 }
     );
 
-    elements.forEach(el => observer.observe(el));
+    // elements.forEach(el => observer.observe(el));
   }
 
   // Type writer effect
@@ -108,15 +109,22 @@ isDeleting = false;
   initScrollAnimations() {
     const elements = document.querySelectorAll('.animate-on-scroll');
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 });
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // ⚡ important
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
 
     elements.forEach(el => observer.observe(el));
   }
+
 
 }
