@@ -52,6 +52,8 @@ export class LandingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.startTypingEffect();
+    this.initScrollAnimations();
     const elements = document.querySelectorAll('.animate-on-scroll');
 
     const observer = new IntersectionObserver(
@@ -67,4 +69,54 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
     elements.forEach(el => observer.observe(el));
   }
+
+  // Type writer effect
+  // 🔹 Typewriter Effect
+words: string[] = [
+  'Dharma',
+  'Tradition',
+  'Spiritual Wisdom',
+  'Sacred Lineage'
+];
+
+typedText = '';
+wordIndex = 0;
+charIndex = 0;
+isDeleting = false;
+
+
+
+  startTypingEffect() {
+    const currentWord = this.words[this.wordIndex];
+
+    if (this.isDeleting) {
+      this.typedText = currentWord.substring(0, this.charIndex--);
+    } else {
+      this.typedText = currentWord.substring(0, this.charIndex++);
+    }
+
+    if (!this.isDeleting && this.charIndex === currentWord.length + 1) {
+      setTimeout(() => (this.isDeleting = true), 1200);
+    } else if (this.isDeleting && this.charIndex === 0) {
+      this.isDeleting = false;
+      this.wordIndex = (this.wordIndex + 1) % this.words.length;
+    }
+
+    setTimeout(() => this.startTypingEffect(), this.isDeleting ? 60 : 120);
+  }
+
+  initScrollAnimations() {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
 }

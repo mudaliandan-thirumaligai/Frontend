@@ -1,50 +1,102 @@
 /* =========================
-   HERO SECTION
+   HERO – MODERN & SPIRITUAL
 ========================= */
-.hero {
+
+.hero-gradient {
+  min-height: 85vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 1.5rem 0;
+  justify-content: center;
+  text-align: center;
+
+  background:
+    radial-gradient(circle at top,
+      rgba(99, 102, 241, 0.08),
+      transparent 55%),
+    radial-gradient(circle at bottom,
+      rgba(129, 140, 248, 0.08),
+      transparent 60%),
+    linear-gradient(
+      to bottom,
+      #f8fafc,
+      #eef2ff
+    );
+
+  padding: 3rem 1.5rem;
+  position: relative;
 }
 
-.hero-image-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+.hero-title {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-weight: 700;
+  color: #1e1b4b;
+  margin-bottom: 1.2rem;
 }
 
-.hero-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 8px;
+.static-text {
+  color: #312e81;
 }
+
+.typewriter {
+  color: #4338ca;
+}
+
+.cursor {
+  color: #4338ca;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #4b5563;
+  max-width: 720px;
+  margin: 0 auto 2.3rem;
+  line-height: 1.8;
+}
+
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
 
 /* =========================
-   SECTIONS & LAYOUT
+   HERO BUTTONS
 ========================= */
-.section {
-  padding: 4rem 1.5rem;
-  max-width: 1200px;
-  margin: auto;
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.bg-soft {
-  background: linear-gradient(
-    to right,
-    rgba(238, 242, 255, 0.6),
-    rgba(219, 234, 254, 0.6)
-  );
+.outline-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #4338ca;
+  color: #4338ca;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  text-align: center;
+.outline-btn:hover {
+  background: #4338ca;
+  color: white;
 }
+
+.ghost-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  color: #4338ca;
+  opacity: 0.8;
+}
+
+.ghost-btn:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 
 /* =========================
    CARDS

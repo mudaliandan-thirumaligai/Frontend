@@ -1,26 +1,35 @@
 <br><br><br>
 
 <!-- Hero Section -->
-<section class="hero animate-fade-in">
-  <div class="hero-image-container animate-slide-up">
-    <img src="images/Landing/acharya.png" alt="Hero Image" class="hero-image">
-  </div>
+<section class="hero hero-gradient">
+  <div class="hero-content animate-fade-in">
 
-  <div class="hero-buttons flex flex-wrap justify-center gap-4 mt-5 animate-slide-up-delay">
-    <a routerLink="/about-swamy"
-       class="bg-blue-800 text-white font-semibold tracking-wide leading-tight px-6 py-3 rounded-md hover:bg-blue-700 transition">
-      Learn More
-    </a>
-    <a routerLink="/calendar"
-       class="bg-blue-800 text-white font-semibold tracking-wide leading-tight px-6 py-3 rounded-md hover:bg-blue-700 transition">
-      Upcoming Events
-    </a>
-    <a routerLink="/bank-info"
-       class="bg-blue-800 text-white font-semibold tracking-wide leading-tight px-6 py-3 rounded-md hover:bg-blue-700 transition">
-      Contribute / Donate
-    </a>
+    <h1 class="hero-title">
+      <span class="static-text">Preserving </span>
+      <span class="typewriter">{{ typedText }}</span>
+      <span class="cursor">|</span>
+    </h1>
+
+    <p class="text-indigo-700 dark:text-indigo-300">
+      Sri Mudhaliandan Swamy Thirumaligai —  
+      guiding devotees through dharma, tradition, and timeless wisdom.
+    </p><br>
+
+    <div class="hero-buttons animate-slide-up-delay">
+      <a routerLink="/about-swamy" class="primary-btn">
+        Learn More
+      </a>
+      <a routerLink="/calendar" class="outline-btn">
+        Upcoming Events
+      </a>
+      <a routerLink="/bank-info" class="ghost-btn">
+        🙏 Contribute
+      </a>
+    </div>
+
   </div>
 </section>
+
 
 <!-- 🌟 Upcoming Event Card -->
 <div class="max-w-md mx-auto mt-10 animate-on-scroll">
