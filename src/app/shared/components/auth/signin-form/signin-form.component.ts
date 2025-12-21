@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter } from '@angular/core';
-import { LabelComponent } from '../../form/label/label.component';
-import { ButtonComponent } from '../../ui/button/button.component';
-import { InputFieldComponent } from '../../form/input/input-field.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -10,9 +7,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-signin-form',
   imports: [
     CommonModule,
-    LabelComponent,
-    ButtonComponent,
-    InputFieldComponent,
     RouterModule,
     FormsModule,
   ],

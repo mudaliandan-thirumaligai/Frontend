@@ -8,4 +8,6 @@ export interface CalendarEvent {
   location: string;
   tamilYear: string;
   tamilMonth: string;
+  googleDriveLink?: string; // optional
+  eventLevel?: string;      // optional
 }

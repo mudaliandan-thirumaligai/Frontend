@@ -1,30 +1,149 @@
-<div class="fixed top-6 right-6 w-14 h-14 rounded-full bg-card shadow-soft
-            flex items-center justify-center text-primary font-bold"
-     [style.background]="
-       'conic-gradient(var(--primary) ' + scrollPercent + '%, var(--muted) ' + scrollPercent + '%)'
-     ">
-  {{ scrollPercent | number:'1.0-0' }}%
+<!-- 🔹 Modern Spiritual Header -->
+<div
+  class="w-full h-24 px-6 shadow-sm flex items-center justify-between fixed top-0 left-0 right-0 z-50 
+         transition-all duration-300 backdrop-blur-md
+         bg-gradient-to-r from-indigo-50/80 to-blue-100/80
+         dark:from-neutral-900/80 dark:to-neutral-800/80"
+  [ngClass]="(containerClasses$ | async) || []"
+>
+
+  <!-- 🔵 LEFT: USER MENU -->
+  <div class="flex items-center space-x-6">
+    <!-- DESKTOP MENU -->
+    <div *ngIf="!(isAdmin$ | async)" 
+        class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
+
+      <ng-container *ngFor="let item of menu">
+
+        <!-- DROPDOWN -->
+        <div class="relative">
+
+          <!-- Make hover active ONLY on the text -->
+          <div class="inline-block relative"
+        (mouseenter)="openDropdown(item)"
+        (mouseleave)="closeDropdown(item)">
+      <button class="hover:text-indigo-800 dark:hover:text-indigo-400 transition">
+        {{ item.label }}
+      </button>
+
+      <!-- DROPDOWN -->
+      <div *ngIf="item.isOpen"
+          class="absolute left-0 mt-2 w-48
+                  bg-white dark:bg-neutral-800
+                  text-indigo-700 dark:text-indigo-300
+                  rounded-xl shadow-md
+                  transform transition-all duration-300 origin-top z-[9999]">
+        <p *ngFor="let child of item.children"
+          [routerLink]="child.route"
+          class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg cursor-pointer">
+          {{ child.label }}
+        </p>
+      </div>
+    </div>
+
+    </div>
+
+  </ng-container>
 </div>
+
+
+    <!-- MOBILE HAMBURGER -->
+    <button *ngIf="!(isAdmin$ | async)"
+            (click)="isMenuOpen = !isMenuOpen"
+            class="md:hidden text-indigo-600 dark:text-indigo-300 text-3xl">
+      ☰
+    </button>
+  </div>
+
+
+<!-- 🔱 CENTER: LOGO (always perfectly centered) -->
+<div class="absolute left-1/2 transform -translate-x-1/2 flex justify-center">
+  <a routerLink="/">
+    <img
+      src="images/mudaliandan/thiruman.png"
+      alt="Logo"
+      class="h-16 md:h-20 object-contain drop-shadow-md
+             transition-transform duration-300 hover:scale-105 cursor-pointer"
+    />
+  </a>
+</div>
+
+
+
+  <!-- 🔵 RIGHT: TITLE -->
+  <div class="text-lg md:text-xl font-semibold
+              text-indigo-700 dark:text-indigo-300
+              tracking-wide leading-tight text-right
+              hidden sm:block"> <!-- hide on xs screens -->
+    Sri Mudhaliandan Swami Thirumaligai
+  </div>
+
+
+
+
+</div>
+
+
+
+<!-- 🔹 MOBILE MENU -->
+<div *ngIf="isMenuOpen" 
+     class="md:hidden mt-20 px-6 space-y-3 text-indigo-700 dark:text-indigo-300 font-medium">
+
+  <div *ngFor="let item of menu">
+
+    <!-- Dropdown in mobile -->
+    <div *ngIf="item.children?.length; else mobileSingleLink">
+
+      <button (click)="item.open = !item.open" class="w-full text-left py-2">
+        {{ item.label }} ▼
+      </button>
+
+      <ul *ngIf="item.open" class="pl-4 space-y-2 text-gray-700 dark:text-gray-300">
+        <li *ngFor="let child of item.children"
+            [routerLink]="child.route"
+            class="cursor-pointer">
+          {{ child.label }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Single link mobile -->
+    <ng-template #mobileSingleLink>
+      <div [routerLink]="item.route" class="cursor-pointer">
+        {{ item.label }}
+      </div>
+    </ng-template>
+
+  </div>
+
+</div>
+
+
+
+<!-- 🔹 Scroll Progress Indicator -->
+<div class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50">
+  <div
+    class="h-1 bg-blue-800 dark:bg-blue-500 transition-all duration-150"
+    [style.width]="scrollPercent + '%'">
+  </div>
+</div>
+
+
+<!-- 🔹 Main Wrapper -->
 <div class="min-h-screen xl:flex">
-  <div>
-    <!-- <app-sidebar></app-sidebar> -->
+
+  <!-- Admin Sidebar -->
+  <div *ngIf="isAdmin$ | async">
     <app-sidebar-new></app-sidebar-new>
     <app-backdrop></app-backdrop>
   </div>
-  <div
-      class="flex-1 transition-all duration-300 ease-in-out"
-      [ngClass]="{
-        'xl:ml-[290px]': (isExpanded$ | async) || (isHovered$ | async),
-        'xl:ml-[90px]': !(isExpanded$ | async) && !(isHovered$ | async),
-        'ml-0': (isMobileOpen$ | async)
-      }"
-  >
-    <!-- app header start -->
-    <!-- <app-header/> -->
-    <!-- app header end -->
+
+  <!-- Content -->
+  <div [ngClass]="(containerClasses$ | async) || []">
     <div class="mx-auto max-w-(--breakpoint-2xl)">
       <router-outlet></router-outlet>
       <app-footer></app-footer>
     </div>
   </div>
+
 </div>

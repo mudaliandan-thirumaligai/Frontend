@@ -14,7 +14,7 @@ import { AvatarElementComponent } from './pages/ui-elements/avatar-element/avata
 import { BadgesComponent } from './pages/ui-elements/badges/badges.component';
 import { ButtonsComponent } from './pages/ui-elements/buttons/buttons.component';
 import { ImagesComponent } from './pages/ui-elements/images/images.component';
-import { VideosComponent } from './pages/ui-elements/videos/videos.component';
+// import { VideosComponent } from './pages/ui-elements/videos/videos.component';
 import { SignInComponent } from './pages/auth-pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/auth-pages/sign-up/sign-up.component';
 import { CalenderComponent } from './pages/calender/calender.component';
@@ -31,11 +31,21 @@ import { adminGuard } from './guards/admin.guard';
 //User pages
 import { UserCalenderComponent } from './pages/User/calender/user-calender.component';
 import { LandingComponent } from './pages/User/Landing/landing.component';
-import { ThirumaaligaisComponent } from './pages/User/thirumaaligais/thirumaaligais.component';
+import { ThirumalagaiComponent } from './pages/User/Thirumaligai/thirumaligai.component';
 import { UserSignInComponent } from './pages/User/Auth/Sign-In/sign-in.component';
 import { ResetPasswordComponent } from './pages/User/Auth/Reset-Password/reset-pwd.component';
 import { ForgotPasswordComponent } from './pages/User/Auth/Forgot-Password/forgot-pwd.component';
+import { ContactUsComponent } from './pages/User/Contact-Us/contact-us.component';
+import { BankDetailsComponent } from './pages/User/Bank-Details/bank-details.component';
+import { GalleryComponent } from './pages/User/Gallery/gallery.component';
+import { HistoryComponent } from './pages/User/History/history.component';
+import { VideosComponent } from './pages/User/Videos/videos.component';
+import { DocumentsComponent } from './pages/User/Documents/documents.component';
+import { PastEventsComponent } from './pages/User/Past-Events/past-events.component';
+import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
 
+
+// TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
   {
     path:'',
@@ -70,9 +80,50 @@ export const routes: Routes = [
 
       // User Feature Pages
       {
-        path:'thirumaaligais',
-        component:ThirumaaligaisComponent,
+        path:'thirumaligais',
+      component:ThirumalagaiComponent,
         title:'Thirumaaligais | Sri Dasarathy Trust'
+      },
+      // Contact us page for users
+      {
+        path:'registration',
+        component:ContactUsComponent,
+        title:'Contact Us |Sri Dasarathy Trust'
+      },
+      {
+        path:'gallery',
+        component:GalleryComponent,
+        title:'Gallery | Sri Dasarathy Trust'
+      },
+      {
+        path:'history',
+        component:HistoryComponent,
+        title:'History | Sri Dasarathy Trust'
+      },
+      {
+        path:'videos',
+        component:VideosComponent,
+        title:'Videos | Sri Dasarathy Trust'
+      },
+      {
+        path:'documents',
+        component:DocumentsComponent,
+        title:'Documents | Sri Dasarathy Trust'
+      },
+      {
+        path:'past-events',
+        component:PastEventsComponent,
+        title:'Past Events | Sri Dasarathy Trust'
+      },
+      {
+        path:'about-swamy',
+        component:AboutSwamyComponent,
+        title:'About Swamy | Sri Dasarathy Trust'
+      },
+      {
+        path:'bank-info',
+        component:BankDetailsComponent,
+        title:'Bank Details | Sri Dasarathy Trust'
       },
       {
         path:'form-elements',
@@ -135,11 +186,11 @@ export const routes: Routes = [
         component:ImagesComponent,
         title:'Angular Images Dashboard | TailAdmin - Angular Admin Dashboard Template'
       },
-      {
-        path:'videos',
-        component:VideosComponent,
-        title:'Angular Videos Dashboard | TailAdmin - Angular Admin Dashboard Template'
-      },
+      // {
+      //   path:'videos',
+      //   component:VideosComponent,
+      //   title:'Angular Videos Dashboard | TailAdmin - Angular Admin Dashboard Template'
+      // },
     ]
   },
   // auth pages

@@ -5,40 +5,37 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
+
   private baseUrl = 'http://localhost:8080/events';
-  //TODO REMOVE THIS TOKEN - JWT from ROLE
-  private token = 'MY-TOKEN';
-  
-  private getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${this.token}`
-      })
-    };
-  }
 
   constructor(private http: HttpClient) {}
 
-
-   createEvent(eventData: Partial<CalendarEvent>): Observable<CalendarEvent> {
-    return this.http.post<CalendarEvent>(this.baseUrl, eventData, this.getHttpOptions());
+  createEvent(eventData: Partial<CalendarEvent>) {
+    return this.http.post<CalendarEvent>(this.baseUrl, eventData);
   }
-  
-  getAllEvents(): Observable<CalendarEvent[]> {
+
+  getAllEvents() {
     return this.http.get<CalendarEvent[]>(this.baseUrl);
   }
 
-  getEventsByDate(formattedDate: string): Observable<CalendarEvent[]> {
+  getEventsByDate(formattedDate: string) {
     return this.http.get<CalendarEvent[]>(`${this.baseUrl}/date/${formattedDate}`);
   }
-  getNextUpcomingEvent(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/next`);
-  }
-  updateEvent(id: string, eventData: Partial<CalendarEvent>): Observable<CalendarEvent> {
-    return this.http.put<CalendarEvent>(`${this.baseUrl}/${id}`, eventData, this.getHttpOptions());
+
+  getNextUpcomingEvent() {
+    return this.http.get<CalendarEvent[]>(`${this.baseUrl}/next`);
   }
 
-  deleteEvent(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`, this.getHttpOptions());
+  getPastEvents() {
+    return this.http.get<CalendarEvent[]>(`${this.baseUrl}/past`);
+  }
+
+  updateEvent(id: string, eventData: Partial<CalendarEvent>) {
+    return this.http.put<CalendarEvent>(`${this.baseUrl}/${id}`, eventData);
+  }
+
+  deleteEvent(id: string) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
+
