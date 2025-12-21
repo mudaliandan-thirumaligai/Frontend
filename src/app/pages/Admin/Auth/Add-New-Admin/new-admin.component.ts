@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { LabelComponent } from '../../../../shared/components/form/label/label.component';
 import { CheckboxComponent } from '../../../../shared/components/form/input/checkbox.component';
-import { InputFieldComponent } from '../../../../shared/components/form/input/input-field.component';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService, RegisterPayload } from '../../../../shared/services/Auth/auth.service';
@@ -14,9 +12,7 @@ import { finalize } from 'rxjs/operators';
   standalone: true,
   imports: [
     CommonModule,
-    LabelComponent,
     CheckboxComponent,
-    InputFieldComponent,
     RouterModule,
     FormsModule,
   ],
