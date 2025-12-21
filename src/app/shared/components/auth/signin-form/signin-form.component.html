@@ -1,90 +1,133 @@
 <div class="w-full max-w-md pt-10 mx-auto">
   <a
     routerLink="/"
-    class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+    class="inline-flex items-center
+           text-sm text-indigo-600
+           hover:text-indigo-900 transition
+           dark:text-indigo-300 dark:hover:text-indigo-200"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none" class="size-5">
-      <path d="M12.7083 5L7.5 10.2083L12.7083 15.4167" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="1em" height="1em" viewBox="0 0 20 20"
+         fill="none" class="size-5">
+      <path
+        d="M12.7083 5L7.5 10.2083L12.7083 15.4167"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
     </svg>
     Back to dashboard
   </a>
 </div>
+<br><br>
+
+
 
 <div class="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-  <div>
-    <div class="mb-5 sm:mb-8">
-      <h1 class="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-        Sign In
-      </h1>
-      <p class="text-sm text-gray-500 dark:text-gray-400">
-        Enter your username and password to sign in!
-      </p>
+
+  <!-- Header -->
+  <div class="mb-6">
+    <h1
+      class="text-2xl font-semibold
+             text-indigo-900 dark:text-indigo-200
+             tracking-wide leading-tight mb-2">
+      Sign In
+    </h1>
+
+    <p class="text-sm text-indigo-600 dark:text-indigo-300 tracking-wide">
+      Enter your username and password to continue.
+    </p>
+  </div>
+
+  <!-- Form -->
+  <form (ngSubmit)="onSignIn()" class="space-y-5">
+
+    <!-- Username -->
+    <div>
+      <label
+        class="block mb-1
+               text-indigo-700 dark:text-indigo-300
+               font-medium tracking-wide leading-tight">
+        Username *
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="username"
+        name="username"
+        placeholder="admin"
+        required
+        class="w-full px-4 py-2 rounded-lg
+               bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+               border border-[#6379C8]/40 dark:border-[#5362A8]/40
+               text-indigo-700 dark:text-indigo-300
+               placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+               font-medium tracking-wide leading-tight
+               focus:outline-none focus:ring-2 focus:ring-indigo-700" />
     </div>
 
-    <!-- Form -->
-    <form (ngSubmit)="onSignIn()" class="space-y-6">
+      <!-- Password -->
       <div>
-        <app-label>Username <span class="text-error-500">*</span></app-label>
-        <app-input-field
-          type="text"
-          placeholder="admin"
-          [(value)]="username"
-          name="username"
-          class="form-input"
-          required
-        />
-      </div>
+        <label
+          class="block mb-1
+                text-indigo-700 dark:text-indigo-300
+                font-medium tracking-wide leading-tight">
+          Password *
+        </label>
 
-      <div>
-        <app-label>Password <span class="text-error-500">*</span></app-label>
         <div class="relative">
-          <app-input-field
+          <input
             [type]="showPassword ? 'text' : 'password'"
-            placeholder="Enter your password"
-            [(value)]="password"
+            [(ngModel)]="password"
             name="password"
-            class="form-input"
+            placeholder="Enter your password"
             required
-          />
+            class="w-full px-4 py-2 pr-12 rounded-lg
+                  bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+                  border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                  text-indigo-700 dark:text-indigo-300
+                  placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                  font-medium tracking-wide leading-tight
+                  focus:outline-none focus:ring-2 focus:ring-indigo-700" />
 
-          <!-- Toggle Password Visibility using local images -->
-          <span
-            (click)="togglePasswordVisibility()"
-            class="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+          <!-- 👁 Eye Toggle -->
+          <button
+            type="button"
+            (click)="showPassword = !showPassword"
+            class="absolute right-3 top-1/2 -translate-y-1/2
+                  text-indigo-600 dark:text-indigo-300
+                  hover:text-indigo-900 dark:hover:text-indigo-200
+                  transition text-sm"
+            aria-label="Toggle password visibility"
           >
-            <img
-              *ngIf="showPassword; else eyeOffTemplate"
-              src="assets/images/eye.png"
-              alt="Show password"
-              class="w-5 h-5"
-            />
-            <ng-template #eyeOffTemplate>
-              <img
-                src="assets/images/eye-off.png"
-                alt="Hide password"
-                class="w-5 h-5"
-              />
-            </ng-template>
-          </span>
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
-        <a
-          routerLink="/forgot-password"
-          class="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
-        >
-          Forgot password?
-        </a>
-      </div>
+    <!-- Forgot -->
+    <div class="text-right">
+      <a
+        routerLink="/forgot-password"
+        class="text-sm text-indigo-700 hover:text-indigo-900
+               dark:text-indigo-300 dark:hover:text-indigo-200 transition">
+        Forgot password?
+      </a>
+    </div>
 
-      <app-button
-        class="w-full"
-        size="sm"
-        (btnClick)="onSignIn()"
-      >
-        Sign in
-      </app-button>
-    </form>
-  </div>
+    <!-- Submit -->
+    <div>
+      <button
+        type="submit"
+        class="inline-flex items-center
+               text-indigo-700 font-medium
+               hover:text-indigo-900 transition
+               px-6 py-3 rounded-lg
+               border border-indigo-300 dark:border-indigo-700
+               focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Sign in →
+      </button>
+    </div>
+
+  </form>
 </div>
