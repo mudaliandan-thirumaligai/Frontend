@@ -136,7 +136,8 @@
       </p>
 
       <a
-        routerLink="/calendar"
+        [routerLink]="['/calendar']"
+        [queryParams]="{ date: nextEvent.startDate }"
         class="inline-flex items-center
                text-indigo-700 font-medium
                hover:text-indigo-900 transition">
@@ -279,7 +280,6 @@
 </section>
 
   <!-- ================= GALLERY ================= -->
-<!-- ================= GALLERY ================= -->
 <section class="py-24 px-4">
   <div class="max-w-6xl mx-auto">
 

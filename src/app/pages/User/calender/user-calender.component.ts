@@ -1,4 +1,3 @@
-
 import { FormsModule } from '@angular/forms';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CommonModule } from '@angular/common';
@@ -7,11 +6,12 @@ import { EventInput, CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { ActivatedRoute } from '@angular/router';
+
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-
 import { EventService } from '../../../service/event.service';
-import { auto } from '@popperjs/core';
+
 interface CalendarEvent extends EventInput {
   extendedProps: {
     calendar: string;
@@ -37,11 +37,16 @@ interface CalendarEvent extends EventInput {
 })
 export class UserCalenderComponent {
 
-  constructor(private eventService: EventService) {}
+  constructor(
+    private eventService: EventService,
+    private route: ActivatedRoute
+  ) {}
+
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   events: CalendarEvent[] = [];
   selectedEvent: CalendarEvent | null = null;
+
   eventTitle = '';
   eventNumber = 0;
   eventDescription = '';
@@ -53,84 +58,82 @@ export class UserCalenderComponent {
   eventLevel = '';
   isOpen = false;
 
-  calendarsEvents: Record<string, string> = {
-    Danger: 'danger',
-    Success: 'success',
-    Primary: 'primary',
-    Warning: 'warning'
-  };
-
   calendarOptions!: CalendarOptions;
 
+  private targetDateFromRoute: string | null = null;
+
   ngOnInit() {
-  // 1. Initialize calendar options immediately
-  this.calendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    headerToolbar: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    selectable: true,
-    allDayMaintainDuration: true,
-    height:'auto',
-    contentHeight: 'auto',
-    aspectRatio: 1.2,
-    events: [],  // <-- keep empty initially
-    eventClick: (info) => this.handleEventClick(info),
-    eventContent: (arg) => this.renderEventContent(arg)
-  };
+    // 🔹 Calendar configuration
+    this.calendarOptions = {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      selectable: true,
+      allDayMaintainDuration: true,
+      height: 'auto',
+      contentHeight: 500,
+      aspectRatio: 1.4,
+      events: [],
+      eventClick: (info) => this.handleEventClick(info),
+      eventContent: (arg) => this.renderEventContent(arg)
+    };
 
-  // 2. Load API events
-  this.loadEventsFromAPI();
-}
-loadEventsFromAPI() {
-  this.eventService.getAllEvents().subscribe(
-    (data: any[]) => {
-      console.log('Fetched Events from API:', data);
-      const formattedEvents = data.map(event => ({
-        id: event.eventNumber.toString(),
-        title: event.name,          
-        start: event.startDate,     
-        end: event.endDate,         
-        extendedProps: {
-          calendar: event.eventLevel || 'Primary',
-          description: event.description,
-          location: event.location,
-          tamilYear: event.tamilYear,
-          tamilMonth: event.tamilMonth,
-          eventNumber: event.eventNumber
+    // 🔹 Read date from landing page
+    this.route.queryParams.subscribe(params => {
+      if (params['date']) {
+        this.targetDateFromRoute = params['date'];
+      }
+    });
+
+    // 🔹 Load events
+    this.loadEventsFromAPI();
+  }
+
+  loadEventsFromAPI() {
+    this.eventService.getAllEvents().subscribe(
+      (data: any[]) => {
+        const formattedEvents = data.map(event => ({
+          id: event.eventNumber.toString(),
+          title: event.name,
+          start: event.startDate,
+          end: event.endDate,
+          extendedProps: {
+            calendar: event.eventLevel || 'Primary',
+            description: event.description,
+            location: event.location,
+            tamilYear: event.tamilYear,
+            tamilMonth: event.tamilMonth,
+            eventNumber: event.eventNumber
+          }
+        }));
+
+        this.calendarOptions.events = formattedEvents;
+
+        // 🔹 Jump to event month if coming from landing page
+        if (this.targetDateFromRoute) {
+          setTimeout(() => {
+            this.goToEventMonth(this.targetDateFromRoute!);
+          });
         }
-      }));
-      console.log('Formatted Events for Calendar:', formattedEvents);
+      },
+      (error) => {
+        console.error('Error fetching events:', error);
+      }
+    );
+  }
 
-      // Update only the events array - updating this should refresh the calendar
-      this.calendarOptions.events = formattedEvents;
-    },
-    (error) => {
-      console.error('Error fetching events:', error);
-    }
-  );
-}
+  // 🔹 Navigate calendar to event month
+  goToEventMonth(date: string) {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.gotoDate(date);
+  }
 
   handleEventClick(clickInfo: EventClickArg) {
-    console.log("Event clicked:", clickInfo.event);
     const event = clickInfo.event;
-    this.selectedEvent = {
-      
-      title: event.title,
-      start: event.startStr,
-      end: event.endStr,
-      extendedProps: {
-        eventNumber: event.extendedProps['eventNumber'], 
-        calendar: event.extendedProps['calendar'],
-        description: event.extendedProps['description'],
-        location: event.extendedProps['location'],
-        tamilYear: event.extendedProps['tamilYear'],
-        tamilMonth: event.extendedProps['tamilMonth']
-      }
-    };
 
     this.eventNumber = event.extendedProps['eventNumber'];
     this.eventTitle = event.title;
@@ -144,6 +147,16 @@ loadEventsFromAPI() {
 
     this.openModal();
   }
+
+  openModal() {
+    this.isOpen = true;
+  }
+
+  closeModal() {
+    this.isOpen = false;
+    this.resetModalFields();
+  }
+
   resetModalFields() {
     this.eventTitle = '';
     this.eventStartDate = '';
@@ -154,15 +167,6 @@ loadEventsFromAPI() {
     this.eventTamilYear = '';
     this.eventTamilMonth = '';
     this.selectedEvent = null;
-  }
-
-  openModal() {
-    this.isOpen = true;
-  }
-
-  closeModal() {
-    this.isOpen = false;
-    this.resetModalFields();
   }
 
   renderEventContent(eventInfo: any) {

@@ -30,34 +30,68 @@ export class ContactUsComponent {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      mobile: [''],
-      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', Validators.required],   
+      email: ['', Validators.email],        
       whatsappNumber: [''],
       postalAddress: [''],
+      query: ['']
     });
   }
+  private showValidationError(): boolean {
+    const controls = this.contactForm.controls;
+
+    if (controls['name'].invalid) {
+      this.toast.showError('Please enter your name');
+      return false;
+    }
+
+    if (controls['type'].invalid) {
+      this.toast.showError('Please select a type');
+      return false;
+    }
+
+    if (controls['mobile'].invalid) {
+      this.toast.showError('Please enter your mobile number');
+      return false;
+    }
+
+    // Optional: validate email format only if entered
+    if (
+      controls['email'].value &&
+      controls['email'].invalid
+    ) {
+      this.toast.showError('Please enter a valid email address');
+      return false;
+    }
+
+    return true; // ✅ all good
+  }
+
 
   submitForm() {
-    if (this.contactForm.invalid) {
-      this.toast.showError('Please fill in all required fields'); // validation toast
-      return;
+    if (!this.showValidationError()) {
+      return; 
     }
 
     this.loading = true;
     this.toast.showInfo('Submitting your details...');
 
     this.contactService.submitContact(this.contactForm.value).subscribe({
-      next: res => {
-        this.toast.showSuccess('Thank you! Your details have been submitted.');
+      next: () => {
+        this.toast.showSuccess(
+          'Thank you! Your details have been submitted successfully.'
+        );
         this.contactForm.reset();
         this.loading = false;
-        this.router.navigate(['/']); // Redirect to home page after successful submission
+        this.router.navigate(['/']);
       },
       error: err => {
-        const apiMessage = err?.error?.message || 'Failed to submit. Please try again.';
+        const apiMessage =
+          err?.error?.message || 'Failed to submit. Please try again.';
         this.toast.showError(apiMessage);
         this.loading = false;
       }
     });
   }
+
 }

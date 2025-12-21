@@ -1,92 +1,185 @@
 <br><br><br>
- <app-page-breadcrumb pageTitle="Calendar" />
+
+<app-page-breadcrumb pageTitle="Calendar" />
+
+<!-- ================= CALENDAR INTRO ================= -->
+<section class="py-8 px-2">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Calendar
+    </h1>
+
+    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+      View upcoming spiritual events, observances, and important dates.
+    </p>
+
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+  </div>
+</section>
 <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-  <div class="custom-calendar">
-    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  <div
+    class="
+      max-w-5xl  
+      mx-auto
+      rounded-2xl
+      border border-gray-200
+      bg-white
+      dark:border-gray-800
+      dark:bg-white/[0.03]
+      p-4 md:p-6
+    "
+  >  
+    <div class="custom-calendar">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
   </div>
 
   <app-modal
     [isOpen]="isOpen"
     (close)="closeModal()"
-    className="max-w-[500px] max-h-[90vh] overflow-hidden p-6 lg:p-10"
+    className="max-w-[520px] max-h-[90vh] overflow-hidden"
   >
-    <div class="flex flex-col px-2 overflow-y-auto custom-scrollbar max-h-[70vh]">
-      
-      <!-- TITLE -->
-      <h5 class="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 lg:text-2xl">
-        Event Details
-      </h5>
+    <div class="flex flex-col overflow-y-auto custom-scrollbar max-h-[80vh]">
 
-      <!-- EVENT NAME -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Name</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTitle }}</p>
-      </div>
-
-      <!-- EVENT NUMBER -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Number</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventNumber }}</p>
-      </div>
-
-      <!-- DESCRIPTION -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Description</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90 whitespace-pre-line">{{ eventDescription }}</p>
-      </div>
-
-      <!-- LOCATION -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Location</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventLocation }}</p>
-      </div>
-
-      <!-- TAMIL YEAR + MONTH -->
-      <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Tamil Year</label>
-          <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTamilYear }}</p>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Tamil Month</label>
-          <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventTamilMonth }}</p>
-        </div>
-      </div>
-
-      <!-- EVENT COLOR -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Event Color</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">{{ eventLevel }}</p>
-      </div>
-
-      <!-- START DATE -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Start Date</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">
-          {{ eventStartDate | date:'mediumDate' }}
+      <!-- 🌸 HEADER -->
+      <div class="px-6 py-5 bg-indigo-50 border-b border-indigo-200">
+        <h5
+          class="text-lg md:text-xl font-semibold
+                text-indigo-900
+                tracking-wide leading-tight"
+        >
+          Event Details
+        </h5>
+        <p class="mt-1 text-sm text-indigo-600">
+          Sacred observance information
         </p>
       </div>
 
-      <!-- END DATE -->
-      <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">End Date</label>
-        <p class="mt-1 text-gray-900 dark:text-white/90">
-          {{ eventEndDate | date:'mediumDate' }}
-        </p>
+      <!-- 🌿 BODY -->
+      <div class="px-6 py-6 space-y-6 bg-white dark:bg-neutral-900">
+
+        <!-- EVENT NAME -->
+        <div>
+          <p
+            class="text-xs uppercase tracking-wide
+                  text-indigo-500"
+          >
+            Event Name
+          </p>
+          <p
+            class="mt-1 text-base md:text-lg font-semibold
+                  text-indigo-800 dark:text-indigo-300
+                  tracking-wide leading-tight"
+          >
+            {{ eventTitle }}
+          </p>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div>
+          <p
+            class="text-xs uppercase tracking-wide
+                  text-indigo-500"
+          >
+            Description
+          </p>
+          <p
+            class="mt-1 text-sm leading-relaxed
+                  text-indigo-600 whitespace-pre-line"
+          >
+            {{ eventDescription || 'No description available.' }}
+          </p>
+        </div>
+
+        <!-- LOCATION -->
+        <div>
+          <p
+            class="text-xs uppercase tracking-wide
+                  text-indigo-500"
+          >
+            Location
+          </p>
+          <p class="mt-1 text-sm text-indigo-600">
+            {{ eventLocation || '—' }}
+          </p>
+        </div>
+
+        <!-- DATES -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <p
+              class="text-xs uppercase tracking-wide
+                    text-indigo-500"
+            >
+              Start Date
+            </p>
+            <p class="mt-1 text-sm text-indigo-600">
+              {{ eventStartDate | date:'fullDate' }}
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs uppercase tracking-wide
+                    text-indigo-500"
+            >
+              End Date
+            </p>
+            <p class="mt-1 text-sm text-indigo-600">
+              {{ eventEndDate | date:'fullDate' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- TAMIL INFO -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <p
+              class="text-xs uppercase tracking-wide
+                    text-indigo-500"
+            >
+              Tamil Year
+            </p>
+            <p class="mt-1 text-sm text-indigo-600">
+              {{ eventTamilYear || '—' }}
+            </p>
+          </div>
+
+          <div>
+            <p
+              class="text-xs uppercase tracking-wide
+                    text-indigo-500"
+            >
+              Tamil Month
+            </p>
+            <p class="mt-1 text-sm text-indigo-600">
+              {{ eventTamilMonth || '—' }}
+            </p>
+          </div>
+        </div>
+
       </div>
 
-      <!-- FOOTER -->
-      <div class="flex items-center gap-3 mt-6 modal-footer sm:justify-end">
+      <!-- 🌺 FOOTER -->
+      <div class="px-6 py-4 bg-indigo-50 border-t border-indigo-200 flex justify-end">
         <button
           (click)="closeModal()"
           type="button"
-          class="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 sm:w-auto"
+          class="inline-flex items-center
+                text-indigo-700 font-medium
+                hover:text-indigo-900 transition
+                px-6 py-3 rounded-lg
+                border border-indigo-300 dark:border-indigo-700
+                focus:outline-none
+                focus:ring-2 focus:ring-indigo-300/40"
         >
           Close
         </button>
       </div>
 
+
     </div>
   </app-modal>
+
+
 </div>
