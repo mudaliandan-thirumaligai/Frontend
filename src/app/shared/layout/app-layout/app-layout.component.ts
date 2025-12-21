@@ -68,7 +68,7 @@ closeDropdown(item: MenuItem) {
     open: false,
     children: [
       { label: 'About Swami', route: '/about-swamy' },
-      { label: 'Mission', route: '/mission' },
+      // { label: 'Mission', route: '/mission' },
       { label: 'History', route: '/history' },
       { label: 'Our Thirumaligais', route: '/thirumaligais' }
     ]
@@ -90,14 +90,14 @@ closeDropdown(item: MenuItem) {
       { label: 'Documents', route: '/documents' }
     ]
   },
-  {
-    label: 'Leadership',
-    open: false,
-    children: [
-      { label: 'Swami & Team', route: '/leadership/team' },
-      { label: 'Organization Structure', route: '/leadership/structure' }
-    ]
-  },
+  // {
+  //   label: 'Leadership',
+  //   open: false,
+  //   children: [
+  //     { label: 'Swami & Team', route: '/leadership/team' },
+  //     { label: 'Organization Structure', route: '/leadership/structure' }
+  //   ]
+  // },
   {
     label: 'Contact',
     open: false,
