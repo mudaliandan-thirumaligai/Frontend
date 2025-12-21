@@ -28,62 +28,51 @@
     <div
       *ngFor="let doc of documents"
       class="group bg-white dark:bg-neutral-900
-             rounded-2xl shadow-sm hover:shadow-lg
-             transition p-4 flex flex-col justify-between">
+            rounded-2xl shadow-sm hover:shadow-lg
+            hover:-translate-y-1 transition-transform duration-300 p-4 flex flex-col justify-between">
 
       <!-- Cover -->
       <div
         class="h-28 rounded-xl mb-4
-               bg-gradient-to-br from-indigo-50 to-indigo-100
-               dark:from-indigo-900 dark:to-neutral-800
-               flex items-center justify-center">
+              bg-gradient-to-br from-indigo-50 to-indigo-100
+              dark:from-indigo-900 dark:to-neutral-800
+              flex items-center justify-center">
 
         <div
           class="w-12 h-12 rounded-lg
-                 bg-indigo-600/90
-                 flex items-center justify-center
-                 text-white text-lg font-semibold">
+                bg-indigo-600/90
+                flex items-center justify-center
+                text-white text-lg font-semibold
+                transform group-hover:scale-105
+                transition-transform duration-300">
           📜
         </div>
       </div>
 
       <!-- Info -->
       <div class="flex-1">
-        <h3
-          class="text-sm md:text-base font-semibold
-                 text-indigo-800 dark:text-indigo-300
-                 leading-snug">
+        <h3 class="text-sm md:text-base font-semibold text-indigo-800 dark:text-indigo-300 leading-snug">
           {{ doc.title }}
         </h3>
 
-        <p
-          class="mt-1 text-xs md:text-sm
-                 text-indigo-600 dark:text-indigo-400">
+        <p class="mt-1 text-xs md:text-sm text-indigo-600 dark:text-indigo-400">
           {{ doc.language }}
         </p>
       </div>
 
       <!-- Action -->
       <a
-        [href]="doc.url"
-        target="_blank"
-        class="mt-4 inline-flex items-center gap-1
-              text-sm font-medium
-              text-indigo-700 dark:text-indigo-400
-              underline-offset-4
-              transition-all duration-300
-              hover:text-indigo-800
-              dark:hover:text-indigo-300">
-
-        Open Document
-        <span
-          class="transition-transform duration-300
-                group-hover:translate-x-0.5">
-          →
-        </span>
-      </a>
-
+  [href]="doc.url"
+  target="_blank"
+  class="mt-4 inline-flex items-center text-sm font-medium
+         text-indigo-600 dark:text-indigo-400
+         underline-offset-4
+         transition-transform duration-200
+         hover:-translate-y-0.5 hover:text-indigo-700">
+  Open document
+</a>
 
     </div>
+
   </div>
 </section>

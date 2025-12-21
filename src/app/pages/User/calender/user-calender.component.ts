@@ -8,6 +8,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
+import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
 import { EventService } from '../../../service/event.service';
 import { auto } from '@popperjs/core';
@@ -28,7 +29,8 @@ interface CalendarEvent extends EventInput {
     FormsModule,
     CommonModule,
     FullCalendarModule,
-    ModalComponent
+    ModalComponent,
+    PageBreadcrumbComponent
   ],
   templateUrl: './user-calender.component.html',
   styles: ``
