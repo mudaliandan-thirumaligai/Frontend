@@ -103,7 +103,7 @@ closeDropdown(item: MenuItem) {
     open: false,
     children: [
       { label: 'Bank Details', route: '/bank-info' },
-      { label: 'Receive Communication', route: '/registration' }
+      { label: 'Registration', route: '/registration' }
     ]
   }
 ];
