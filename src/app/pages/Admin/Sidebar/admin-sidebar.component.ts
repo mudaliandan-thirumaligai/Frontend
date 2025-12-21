@@ -15,7 +15,7 @@ interface AdminNavItem {
     CommonModule,
   ],
   templateUrl: './admin-sidebar.component.html',
-  styles: ``
+  styleUrl: `./admin-sidebar.component.css`
 })
 export class AdminSidebarComponent {
 
