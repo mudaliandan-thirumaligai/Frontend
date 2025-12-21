@@ -1,253 +1,406 @@
 <br><br><br>
+<main class="flex flex-col">
 
-<!-- Hero Section -->
+  <!-- ================= HERO ================= -->
 <section
-  class="relative hero hero-gradient
-         flex items-center justify-center
-         py-28 px-4 overflow-hidden">
+  class="relative min-h-[85vh] flex items-center justify-center
+         bg-gradient-to-b from-slate-50 to-indigo-100
+         px-4">
 
-  <!-- 🌸 Subtle Sacred Background Motif -->
-  <div
-    class="absolute inset-0
-           bg-center bg-no-repeat
-           bg-[length:520px]
-           opacity-[0.035]
-           pointer-events-none">
+  <!-- Soft radial accents -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2
+             w-[600px] h-[600px]
+             bg-indigo-400/10 rounded-full blur-3xl">
+    </div>
+    <div
+      class="absolute bottom-0 left-1/2 -translate-x-1/2
+             w-[600px] h-[600px]
+             bg-indigo-500/10 rounded-full blur-3xl">
+    </div>
   </div>
 
-  <!-- 🌫️ Soft Gradient Overlay (keeps it light) -->
-  <div
-    class="absolute inset-0
-           bg-gradient-to-b
-           from-white
-           via-indigo-50/70
-           to-indigo-100/60">
-  </div>
+  <!-- Content -->
+  <div class="relative z-10 max-w-3xl text-center">
 
-  <!-- Hero Content -->
-  <div class="relative z-10 hero-content animate-fade-in text-center max-w-3xl">
-
-    <!-- 🪔 Sacred Emblem -->
-    <!-- <div class="flex justify-center ">
-      <img
-        src="images/mudaliandan/thiruman.png"
-        alt="Sacred Symbol"
-        class="w-10 h-10 opacity-80">
-    </div> -->
-
-    <!-- ✨ Hero Title -->
-    <h1 class="hero-title mb-4">
-      <span class="static-text">Preserving </span>
-      <span class="typewriter">{{ typedText }}</span>
-      <span class="cursor">|</span>
+    <!-- Title -->
+    <h1 class="text-3xl md:text-5xl font-bold text-indigo-950 mb-4">
+      Preserving
+      <span class="text-indigo-600">{{ typedText }}</span>
+      <span class="text-indigo-600">|</span>
     </h1>
 
-    <!-- 🕉️ Tamil / Sanskrit Line -->
-    <p
-      class="text-sm md:text-base
-             italic
-             text-indigo-600
-             opacity-80
-             mb-4">
+    <!-- Quote -->
+    <p class="italic text-indigo-600 text-sm md:text-base mb-4">
       “அறம் காக்கும், காக்கப்படுவோர் அறம்”
     </p>
 
-    <!-- 📜 Subtitle -->
-    <p
-      class="text-lg md:text-xl
-             font-semibold
-             tracking-wide
-             leading-tight
-             text-indigo-700
-             max-w-3xl
-             mx-auto
-             mb-10">
+    <!-- Subtitle -->
+    <p class="text-lg md:text-xl font-semibold text-indigo-800 mb-10">
       Sri Mudhaliandan Swamy Thirumaligai —
       guiding devotees through dharma, tradition, and timeless wisdom.
     </p>
 
-    <!-- 🔘 Action Buttons -->
-    <div
-      class="hero-buttons
-             flex flex-wrap justify-center
-             gap-4 animate-slide-up-delay">
+    <!-- CTAs -->
+    <div class="flex flex-wrap justify-center gap-6">
 
+      <!-- Primary -->
       <a
         routerLink="/about-swamy"
-        class="primary-btn">
-        Learn More
+        class="inline-flex items-center gap-1
+               text-indigo-700 font-medium
+               hover:text-indigo-800
+               transition">
+        Learn more about the lineage
+        <span
+          class="transition-transform duration-300
+                 hover:translate-x-0.5">
+          →
+        </span>
       </a>
+
+      <!-- Secondary -->
+      <a
+        routerLink="/calendar"
+        class="inline-flex items-center gap-1
+               text-indigo-600 font-medium
+               hover:text-indigo-700
+               transition">
+        View upcoming events
+        <span
+          class="transition-transform duration-300
+                 hover:translate-x-0.5">
+          →
+        </span>
+      </a>
+
+      <!-- Tertiary -->
+      <a
+        routerLink="/bank-info"
+        class="inline-flex items-center gap-1
+               text-indigo-600
+               hover:text-indigo-700
+               transition">
+        Contribute
+        <span
+          class="transition-transform duration-300
+                 hover:translate-x-0.5">
+          →
+        </span>
+      </a>
+
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="mt-16 text-indigo-400 animate-bounce">↓</div>
+
+  </div>
+</section>
+
+
+  <!-- ================= UPCOMING EVENT ================= -->
+<section class="bg-indigo-50 py-24 px-4">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Section Intro -->
+    <div class="text-center mb-14">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Upcoming Event
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+        Join us in upcoming spiritual gatherings, festivals,
+        and sacred observances.
+      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Event Card -->
+    <div *ngIf="nextEvent"
+         class="max-w-md mx-auto
+                bg-white rounded-2xl shadow-md
+                hover:shadow-xl transition
+                p-8">
+
+      <h3 class="text-xl font-semibold text-indigo-800 mb-2">
+        {{ nextEvent.name }}
+      </h3>
+
+      <div class="text-sm text-indigo-600 space-y-1 mb-4">
+        <p>Location: {{ nextEvent.location }}</p>
+        <p>Date: {{ nextEvent.startDate | date:'fullDate' }}</p>
+      </div>
+
+      <p class="text-indigo-700 leading-relaxed mb-6 line-clamp-3">
+        {{ nextEvent.description }}
+      </p>
 
       <a
         routerLink="/calendar"
-        class="outline-btn">
-        Upcoming Events
+        class="inline-flex items-center
+               text-indigo-700 font-medium
+               hover:text-indigo-900 transition">
+        View full details →
       </a>
+    </div>
+
+    <!-- No Event -->
+    <div *ngIf="!nextEvent"
+         class="text-center text-indigo-600 mt-10">
+      No upcoming events at the moment 🙏
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- ================= ABOUT ================= -->
+<section class="py-24 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Section Intro -->
+    <div class="text-center mb-16">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        About Thirumaaligai
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+        Preserving sacred traditions, spiritual wisdom,
+        and dharmic values across generations.
+      </p>
+    </div>
+
+    <!-- Content -->
+    <div class="grid md:grid-cols-2 gap-14 items-center">
+
+      <!-- Image -->
+      <div class="relative">
+        <div class="absolute -inset-3 bg-indigo-100 rounded-2xl"></div>
+        <img
+          src="images/mudaliandan/aachariyan.png"
+          alt="Swamy"
+          class="relative rounded-2xl shadow-xl w-full">
+      </div>
+
+      <!-- Text -->
+      <div>
+        <h3 class="text-xl font-semibold text-indigo-800 mb-4">
+          Sri Mudhaliandan Swamy Thirumaligai
+        </h3>
+
+        <p class="text-indigo-700 leading-relaxed mb-5">
+          Sri Mudhaliandan Swamy Thirumaligai is dedicated to preserving
+          spiritual values, promoting dharma, and guiding devotees through
+          sacred practices rooted in tradition.
+        </p>
+
+        <p class="text-indigo-700 leading-relaxed mb-8">
+          Through teachings, festivals, and community service,
+          the Thirumaligai continues to serve as a spiritual
+          anchor for devotees seeking guidance and wisdom.
+        </p>
+
+        <a
+          routerLink="/about-swamy"
+          class="inline-flex items-center text-indigo-700 font-medium
+                 hover:text-indigo-900 transition">
+          Learn more about our lineage →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- ================= DOCUMENTS ================= -->
+<section class="bg-indigo-50 py-24 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Section Title -->
+    <div class="text-center mb-14">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Spiritual Documents
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+        Preserving sacred knowledge, hymns, and historical records
+        for generations to come.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid sm:grid-cols-2 gap-10">
+
+      <!-- Card 1 -->
+      <div
+        class="bg-white p-8 rounded-2xl shadow-md
+               hover:shadow-xl transition">
+
+        <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+          Stotras & Granthas
+        </h3>
+
+        <p class="text-indigo-600 leading-relaxed mb-6">
+          Sacred hymns, devotional verses, and spiritual teachings
+          carefully preserved for devotees and scholars.
+        </p>
+
+        <a
+          routerLink="/documents"
+          class="inline-flex items-center text-indigo-700 font-medium
+                 hover:text-indigo-900 transition">
+          Read Documents →
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div
+        class="bg-white p-8 rounded-2xl shadow-md
+               hover:shadow-xl transition">
+
+        <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+          Historical Records
+        </h3>
+
+        <p class="text-indigo-600 leading-relaxed mb-6">
+          Temple history, lineage details, and traditional records
+          passed down across generations.
+        </p>
+
+        <a
+          routerLink="/documents"
+          class="inline-flex items-center text-indigo-700 font-medium
+                 hover:text-indigo-900 transition">
+          Explore Records →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- ================= GALLERY ================= -->
+<!-- ================= GALLERY ================= -->
+<section class="py-24 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Section Intro -->
+    <div class="text-center mb-14">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Gallery Highlights
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+        A glimpse into sacred moments, rituals,
+        and memories preserved through images.
+      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Images -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+      <div
+        *ngFor="let img of galleryImages | slice:0:4"
+        class="group overflow-hidden rounded-2xl shadow-md">
+
+        <img
+          [src]="img"
+          alt="Gallery"
+          class="w-full h-44 object-cover
+                 transition-transform duration-500
+                 group-hover:scale-105">
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center">
+      <a
+        routerLink="/gallery"
+        class="inline-flex items-center
+               text-indigo-700 font-medium
+               hover:text-indigo-800
+               transition">
+        View full gallery →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- ================= CTA ================= -->
+  <!-- ================= CTA ================= -->
+<section class="bg-indigo-50 py-24 px-4">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Section Intro -->
+    <div class="text-center mb-10">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Stay Connected
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-xl mx-auto">
+        Receive updates on upcoming events, announcements,
+        and important communications.
+      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Card -->
+    <div
+      class="bg-white rounded-2xl shadow-md p-10 text-center">
+
+      <p class="text-indigo-700 mb-6">
+        Join our communication list and stay connected
+        with the spiritual activities of the Thirumaligai.
+      </p>
+
+      <a
+        routerLink="/registration"
+        class="inline-flex items-center
+               text-indigo-700 font-medium
+               hover:text-indigo-800
+               transition">
+        Contact us →
+      </a>
+    </div>
+
+  </div>
+</section>
+<!-- ================= DONATION ================= -->
+<section class="py-24 px-4">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Section Intro -->
+    <div class="text-center mb-10">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Make a Contribution
+      </h2>
+      <p class="mt-3 text-indigo-600 max-w-xl mx-auto">
+        Support the preservation of dharmic traditions
+        and sacred temple activities.
+      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Card -->
+    <div
+      class="bg-white rounded-2xl shadow-md p-10 text-center">
+
+      <p class="text-indigo-700 mb-6">
+        Your contribution helps sustain spiritual services,
+        rituals, and cultural heritage for future generations.
+      </p>
 
       <a
         routerLink="/bank-info"
-        class="ghost-btn">
-        🙏 Contribute
-      </a>
-
-    </div>
-
-    <!-- ↓ Scroll Indicator -->
-    <div class="mt-16 text-indigo-400 opacity-60 animate-bounce">
-      ↓
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- 🌟 Upcoming Event Card -->
-<div class="max-w-md mx-auto mt-10 animate-on-scroll">
-
-  <!-- Loading -->
-  <div *ngIf="loadingEvent" class="p-4 text-center text-gray-500">
-    Loading upcoming event...
-  </div>
-
-  <!-- No Event -->
-  <div *ngIf="noUpcomingEvent && !loadingEvent"
-       class="p-6 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
-    <p class="text-gray-600 dark:text-gray-300">
-      No upcoming events at the moment 🙏
-    </p>
-  </div>
-
-  <!-- Event Card -->
-  <div *ngIf="nextEvent"
-       class="bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-
-    <h3 class="text-xl font-semibold text-indigo-700 dark:text-indigo-300">
-      {{ nextEvent.name }}
-    </h3>
-
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
-      📍 {{ nextEvent.location }}
-    </p>
-
-    <p class="text-sm text-gray-600 dark:text-gray-400">
-      📅 {{ nextEvent.startDate | date:'fullDate' }}
-    </p>
-
-    <p class="mt-3 text-gray-700 dark:text-gray-300 line-clamp-3">
-      {{ nextEvent.description }}
-    </p>
-
-    <a
-      routerLink="/calendar"
-      class="inline-block mt-4 px-5 py-2 rounded-lg
-             bg-indigo-600 text-white hover:bg-indigo-700 transition">
-      View in Calendar →
-    </a>
-  </div>
-</div>
-
-
-
-<!-- About Section -->
-<section class="about">
-  <div class="about-container">
-    <div class="about-image">
-      <img src="images/mudaliandan/aachariyan.png" alt="Temple/Swamiji">
-    </div>
-
-    <div class="about-text text-indigo-700 dark:text-indigo-300">
-      <h2 class="text-indigo-700 dark:text-indigo-300">About the Organization</h2>
-      <p class="text-indigo-700 dark:text-indigo-300">
-        Sri Mudhaliandan Swamy Thirumadapalli is dedicated to preserving spiritual
-        values, promoting dharma, and guiding devotees through sacred practices
-        and teachings.
-      </p>
-      <a routerLink="/about-swamy" class="btn primary-btn">
-        Read More
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Spiritual Documents Section -->
-<section class="section bg-soft animate-on-scroll text-indigo-700 dark:text-indigo-300">
-  <h2 class="section-title text-indigo-700 dark:text-indigo-300">
-    Spiritual Documents
-  </h2>
-
-  <div class="card-grid">
-    <div class="info-card text-indigo-700 dark:text-indigo-300">
-      <h3 class="text-indigo-700 dark:text-indigo-300">Stotras & Granthas</h3>
-      <p class="text-indigo-700 dark:text-indigo-300">
-        Read sacred hymns, spiritual documents, and teachings preserved
-        for devotees and scholars.
-      </p>
-      <a routerLink="/documents" class="primary-btn">
-        📄 Read Documents
+        class="inline-flex items-center
+               text-indigo-700 font-medium
+               hover:text-indigo-800
+               transition">
+        Contribute / Donate →
       </a>
     </div>
 
-    <div class="info-card text-indigo-700 dark:text-indigo-300">
-      <h3 class="text-indigo-700 dark:text-indigo-300">Historical Records</h3>
-      <p class="text-indigo-700 dark:text-indigo-300">
-        Explore temple history, lineage details, and traditional records
-        passed across generations.
-      </p>
-      <a routerLink="/documents" class="primary-btn">
-        📚 Explore More
-      </a>
-    </div>
   </div>
 </section>
 
-<!-- Gallery Preview Section -->
-<section class="section animate-on-scroll text-indigo-700 dark:text-indigo-300">
-  <h2 class="section-title text-indigo-700 dark:text-indigo-300">
-    Gallery Highlights
-  </h2>
 
-  <div class="card-grid">
-    <div class="card" *ngFor="let img of galleryImages | slice:0:4">
-      <img [src]="img" alt="Gallery Image">
-    </div>
-  </div>
-
-  <div class="text-center mt-6">
-    <a routerLink="/gallery" class="primary-btn">
-      📸 View More Pictures
-    </a>
-  </div>
-</section>
-
-<!-- Communication Section -->
-<section class="section animate-on-scroll text-indigo-700 dark:text-indigo-300">
-  <div class="cta-card text-indigo-700 dark:text-indigo-300">
-    <h2 class="text-indigo-700 dark:text-indigo-300">
-      Want to Receive Communication?
-    </h2>
-    <p class="text-indigo-700 dark:text-indigo-300">
-      Stay informed about upcoming events, announcements,
-      and important updates from the Thirumadapalli.
-    </p>
-    <a routerLink="/registration" class="primary-btn">
-      📩 Contact Us
-    </a>
-  </div>
-</section>
-
-<!-- Contribution Section -->
-<section class="section bg-soft animate-on-scroll text-indigo-700 dark:text-indigo-300">
-  <div class="cta-card text-indigo-700 dark:text-indigo-300">
-    <h2 class="text-indigo-700 dark:text-indigo-300">
-      Make a Contribution
-    </h2>
-    <p class="text-indigo-700 dark:text-indigo-300">
-      Your contribution helps preserve dharmic traditions,
-      temple activities, and spiritual services for future generations.
-    </p>
-    <a routerLink="/bank-info" class="primary-btn">
-      🙏 Contribute / Donate
-    </a>
-  </div>
-</section>
+</main>
