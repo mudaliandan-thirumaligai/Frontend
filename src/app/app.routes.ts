@@ -63,7 +63,8 @@ export const routes: Routes = [
       { path: 'past-events', component: PastEventsComponent },
       { path: 'about-swamy', component: AboutSwamyComponent },
       { path: 'bank-info', component: BankDetailsComponent },
-      { path: 'registration', component: ContactUsComponent }
+      { path: 'registration', component: ContactUsComponent },
+      { path : 'thirumaligais', component: ThirumalagaiComponent }
     ]
   },
 
