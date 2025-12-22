@@ -71,14 +71,14 @@ export class LandingComponent implements OnInit, AfterViewInit {
     // elements.forEach(el => observer.observe(el));
   }
 
-  // Type writer effect
-  // 🔹 Typewriter Effect
+// Type writer effect
 words: string[] = [
-  'Dharma',
-  'Tradition',
-  'Spiritual Wisdom',
-  'Sacred Lineage'
+  'ஆசார்ய நிஷ்டை',
+  'கைங்கர்யம்',
+  'ஸ்ரீ வைஷ்ணவ சம்பிரதாயம்',
+  'ராமானுஜ சம்பந்தம்'
 ];
+
 
 typedText = '';
 wordIndex = 0;
