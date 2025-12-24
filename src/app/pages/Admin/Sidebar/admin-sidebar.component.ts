@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { AuthService } from '../../../shared/services/Auth/auth.service';
+import { ToastService } from '../../../shared/services/toast.service';
 interface AdminNavItem {
   label: string;
   route?: string;
@@ -27,7 +28,7 @@ export class AdminSidebarComponent {
     { label: 'Logout', action: () => this.logout() }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService, private toast: ToastService) {}
 
   navigate(item: AdminNavItem) {
     if (item.route) {
@@ -38,8 +39,8 @@ export class AdminSidebarComponent {
   }
 
   logout() {
-    console.log('Logging out...');
-    this.router.navigateByUrl('/', { replaceUrl: true });
-    
+    this.toast.showInfo('Logging out...');
+    this.authService.logout();
+    this.toast.showSuccess('Logged out successfully');
   }
 }

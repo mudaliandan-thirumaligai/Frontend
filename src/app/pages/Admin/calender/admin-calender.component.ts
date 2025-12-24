@@ -23,6 +23,11 @@ interface CalendarEvent extends EventInput {
     eventNumber?: number;
   };
 }
+type EventColor =
+  | 'danger'
+  | 'success'
+  | 'primary'
+  | 'warning';
 
 @Component({
   selector: 'app-calender',
@@ -53,12 +58,13 @@ export class AdminCalenderComponent {
   eventEndDate = '';
   eventLevel = '';
   isOpen = false;
+  
 
   calendarsEvents: Record<string, string> = {
-    Danger: 'danger',
-    Success: 'success',
-    Primary: 'primary',
-    Warning: 'warning'
+    utsavam: 'danger',
+    thirunakchathiram: 'success',
+    theerthem: 'primary',
+    others: 'warning'
   };
 
   calendarOptions!: CalendarOptions;
@@ -96,12 +102,11 @@ loadEventsFromAPI() {
       console.log('Fetched Events from API:', data);
       const formattedEvents = data.map(event => ({
         id: event.eventNumber.toString(),
-        title: event.name,          
-        start: event.startDate,     
-        end: event.endDate,         
+        title: event.name,
+        start: event.startDate,
+        end: event.endDate,
         extendedProps: {
-          // TODO the api can be changed to the type of event also (in backednd and passed as payload )
-          calendar: event.eventLevel || 'Primary',
+          calendar: event.eventLevel || 'others', // keep original name for API
           description: event.description,
           location: event.location,
           tamilYear: event.tamilYear,
@@ -109,7 +114,8 @@ loadEventsFromAPI() {
           eventNumber: event.eventNumber
         }
       }));
-      console.log('Formatted Events for Calendar:', formattedEvents);
+      this.calendarOptions.events = formattedEvents;
+
 
       // Update only the events array - updating this should refresh the calendar
       this.calendarOptions.events = formattedEvents;
@@ -255,7 +261,7 @@ handleAddOrUpdateEvent() {
       end: new Date(createdEvent.endDate),
       allDay: true,
       extendedProps: {
-        calendar: this.eventLevel,
+        calendar: this.eventLevel, // send this to backend
         description: createdEvent.description,
         location: createdEvent.location,
         tamilYear: createdEvent.tamilYear,
@@ -263,6 +269,7 @@ handleAddOrUpdateEvent() {
         eventNumber: Number(createdEvent.eventNumber)
       }
     };
+
 
     this.events.push(newCalendarEvent);
     this.calendarComponent.getApi().addEvent(newCalendarEvent);
@@ -344,15 +351,17 @@ handleDeleteEvent() {
   }
 
   renderEventContent(eventInfo: any) {
-    const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar?.toLowerCase()}`;
+    const level = eventInfo.event.extendedProps.calendar || 'others';
+    const mappedColor = this.calendarsEvents[level] || 'warning';
+
     return {
       html: `
-        <div class="event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm">
-          <div class="fc-daygrid-event-dot"></div>
-          <div class="fc-event-time">${eventInfo.timeText || ''}</div>
-          <div class="fc-event-title">${eventInfo.event.title}</div>
+        <div class="event-fc-color fc-bg-${mappedColor} flex items-center gap-1 p-1 rounded-sm">
+          <span class="fc-daygrid-event-dot"></span>
+          <span class="fc-event-title">${eventInfo.event.title}</span>
         </div>
       `
     };
   }
+
 }
