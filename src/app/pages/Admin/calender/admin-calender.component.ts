@@ -21,6 +21,7 @@ interface CalendarEvent extends EventInput {
     tamilYear?: string;
     tamilMonth?: string;
     eventNumber?: number;
+    googleDriveLink?: string;
   };
 }
 type EventColor =
@@ -57,6 +58,7 @@ export class AdminCalenderComponent {
   eventStartDate = '';
   eventEndDate = '';
   eventLevel = '';
+  eventGoogleDriveLink = '';
   isOpen = false;
   
 
@@ -169,6 +171,7 @@ loadEventsFromAPI() {
     this.eventLocation = event.extendedProps['location'] || '';
     this.eventTamilYear = event.extendedProps['tamilYear'] || '';
     this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
+    this.eventGoogleDriveLink = event.extendedProps['googleDriveLink'] || '';
 
     this.openModal();
   }
@@ -185,7 +188,8 @@ handleAddOrUpdateEvent() {
     location: this.eventLocation,
     tamilYear: this.eventTamilYear,
     tamilMonth: this.eventTamilMonth,
-    eventLevel: this.eventLevel
+    eventLevel: this.eventLevel,
+    googleDriveLink: this.eventGoogleDriveLink
   };
 
   if (this.selectedEvent) {
@@ -210,6 +214,7 @@ handleAddOrUpdateEvent() {
           existingEvent.setExtendedProp('tamilYear', updatedEvent.tamilYear);
           existingEvent.setExtendedProp('tamilMonth', updatedEvent.tamilMonth);
           existingEvent.setExtendedProp('eventNumber', Number(updatedEvent.eventNumber));
+          existingEvent.setExtendedProp('googleDriveLink', updatedEvent.googleDriveLink);
         }
 
         // Update local events array
@@ -229,7 +234,8 @@ handleAddOrUpdateEvent() {
               location: updatedEvent.location,
               tamilYear: updatedEvent.tamilYear,
               tamilMonth: updatedEvent.tamilMonth,
-              eventNumber: Number(updatedEvent.eventNumber) // ensure number
+              eventNumber: Number(updatedEvent.eventNumber),
+              googleDriveLink: updatedEvent.googleDriveLink
             }
           };
         }
@@ -338,6 +344,7 @@ handleDeleteEvent() {
     this.eventLocation = '';
     this.eventTamilYear = '';
     this.eventTamilMonth = '';
+    this.eventGoogleDriveLink = '';
     this.selectedEvent = null;
   }
 

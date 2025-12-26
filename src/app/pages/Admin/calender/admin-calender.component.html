@@ -11,14 +11,14 @@
     <div class="flex flex-col px-6 py-6 overflow-y-auto custom-scrollbar max-h-[90vh] font-sans text-indigo-700 dark:text-indigo-300">
       
       <!-- 🌸 HEADER -->
-      <div class="mb-6">
+      <div class="sticky top-0 z-10 bg-white dark:bg-gray-900 px-6 py-4">
         <h5 class="font-semibold text-indigo-700 dark:text-indigo-300 text-xl lg:text-2xl">
           {{ selectedEvent ? 'Edit Event' : 'Add Event' }}
         </h5>
       </div>
 
       <!-- 🌿 FORM FIELDS -->
-      <div class="space-y-6">
+      <div class="overflow-y-auto max-h-[75vh] px-6 py-4 space-y-6 custom-scrollbar">
         <!-- Event Name -->
         <div>
           <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
@@ -90,6 +90,18 @@
               class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-indigo-700 dark:text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-400"
             />
           </div>
+          <!-- Google Drive Link -->
+          <div>
+            <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+              Google Drive Link
+            </label>
+            <input
+              type="url"
+              [(ngModel)]="eventGoogleDriveLink"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-indigo-700 dark:text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:placeholder:text-gray-400"
+            />
+          </div>
+
         </div>
 
         <!-- Event Color Radio Buttons -->
@@ -114,6 +126,7 @@
                 </span>
                 {{ entry.key }}
               </label>
+
             </div>
           </div>
         </div>
@@ -144,7 +157,7 @@
       </div>
 
       <!-- Footer Buttons -->
-      <div class="flex flex-col sm:flex-row items-center gap-3 mt-6 sm:justify-end">
+      <div class="sticky bottom-0 z-10 bg-white dark:bg-gray-900 flex flex-col sm:flex-row items-center gap-3 mt-6 sm:justify-end px-6 py-4">
         <button
           type="button"
           (click)="closeModal()"
