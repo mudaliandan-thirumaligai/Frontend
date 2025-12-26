@@ -131,3 +131,75 @@ section.bg-indigo-50 .text-center.text-indigo-600 {
   font-size: 1rem;
   opacity: 0.85;
 }
+
+/* ================= COMMUNITY PRESENCE ================= */
+
+.community-presence {
+  position: relative;
+  padding: 3rem 1rem;
+  border-radius: 1.5rem;
+  background: white;
+
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Soft divine glow */
+.community-presence::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.18),
+    transparent 70%
+  );
+  filter: blur(60px);
+  z-index: -1;
+
+  /* subtle pulse animation */
+  animation: glowPulse 4s ease-in-out infinite alternate;
+}
+
+/* Visitor number */
+.visitor-count {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 700;
+  color: #1e3a8a; /* indigo-900 */
+  margin-top: 0.5rem;
+  letter-spacing: -0.02em;
+
+  /* gently scale on hover */
+  transition: transform 0.3s ease;
+}
+
+.community-presence:hover .visitor-count {
+  transform: scale(1.05);
+}
+
+/* Pulse keyframes for glow */
+@keyframes glowPulse {
+  0% {
+    filter: blur(60px) brightness(1);
+  }
+  50% {
+    filter: blur(70px) brightness(1.2);
+  }
+  100% {
+    filter: blur(60px) brightness(1);
+  }
+}
+
+
