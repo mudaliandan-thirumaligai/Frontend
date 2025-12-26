@@ -92,6 +92,37 @@
             </p>
           </div>
         </div>
+        <!-- GOOGLE DRIVE LINK -->
+        <div>
+          <p class="text-xs uppercase tracking-widest text-indigo-500 font-medium">
+            Event Media
+          </p>
+
+          <!-- If link exists -->
+          <button
+            *ngIf="eventGoogleDriveLink; else noDriveLink"
+            type="button"
+            (click)="openGoogleDrive()"
+            class="mt-2 inline-flex items-center
+                  text-indigo-700 font-medium
+                  hover:text-indigo-900 transition
+                  px-6 py-3 rounded-lg
+                  border border-indigo-300 dark:border-indigo-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+          >
+            View Photos  →
+          </button>
+
+          <!-- Else block -->
+          <ng-template #noDriveLink>
+            <p class="mt-2 text-sm text-gray-500 italic">
+              Google Drive link has not been updated for this event.
+            </p>
+          </ng-template>
+        </div>
+
+
+
 
         <!-- TAMIL INFO -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

@@ -19,6 +19,7 @@ interface CalendarEvent extends EventInput {
     location?: string;
     tamilYear?: string;
     tamilMonth?: string;
+    googleDriveLink?: string;
     eventNumber?: number;
   };
 }
@@ -65,6 +66,7 @@ export class UserCalenderComponent {
   eventStartDate = '';
   eventEndDate = '';
   eventLevel = '';
+  eventGoogleDriveLink = '';
   isOpen = false;
 
   calendarOptions!: CalendarOptions;
@@ -115,7 +117,8 @@ export class UserCalenderComponent {
         description: event.description,
         location: event.location,
         tamilYear: event.tamilYear,
-        tamilMonth: event.tamilMonth
+        tamilMonth: event.tamilMonth,
+        googleDriveLink: event.googleDriveLink
       }
     }));
 
@@ -152,6 +155,7 @@ export class UserCalenderComponent {
     this.eventLocation = event.extendedProps['location'] || '';
     this.eventTamilYear = event.extendedProps['tamilYear'] || '';
     this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
+    this.eventGoogleDriveLink = event.extendedProps['googleDriveLink'] || '';
 
     this.openModal();
   }
@@ -164,6 +168,11 @@ export class UserCalenderComponent {
     this.isOpen = false;
     this.resetModalFields();
   }
+  openGoogleDrive() {
+    if (!this.eventGoogleDriveLink) return;
+    window.open(this.eventGoogleDriveLink, '_blank', 'noopener');
+  }
+
 
   resetModalFields() {
     this.eventTitle = '';
