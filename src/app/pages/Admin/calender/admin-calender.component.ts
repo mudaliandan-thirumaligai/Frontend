@@ -40,7 +40,7 @@ type EventColor =
     ModalComponent
   ],
   templateUrl: './admin-calender.component.html',
-  styles: ``
+  styleUrls: ['./admin-calender.component.scss']
 })
 export class AdminCalenderComponent {
 

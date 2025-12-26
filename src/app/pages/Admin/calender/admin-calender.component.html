@@ -111,18 +111,31 @@
           </label>
           <div class="flex flex-wrap items-center gap-4">
             <div *ngFor="let entry of (calendarsEvents | keyvalue)">
-              <label class="flex items-center text-sm text-indigo-700 dark:text-indigo-300 cursor-pointer">
+              <label
+                  class="flex items-center text-sm text-indigo-700 dark:text-indigo-300 cursor-pointer select-none"
+                  (click)="eventLevel = entry.key"
+                >
                 <input
                   type="radio"
                   name="event-level"
                   [(ngModel)]="eventLevel"
                   [value]="entry.key"
-                  class="sr-only"
+                  class="absolute opacity-0 w-5 h-5 cursor-pointer"
                 />
                 <span
                   class="w-5 h-5 mr-2 border border-gray-300 rounded-full flex items-center justify-center dark:border-gray-700"
                 >
-                  <span class="w-2 h-2 rounded-full bg-white" [class.block]="eventLevel === entry.key" [class.hidden]="eventLevel !== entry.key"></span>
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [ngClass]="{
+                      'bg-red-500': entry.key === 'utsavam',
+                      'bg-green-500': entry.key === 'thirunakchathiram',
+                      'bg-blue-500': entry.key === 'theerthem',
+                      'bg-yellow-500': entry.key === 'others'
+                    }"
+                    [class.block]="eventLevel === entry.key"
+                    [class.hidden]="eventLevel !== entry.key">
+                  </span>
                 </span>
                 {{ entry.key }}
               </label>
