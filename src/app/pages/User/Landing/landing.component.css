@@ -9,3 +9,125 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ================= UPCOMING EVENT SECTION ================= */
+
+section.bg-indigo-50 {
+  position: relative;
+  overflow: hidden;
+}
+
+/* soft background glow */
+section.bg-indigo-50::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.18),
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* ================= EVENT CARD ================= */
+
+section.bg-indigo-50 .max-w-md {
+  position: relative;
+  border-radius: 1.25rem;
+  background: white;
+
+  /* premium depth */
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  transition:
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* hover interaction */
+section.bg-indigo-50 .max-w-md:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 30px 60px rgba(79, 70, 229, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ================= EVENT TITLE ================= */
+
+section.bg-indigo-50 h3 {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+section.bg-indigo-50 h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    #6366f1,
+    #4f46e5
+  );
+  border-radius: 999px;
+}
+
+/* ================= DETAILS ================= */
+
+section.bg-indigo-50 .text-sm p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ================= CTA UNDERLINE EFFECT ================= */
+
+/* Target all CTA-style links */
+a.inline-flex {
+  position: relative;
+  text-decoration: none;
+}
+
+/* underline */
+a.inline-flex::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  width: 100%;
+  height: 2px;
+
+  background: linear-gradient(
+    to right,
+    #1e3a8a,   /* indigo-900 */
+    #4f46e5    /* indigo-600 */
+  );
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* hover animation */
+a.inline-flex:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* ================= NO EVENT MESSAGE ================= */
+
+section.bg-indigo-50 .text-center.text-indigo-600 {
+  font-size: 1rem;
+  opacity: 0.85;
+}
