@@ -44,6 +44,7 @@ import { DocumentsComponent } from './pages/User/Documents/documents.component';
 import { PastEventsComponent } from './pages/User/Past-Events/past-events.component';
 import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
 import { AdminLayoutComponent } from './pages/Admin/Layout/admin-layout.component';
+import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.component';
 
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
@@ -76,7 +77,8 @@ export const routes: Routes = [
     children: [
       { path: 'calendar', component: AdminCalenderComponent },
       { path: 'addUser', component: AddNewAdmin },
-      { path: 'change-pwd', component: ChangePasswordComponent }
+      { path: 'change-pwd', component: ChangePasswordComponent },
+      { path: 'videos', component: VideosAdminComponent }
     ]
   },
 

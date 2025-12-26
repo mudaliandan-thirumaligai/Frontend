@@ -25,6 +25,7 @@ export class AdminSidebarComponent {
     { label: 'Add User', route: '/admin/addUser' },
     { label: 'Calendar', route: '/admin/calendar' },
     { label: 'Change Password', route: '/admin/change-pwd' },
+    { label: 'Videos', route: '/admin/videos' },
     { label: 'Logout', action: () => this.logout() }
   ];
 
