@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Contact
-
- } from '../pages/Admin/Shishya-List/shishya.model';
+import { Contact} from '../pages/Admin/Shishya-List/shishya.model';
+import { environment } from '../environment/environment';
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-  private baseUrl = 'http://localhost:8080'; // change as needed
+  private baseUrl = environment.apiUrl; // change as needed
 
   constructor(private http: HttpClient) {}
 

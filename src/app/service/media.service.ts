@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../environment/environment';
 export interface Video {
   _id?: string;
   eventName?: string;
@@ -14,7 +14,7 @@ export interface Video {
   providedIn: 'root',
 })
 export class MediaService {
-  private readonly baseUrl = 'http://localhost:8080/media/videos';
+  private readonly baseUrl = environment.apiUrl + '/media/videos';
 
   constructor(private http: HttpClient) {}
 
