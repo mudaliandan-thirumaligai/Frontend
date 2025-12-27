@@ -1,0 +1,217 @@
+<app-page-breadcrumb pageTitle="Shishya List" />
+<!-- ================= Contact INTRO ================= -->
+<h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">Shishya List</h1>
+<br>
+
+<!-- SEARCH & FILTER BAR -->
+<div class="flex flex-col sm:flex-row gap-3 mb-4">
+
+  <input
+    type="text"
+    placeholder="Search by name or email..."
+    class="input flex-1"
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="onSearchChange()"
+  />
+
+  <select
+    class="input w-full sm:w-48"
+    [(ngModel)]="selectedType"
+    (ngModelChange)="onTypeChange()"
+  >
+    <option value="all">All Types</option>
+    <option value="shishya">Shishya</option>
+    <option value="abhimani">Abhimani</option>
+  </select>
+
+</div>
+
+
+<div class="rounded-2xl border bg-white p-6 shadow-sm">
+
+  <table class="w-full border-collapse">
+    <thead>
+      <tr class="text-left border-b text-sm text-gray-600">
+        <th class="py-3">Name</th>
+        <th>Type</th>
+        <th>Email</th>
+        <th>Created</th>
+        <th class="text-right">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let contact of contacts"
+        class="border-b hover:bg-gray-50 text-sm"
+      >
+        <td class="py-3 font-medium">{{ contact.name }}</td>
+        <td class="capitalize">{{ contact.type }}</td>
+        <td>{{ contact.email || '—' }}</td>
+        <td>{{ contact.createdAt | date: 'short' }}</td>
+
+        <td class="text-right space-x-2">
+          <!-- VIEW -->
+          <button
+            class="px-3 py-1 text-blue-600 hover:underline"
+            (click)="viewContact(contact)"
+          >
+            View
+          </button>
+
+          <!-- EDIT -->
+          <button
+            class="px-3 py-1 text-indigo-600 hover:underline"
+            (click)="editContact(contact)"
+          >
+            Edit
+          </button>
+
+          <!-- DELETE -->
+          <button
+            class="px-3 py-1 text-red-600 hover:underline"
+            (click)="deleteContact(contact._id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- PAGINATION -->
+<div
+  *ngIf="totalPages >= 1"
+  class="flex items-center justify-between mt-4 text-sm"
+>
+  <span class="text-gray-600">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
+
+  <div class="flex gap-2">
+    <button
+      class="btn-secondary"
+      [disabled]="currentPage === 1"
+      (click)="prevPage()"
+    >
+      Prev
+    </button>
+
+    <button
+      class="btn-secondary"
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()"
+    >
+      Next
+    </button>
+  </div>
+</div>
+
+<tr *ngIf="contacts.length === 0">
+  <td colspan="5" class="py-6 text-center text-gray-500">
+    No contacts found
+  </td>
+</tr>
+
+
+<!-- MODAL -->
+<app-modal
+  [isOpen]="isModalOpen"
+  (close)="closeModal()"
+  className="max-w-[420px] max-h-[90vh] overflow-hidden"
+>
+  <div
+    *ngIf="selectedContact"
+    class="flex flex-col px-5 py-5 overflow-y-auto max-h-[85vh] custom-scrollbar space-y-4"
+  >
+    <!-- HEADER -->
+    <div class="sticky top-0 bg-white pb-3 z-10">
+      <h3 class="text-lg font-semibold text-indigo-700">
+        {{ isEditMode ? 'Edit Contact' : 'Contact Details' }}
+      </h3>
+    </div>
+
+    <!-- FIELDS -->
+    <div class="space-y-2">
+
+      <div>
+        <label class="text-xs text-gray-500">Name</label>
+        <input
+          class="input mt-0.5"
+          [(ngModel)]="selectedContact.name"
+          [readonly]="!isEditMode"
+        />
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">Type</label>
+        <select
+          class="input mt-0.5"
+          [(ngModel)]="selectedContact.type"
+          [disabled]="!isEditMode"
+        >
+          <option value="shishya">Shishya</option>
+          <option value="abhimani">Abhimani</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">Email</label>
+        <input
+          class="input mt-0.5"
+          [(ngModel)]="selectedContact.email"
+          [readonly]="!isEditMode"
+        />
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">Mobile</label>
+        <input
+          class="input mt-0.5"
+          [(ngModel)]="selectedContact.mobile"
+          [readonly]="!isEditMode"
+        />
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">WhatsApp Number</label>
+        <input
+          class="input mt-0.5"
+          [(ngModel)]="selectedContact.whatsappNumber"
+          [readonly]="!isEditMode"
+        />
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">Postal Address</label>
+        <textarea
+          rows="3"
+          class="input mt-0.5 h-16 px-2 py-1 resize-none"
+          [(ngModel)]="selectedContact.postalAddress"
+          [readonly]="!isEditMode"
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="text-xs text-gray-500">Created At</label>
+        <div class="text-sm text-gray-700 mt-0.5">
+          {{ selectedContact.createdAt | date:'medium' }}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="sticky bottom-0 bg-white pt-4 flex justify-end gap-3">
+      <button class="btn-secondary" (click)="closeModal()">Close</button>
+
+      <button
+        *ngIf="isEditMode"
+        class="btn-primary"
+        (click)="saveChanges()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</app-modal>

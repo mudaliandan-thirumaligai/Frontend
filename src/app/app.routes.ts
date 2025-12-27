@@ -45,7 +45,7 @@ import { PastEventsComponent } from './pages/User/Past-Events/past-events.compon
 import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
 import { AdminLayoutComponent } from './pages/Admin/Layout/admin-layout.component';
 import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.component';
-
+import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.component';
 
 // TODO ISOLATE ROUTES FOR ADMIN/ USERS TO RESOLVE ANY CSS CONFLICT
 export const routes: Routes = [
@@ -78,7 +78,8 @@ export const routes: Routes = [
       { path: 'calendar', component: AdminCalenderComponent },
       { path: 'addUser', component: AddNewAdmin },
       { path: 'change-pwd', component: ChangePasswordComponent },
-      { path: 'videos', component: VideosAdminComponent }
+      { path: 'videos', component: VideosAdminComponent },
+      { path: 'shishya-info', component: ShishyaListComponent }
     ]
   },
 
