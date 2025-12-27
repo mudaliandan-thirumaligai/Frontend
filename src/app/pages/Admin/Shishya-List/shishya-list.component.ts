@@ -6,6 +6,7 @@ import { ModalComponent } from '../../../shared/components/ui/modal/modal.compon
 import { ContactService } from '../../../service/contact-us.service';
 import { Contact } from './shishya.model';
 import { ToastService } from '../../../shared/services/toast.service';
+import { exportToExcel } from './excel.utils';
 @Component({
   selector: 'app-shishya-list',
   standalone: true,
@@ -146,5 +147,46 @@ export class ShishyaListComponent implements OnInit {
     }
   });
 }
+  //  Export to Excel
+  exportAllFiltered(): void {
+  this.contactService.getPaginated({
+    page: 1,
+    limit: 10000,
+    search: this.searchTerm,
+    type: this.selectedType,
+  }).subscribe({
+    next: (res) => {
+      if (!res.data || !res.data.length) {
+        this.toast.showInfo('No data to export');
+        return;
+      }
+
+      const excelData = res.data.map((c: any) => ({
+        'Name': c.name,
+        'Type': c.type,
+        'Email': c.email,
+        'Mobile': c.mobile || '',
+        'WhatsApp Number': c.whatsappNumber || '',
+        'Postal Address': c.postalAddress || '',
+        'Query / Message': c.query || '',
+        'Status': c.status || 'open',
+        'Created At': c.createdAt
+          ? new Date(c.createdAt).toLocaleString()
+          : '',
+        'Updated At': c.updatedAt
+          ? new Date(c.updatedAt).toLocaleString()
+          : '',
+      }));
+
+      exportToExcel(excelData, `shishya-list-${new Date().toISOString().split('T')[0]}`);
+      this.toast.showSuccess('Excel downloaded successfully');
+    },
+    error: () => {
+      this.toast.showError('Failed to export contacts');
+    }
+  });
+}
+
+
 
 }
