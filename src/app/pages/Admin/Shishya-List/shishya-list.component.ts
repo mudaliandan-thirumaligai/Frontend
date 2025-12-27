@@ -5,7 +5,7 @@ import { PageBreadcrumbComponent } from '../../../shared/components/common/page-
 import { ModalComponent } from '../../../shared/components/ui/modal/modal.component';
 import { ContactService } from '../../../service/contact-us.service';
 import { Contact } from './shishya.model';
-
+import { ToastService } from '../../../shared/services/toast.service';
 @Component({
   selector: 'app-shishya-list',
   standalone: true,
@@ -35,24 +35,30 @@ export class ShishyaListComponent implements OnInit {
   totalPages = 0;
   totalRecords = 0;
 
-  constructor(private contactService: ContactService) {}
+  constructor(private contactService: ContactService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadContacts();
   }
 
   loadContacts(): void {
-    this.contactService.getPaginated({
-      page: this.currentPage,
-      limit: this.pageSize,
-      search: this.searchTerm,
-      type: this.selectedType,
-    }).subscribe(res => {
+  this.contactService.getPaginated({
+    page: this.currentPage,
+    limit: this.pageSize,
+    search: this.searchTerm,
+    type: this.selectedType,
+  }).subscribe({
+    next: (res) => {
       this.contacts = res.data;
       this.totalPages = res.totalPages;
       this.totalRecords = res.total;
-    });
-  }
+    },
+    error: () => {
+      this.toast.showError('Failed to load contacts. Please try again.');
+    }
+  });
+}
+
 
   /* SEARCH / FILTER */
   onSearchChange(): void {
@@ -85,6 +91,7 @@ export class ShishyaListComponent implements OnInit {
     this.selectedContact = { ...contact };
     this.isEditMode = false;
     this.isModalOpen = true;
+    this.toast.showInfo('Viewing contact details');
   }
 
   /* EDIT */
@@ -92,6 +99,7 @@ export class ShishyaListComponent implements OnInit {
     this.selectedContact = { ...contact };
     this.isEditMode = true;
     this.isModalOpen = true;
+     this.toast.showInfo('Edit mode enabled');
   }
 
   closeModal(): void {
@@ -105,17 +113,38 @@ export class ShishyaListComponent implements OnInit {
 
     this.contactService
       .update(this.selectedContact._id, this.selectedContact)
-      .subscribe(() => {
-        this.loadContacts();
-        this.closeModal();
+      .subscribe({
+        next: () => {
+          this.toast.showSuccess('Contact updated successfully');
+          this.loadContacts();
+          this.closeModal();
+        },
+        error: (err) => {
+          this.toast.showError(
+            err?.error?.message || 'Failed to update contact'
+          );
+        }
       });
   }
 
-  deleteContact(id: string): void {
-    if (!confirm('Are you sure you want to delete this contact?')) return;
 
-    this.contactService.delete(id).subscribe(() => {
-      this.loadContacts();
-    });
+  deleteContact(id: string): void {
+  if (!confirm('Are you sure you want to delete this contact?')) {
+    this.toast.showInfo('Deletion cancelled');
+    return;
   }
+
+  this.contactService.delete(id).subscribe({
+    next: () => {
+      this.toast.showSuccess('Contact deleted successfully');
+      this.loadContacts();
+    },
+    error: (err) => {
+      this.toast.showError(
+        err?.error?.message || 'Failed to delete contact'
+      );
+    }
+  });
+}
+
 }

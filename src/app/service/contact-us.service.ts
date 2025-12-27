@@ -32,10 +32,10 @@ export class ContactService {
 
 
   update(id: string, data: Partial<Contact>) {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+    return this.http.put(`${this.baseUrl}/contact/${id}`, data);
   }
 
   delete(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/contact/${id}`);
   }
 }

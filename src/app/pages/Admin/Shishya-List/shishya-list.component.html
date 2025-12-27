@@ -1,120 +1,171 @@
 <app-page-breadcrumb pageTitle="Shishya List" />
-<!-- ================= Contact INTRO ================= -->
-<h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">Shishya List</h1>
-<br>
 
-<!-- SEARCH & FILTER BAR -->
-<div class="flex flex-col sm:flex-row gap-3 mb-4">
+<!-- ================= PAGE INTRO ================= -->
+<section class="py-8 px-2">
+  <div class="max-w-6xl mx-auto">
 
-  <input
-    type="text"
-    placeholder="Search by name or email..."
-    class="input flex-1"
-    [(ngModel)]="searchTerm"
-    (ngModelChange)="onSearchChange()"
-  />
+    <!-- Title (Left aligned) -->
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Shishya List
+    </h1>
 
-  <select
-    class="input w-full sm:w-48"
-    [(ngModel)]="selectedType"
-    (ngModelChange)="onTypeChange()"
-  >
-    <option value="all">All Types</option>
-    <option value="shishya">Shishya</option>
-    <option value="abhimani">Abhimani</option>
-  </select>
-
-</div>
-
-
-<div class="rounded-2xl border bg-white p-6 shadow-sm">
-
-  <table class="w-full border-collapse">
-    <thead>
-      <tr class="text-left border-b text-sm text-gray-600">
-        <th class="py-3">Name</th>
-        <th>Type</th>
-        <th>Email</th>
-        <th>Created</th>
-        <th> Query</th>
-        <th class="text-right">Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr
-        *ngFor="let contact of contacts"
-        class="border-b hover:bg-gray-50 text-sm"
-      >
-        <td class="py-3 font-medium">{{ contact.name }}</td>
-        <td class="capitalize">{{ contact.type }}</td>
-        <td>{{ contact.email || '—' }}</td>
-        <td>{{ contact.createdAt | date: 'short' }}</td>
-        <td>{{ contact.query || '—' }}</td>
-
-
-        <td class="text-right space-x-2">
-          <!-- VIEW -->
-          <button
-            class="px-3 py-1 text-blue-600 hover:underline"
-            (click)="viewContact(contact)"
-          >
-            View
-          </button>
-
-          <!-- EDIT -->
-          <button
-            class="px-3 py-1 text-indigo-600 hover:underline"
-            (click)="editContact(contact)"
-          >
-            Edit
-          </button>
-
-          <!-- DELETE -->
-          <button
-            class="px-3 py-1 text-red-600 hover:underline"
-            (click)="deleteContact(contact._id)"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- PAGINATION -->
-<div
-  *ngIf="totalPages >= 1"
-  class="flex items-center justify-between mt-4 text-sm"
->
-  <span class="text-gray-600">
-    Page {{ currentPage }} of {{ totalPages }}
-  </span>
-
-  <div class="flex gap-2">
-    <button
-      class="btn-secondary"
-      [disabled]="currentPage === 1"
-      (click)="prevPage()"
-    >
-      Prev
-    </button>
-
-    <button
-      class="btn-secondary"
-      [disabled]="currentPage === totalPages"
-      (click)="nextPage()"
-    >
-      Next
-    </button>
   </div>
-</div>
+</section>
 
-<tr *ngIf="contacts.length === 0">
-  <td colspan="5" class="py-6 text-center text-gray-500">
-    No contacts found
-  </td>
-</tr>
+<!-- ================= CONTENT ================= -->
+<section class="max-w-6xl mx-auto px-6 pb-16">
+
+  <!-- 🔍 SEARCH & FILTER -->
+  <div class="flex flex-col sm:flex-row gap-4 mb-6">
+
+    <!-- Search -->
+    <input
+      type="text"
+      placeholder="Search by name or email..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange()"
+      class="flex-1 px-4 py-2 rounded-lg
+             border border-[#6379C8]/40 dark:border-[#5362A8]/40
+             bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+             text-indigo-700 dark:text-indigo-300
+             placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+             font-medium tracking-wide
+             focus:outline-none focus:ring-2 focus:ring-indigo-700
+             transition"
+    />
+
+    <!-- Filter -->
+    <select
+      [(ngModel)]="selectedType"
+      (ngModelChange)="onTypeChange()"
+      class="w-full sm:w-48 px-4 py-2 rounded-lg
+             border border-[#6379C8]/40 dark:border-[#5362A8]/40
+             bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+             text-indigo-700 dark:text-indigo-300
+             font-medium tracking-wide
+             focus:outline-none focus:ring-2 focus:ring-indigo-700
+             transition"
+    >
+      <option value="all">All Types</option>
+      <option value="shishya">Shishya</option>
+      <option value="abhimani">Abhimani</option>
+    </select>
+
+  </div>
+
+  <!-- 📋 TABLE CARD -->
+  <div
+    class="rounded-xl
+          bg-indigo-50/60 dark:bg-indigo-950/20
+          border border-indigo-200/60 dark:border-indigo-900
+          shadow-sm overflow-x-auto"
+  >
+    <table class="w-full border-collapse text-left">
+
+      <!-- TABLE HEADER -->
+      <thead>
+        <tr
+          class="border-b border-indigo-200/60
+                text-sm font-semibold
+                text-indigo-700 dark:text-indigo-300"
+        >
+          <th class="py-4 px-4">Name</th>
+          <th class="py-4 px-4">Type</th>
+          <th class="py-4 px-4">Query</th>
+          <th class="py-4 px-4 text-right">Actions</th>
+        </tr>
+      </thead>
+
+      <!-- TABLE BODY -->
+      <tbody>
+        <tr
+          *ngFor="let contact of contacts"
+          class="border-b border-indigo-200/40
+                hover:bg-indigo-100/40 dark:hover:bg-indigo-900/20
+                transition text-sm"
+        >
+          <td class="py-3 px-4 font-medium text-indigo-900 dark:text-indigo-200">
+            {{ contact.name }}
+          </td>
+
+          <td class="py-3 px-4 capitalize text-indigo-700 dark:text-indigo-300">
+            {{ contact.type }}
+          </td>
+
+          <td class="py-3 px-4 text-indigo-600 dark:text-indigo-400">
+            {{ contact.query || '—' }}
+          </td>
+
+          <td class="py-3 px-4 text-right space-x-3 whitespace-nowrap">
+            <button
+              class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+              (click)="viewContact(contact)"
+            >
+              View
+            </button>
+
+            <button
+              class="text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline"
+              (click)="editContact(contact)"
+            >
+              Edit
+            </button>
+
+            <button
+              class="text-red-500 hover:text-red-600 hover:underline"
+              (click)="deleteContact(contact._id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+
+        <!-- EMPTY STATE -->
+        <tr *ngIf="contacts.length === 0">
+          <td
+            colspan="4"
+            class="py-10 text-center text-indigo-500"
+          >
+            No contacts found
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <!-- 🔢 PAGINATION -->
+  <div
+    *ngIf="totalPages >= 1"
+    class="flex items-center justify-between mt-6
+           text-sm text-indigo-600 dark:text-indigo-400"
+  >
+    <span>
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+
+    <div class="flex gap-2">
+      <button
+        class="btn-secondary"
+        [disabled]="currentPage === 1"
+        (click)="prevPage()"
+      >
+        Prev
+      </button>
+
+      <button
+        class="btn-secondary"
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+
+</section>
+
+
 
 
 <!-- SHISHYA DETAILS MODAL -->
