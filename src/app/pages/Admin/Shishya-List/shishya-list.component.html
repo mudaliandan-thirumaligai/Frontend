@@ -36,6 +36,7 @@
         <th>Type</th>
         <th>Email</th>
         <th>Created</th>
+        <th> Query</th>
         <th class="text-right">Actions</th>
       </tr>
     </thead>
@@ -49,6 +50,8 @@
         <td class="capitalize">{{ contact.type }}</td>
         <td>{{ contact.email || '—' }}</td>
         <td>{{ contact.createdAt | date: 'short' }}</td>
+        <td>{{ contact.query || '—' }}</td>
+
 
         <td class="text-right space-x-2">
           <!-- VIEW -->
@@ -114,104 +117,182 @@
 </tr>
 
 
-<!-- MODAL -->
+<!-- SHISHYA DETAILS MODAL -->
 <app-modal
   [isOpen]="isModalOpen"
   (close)="closeModal()"
-  className="max-w-[420px] max-h-[90vh] overflow-hidden"
+  className="max-w-[600px] max-h-[95vh] overflow-hidden"
 >
   <div
     *ngIf="selectedContact"
-    class="flex flex-col px-5 py-5 overflow-y-auto max-h-[85vh] custom-scrollbar space-y-4"
+    class="flex flex-col px-6 py-6 overflow-y-auto custom-scrollbar max-h-[90vh] font-sans text-indigo-700 dark:text-indigo-300"
   >
-    <!-- HEADER -->
-    <div class="sticky top-0 bg-white pb-3 z-10">
-      <h3 class="text-lg font-semibold text-indigo-700">
+
+    <!-- 🌸 HEADER -->
+    <div class="sticky top-0 z-10 bg-white dark:bg-gray-900 px-6 py-4">
+      <h5 class="font-semibold text-indigo-700 dark:text-indigo-300 text-xl lg:text-2xl">
         {{ isEditMode ? 'Edit Contact' : 'Contact Details' }}
-      </h3>
+      </h5>
     </div>
 
-    <!-- FIELDS -->
-    <div class="space-y-2">
+    <!-- 🌿 FORM FIELDS -->
+    <div class="overflow-y-auto max-h-[75vh] px-6 py-4 space-y-6 custom-scrollbar">
 
+      <!-- Name -->
       <div>
-        <label class="text-xs text-gray-500">Name</label>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Name
+        </label>
         <input
-          class="input mt-0.5"
+          type="text"
           [(ngModel)]="selectedContact.name"
           [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900
+                 disabled:bg-gray-100"
         />
       </div>
 
+      <!-- Type -->
       <div>
-        <label class="text-xs text-gray-500">Type</label>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Type
+        </label>
         <select
-          class="input mt-0.5"
           [(ngModel)]="selectedContact.type"
           [disabled]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
         >
           <option value="shishya">Shishya</option>
           <option value="abhimani">Abhimani</option>
         </select>
       </div>
 
+      <!-- Query -->
       <div>
-        <label class="text-xs text-gray-500">Email</label>
-        <input
-          class="input mt-0.5"
-          [(ngModel)]="selectedContact.email"
-          [readonly]="!isEditMode"
-        />
-      </div>
-
-      <div>
-        <label class="text-xs text-gray-500">Mobile</label>
-        <input
-          class="input mt-0.5"
-          [(ngModel)]="selectedContact.mobile"
-          [readonly]="!isEditMode"
-        />
-      </div>
-
-      <div>
-        <label class="text-xs text-gray-500">WhatsApp Number</label>
-        <input
-          class="input mt-0.5"
-          [(ngModel)]="selectedContact.whatsappNumber"
-          [readonly]="!isEditMode"
-        />
-      </div>
-
-      <div>
-        <label class="text-xs text-gray-500">Postal Address</label>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Query
+        </label>
         <textarea
           rows="3"
-          class="input mt-0.5 h-16 px-2 py-1 resize-none"
-          [(ngModel)]="selectedContact.postalAddress"
+          [(ngModel)]="selectedContact.query"
           [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300 resize-none
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
         ></textarea>
       </div>
 
+      <!-- Email -->
       <div>
-        <label class="text-xs text-gray-500">Created At</label>
-        <div class="text-sm text-gray-700 mt-0.5">
-          {{ selectedContact.createdAt | date:'medium' }}
-        </div>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Email
+        </label>
+        <input
+          type="email"
+          [(ngModel)]="selectedContact.email"
+          [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
+        />
+      </div>
+
+      <!-- Mobile -->
+      <div>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Mobile
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="selectedContact.mobile"
+          [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
+        />
+      </div>
+
+      <!-- WhatsApp -->
+      <div>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          WhatsApp Number
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="selectedContact.whatsappNumber"
+          [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
+        />
+      </div>
+
+      <!-- Postal Address -->
+      <div>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Postal Address
+        </label>
+        <textarea
+          rows="3"
+          [(ngModel)]="selectedContact.postalAddress"
+          [readonly]="!isEditMode"
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm
+                 text-indigo-700 dark:text-indigo-300 resize-none
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                 dark:border-gray-700 dark:bg-gray-900"
+        ></textarea>
+      </div>
+
+      <!-- Created At (Read-only text like Event Number) -->
+      <div>
+        <label class="block mb-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+          Created At
+        </label>
+        <input
+          type="text"
+          [value]="selectedContact.createdAt | date:'medium'"
+          disabled
+          class="w-full rounded-lg border border-gray-300 px-4 py-2.5
+                 bg-gray-100 text-sm cursor-not-allowed"
+        />
       </div>
 
     </div>
 
-    <!-- FOOTER -->
-    <div class="sticky bottom-0 bg-white pt-4 flex justify-end gap-3">
-      <button class="btn-secondary" (click)="closeModal()">Close</button>
+    <!-- FOOTER BUTTONS -->
+    <div class="sticky bottom-0 z-10 bg-white dark:bg-gray-900 flex flex-col sm:flex-row items-center gap-3 mt-6 sm:justify-end px-6 py-4">
+
+      <button
+        type="button"
+        (click)="closeModal()"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-indigo-300
+               text-indigo-700 dark:text-indigo-300
+               hover:bg-indigo-50 dark:hover:bg-indigo-900"
+      >
+        Close
+      </button>
 
       <button
         *ngIf="isEditMode"
-        class="btn-primary"
+        type="button"
         (click)="saveChanges()"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-indigo-500 text-white hover:bg-indigo-600"
       >
-        Save
+        Save Changes
       </button>
+
     </div>
+
   </div>
 </app-modal>
+

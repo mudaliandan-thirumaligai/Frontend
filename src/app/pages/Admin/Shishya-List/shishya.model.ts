@@ -6,5 +6,6 @@ export interface Contact {
   mobile?: string;
   whatsappNumber?: string;
   postalAddress?: string;
+  query?: string;
   createdAt: string;
 }
