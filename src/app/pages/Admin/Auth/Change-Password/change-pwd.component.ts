@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { LabelComponent } from '../../../../shared/components/form/label/label.component';
-import { ButtonComponent } from '../../../../shared/components/ui/button/button.component';
-import { InputFieldComponent } from '../../../../shared/components/form/input/input-field.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService, ChangePasswordPayload } from '../../../../shared/services/Auth/auth.service';
@@ -14,9 +11,6 @@ import { ToastService } from '../../../../shared/services/toast.service';
   standalone: true,
   imports: [
     CommonModule,
-    LabelComponent,
-    ButtonComponent,
-    InputFieldComponent,
     RouterModule,
     FormsModule,
   ],

@@ -4,8 +4,8 @@
          transition-all duration-300 backdrop-blur-md
          bg-gradient-to-r from-indigo-50/80 to-blue-100/80
          dark:from-neutral-900/80 dark:to-neutral-800/80"
-  [ngClass]="(containerClasses$ | async) || []"
 >
+
 
   <!-- 🔵 LEFT: USER MENU -->
   <div class="flex items-center space-x-6">
@@ -130,20 +130,16 @@
 
 
 <!-- 🔹 Main Wrapper -->
-<div class="min-h-screen xl:flex">
+<div class="min-h-screen">
 
-  <!-- Admin Sidebar -->
-  <div *ngIf="isAdmin$ | async">
-    <app-sidebar-new></app-sidebar-new>
-    <app-backdrop></app-backdrop>
-  </div>
+  <!-- Header already fixed, so offset content -->
+  <div class="pt-24">
 
-  <!-- Content -->
-  <div [ngClass]="(containerClasses$ | async) || []">
     <div class="mx-auto max-w-(--breakpoint-2xl)">
       <router-outlet></router-outlet>
       <app-footer></app-footer>
     </div>
-  </div>
 
+  </div>
 </div>
+

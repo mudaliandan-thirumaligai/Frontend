@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { EventService } from '../../../service/event.service';
 import { CalendarEvent } from '../../../shared/interfaces/calender-event.interface';
+import { VisitorService } from '../../../service/visitors.service';
 
 @Component({
   selector: 'app-landing',
@@ -15,6 +16,8 @@ import { CalendarEvent } from '../../../shared/interfaces/calender-event.interfa
   encapsulation: ViewEncapsulation.None
 })
 export class LandingComponent implements OnInit, AfterViewInit {
+  visitorCount = 0;
+
 
   // 🔹 Gallery Preview Images
   galleryImages: string[] = [
@@ -30,10 +33,11 @@ export class LandingComponent implements OnInit, AfterViewInit {
   loadingEvent = true;
   noUpcomingEvent = false;
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private visitorService: VisitorService) {}
 
   ngOnInit(): void {
     this.fetchNextUpcomingEvent();
+    this.trackVisitor();
   }
 
   fetchNextUpcomingEvent(): void {
@@ -51,6 +55,33 @@ export class LandingComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  private trackVisitor(): void {
+  const visitorId = this.getVisitorId();
+
+  this.visitorService.registerVisit(visitorId).subscribe({
+    next: res => {
+      this.visitorCount = res.count;
+    },
+    error: () => {
+      // fallback: still show count if visit fails
+      this.visitorService.getCount().subscribe(res => {
+        this.visitorCount = res.count;
+      });
+    }
+  });
+}
+
+  private getVisitorId(): string {
+    const key = 'tm_visitor_id';
+    let id = localStorage.getItem(key);
+
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(key, id);
+    }
+
+    return id;
+}
 
   ngAfterViewInit(): void {
     this.startTypingEffect();
@@ -71,14 +102,14 @@ export class LandingComponent implements OnInit, AfterViewInit {
     // elements.forEach(el => observer.observe(el));
   }
 
-  // Type writer effect
-  // 🔹 Typewriter Effect
+// Type writer effect
 words: string[] = [
-  'Dharma',
-  'Tradition',
-  'Spiritual Wisdom',
-  'Sacred Lineage'
+  'ஆசார்ய நிஷ்டை',
+  'கைங்கர்யம்',
+  'ஸ்ரீ வைஷ்ணவ சம்பிரதாயம்',
+  'ராமானுஜ சம்பந்தம்'
 ];
+
 
 typedText = '';
 wordIndex = 0;

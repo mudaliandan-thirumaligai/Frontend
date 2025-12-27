@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastService, ToastMessage } from '../../services/toast.service';
 import { NgClass } from '@angular/common';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-toast',
   standalone: true,
-  imports: [ NgClass],
+  imports: [ NgClass, CommonModule],
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.scss'],
 })

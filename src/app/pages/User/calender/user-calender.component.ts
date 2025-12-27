@@ -19,9 +19,12 @@ interface CalendarEvent extends EventInput {
     location?: string;
     tamilYear?: string;
     tamilMonth?: string;
+    googleDriveLink?: string;
     eventNumber?: number;
   };
 }
+type EventColor = 'danger' | 'success' | 'primary' | 'warning';
+
 
 @Component({
   selector: 'app-calender',
@@ -47,6 +50,13 @@ export class UserCalenderComponent {
   events: CalendarEvent[] = [];
   selectedEvent: CalendarEvent | null = null;
 
+  calendarsEvents: Record<string, EventColor> = {
+    utsavam: 'danger',
+    thirunakchathiram: 'success',
+    theerthem: 'primary',
+    others: 'warning'
+  };
+
   eventTitle = '';
   eventNumber = 0;
   eventDescription = '';
@@ -56,6 +66,7 @@ export class UserCalenderComponent {
   eventStartDate = '';
   eventEndDate = '';
   eventLevel = '';
+  eventGoogleDriveLink = '';
   isOpen = false;
 
   calendarOptions!: CalendarOptions;
@@ -94,24 +105,24 @@ export class UserCalenderComponent {
   }
 
   loadEventsFromAPI() {
-    this.eventService.getAllEvents().subscribe(
-      (data: any[]) => {
-        const formattedEvents = data.map(event => ({
-          id: event.eventNumber.toString(),
-          title: event.name,
-          start: event.startDate,
-          end: event.endDate,
-          extendedProps: {
-            calendar: event.eventLevel || 'Primary',
-            description: event.description,
-            location: event.location,
-            tamilYear: event.tamilYear,
-            tamilMonth: event.tamilMonth,
-            eventNumber: event.eventNumber
-          }
-        }));
+  this.eventService.getAllEvents().subscribe((data: any[]) => {
+    const formattedEvents: EventInput[] = data.map(event => ({
+      id: event.eventNumber.toString(),
+      title: event.name,
+      start: event.startDate,
+      end: event.endDate,
+      allDay: true,
+      extendedProps: {
+        calendar: event.eventLevel || 'others',
+        description: event.description,
+        location: event.location,
+        tamilYear: event.tamilYear,
+        tamilMonth: event.tamilMonth,
+        googleDriveLink: event.googleDriveLink
+      }
+    }));
 
-        this.calendarOptions.events = formattedEvents;
+    this.calendarOptions.events = formattedEvents;
 
         // 🔹 Jump to event month if coming from landing page
         if (this.targetDateFromRoute) {
@@ -144,6 +155,7 @@ export class UserCalenderComponent {
     this.eventLocation = event.extendedProps['location'] || '';
     this.eventTamilYear = event.extendedProps['tamilYear'] || '';
     this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
+    this.eventGoogleDriveLink = event.extendedProps['googleDriveLink'] || '';
 
     this.openModal();
   }
@@ -156,6 +168,11 @@ export class UserCalenderComponent {
     this.isOpen = false;
     this.resetModalFields();
   }
+  openGoogleDrive() {
+    if (!this.eventGoogleDriveLink) return;
+    window.open(this.eventGoogleDriveLink, '_blank', 'noopener');
+  }
+
 
   resetModalFields() {
     this.eventTitle = '';
@@ -170,15 +187,17 @@ export class UserCalenderComponent {
   }
 
   renderEventContent(eventInfo: any) {
-    const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar?.toLowerCase()}`;
+    const level = eventInfo.event.extendedProps.calendar || 'others';
+    const mappedColor = this.calendarsEvents[level] || 'warning';
+
     return {
       html: `
-        <div class="event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm">
-          <div class="fc-daygrid-event-dot"></div>
-          <div class="fc-event-time">${eventInfo.timeText || ''}</div>
-          <div class="fc-event-title">${eventInfo.event.title}</div>
+        <div class="event-fc-color fc-bg-${mappedColor} flex items-center gap-1 p-1 rounded-sm">
+          <span class="fc-daygrid-event-dot"></span>
+          <span class="fc-event-title">${eventInfo.event.title}</span>
         </div>
       `
     };
   }
+
 }
