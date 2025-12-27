@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { MediaService, Video } from '../../../service/media.service';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-videos-admin',
@@ -17,7 +18,7 @@ export class VideosAdminComponent implements OnInit {
   editedData: Partial<Video> = {};       // temporary form data
   searchTerm: string = '';                // search filter
 
-  constructor(private mediaService: MediaService) {}
+  constructor(private mediaService: MediaService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadVideos();
@@ -27,7 +28,9 @@ export class VideosAdminComponent implements OnInit {
   loadVideos(): void {
     this.mediaService.getVideos().subscribe({
       next: (data) => this.videos = data,
-      error: (err) => console.error('Failed to load videos', err),
+      error: () => {
+        this.toast.showError('Failed to load videos. Please try again.');
+      }
     });
   }
 
@@ -47,34 +50,52 @@ export class VideosAdminComponent implements OnInit {
   saveEdit(): void {
     if (!this.editingVideoId) return;
 
+    this.toast.showInfo('Updating video...');
+
     this.mediaService.updateVideo(this.editingVideoId, this.editedData).subscribe({
       next: (updated) => {
         const index = this.videos.findIndex(v => v._id === updated._id);
         if (index !== -1) this.videos[index] = updated;
+
+        this.toast.showSuccess('Video updated successfully');
         this.cancelEdit();
       },
-      error: (err) => console.error('Failed to update video', err),
+      error: () => {
+        this.toast.showError('Failed to update video');
+      }
     });
   }
+  
+  get filteredVideos(): Video[] {
+    if (!this.searchTerm) return this.videos;
+
+    return this.videos.filter(video =>
+      (video.eventName ?? '').toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      (video.description ?? '').toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+
 
   // Delete video
   deleteVideo(video: Video): void {
-    if (!video._id || !confirm(`Delete "${video.eventName ?? ''}"?`)) return;
+    if (!video._id) return;
+
+    if (!confirm(`Delete "${video.eventName ?? 'this video'}"?`)) return;
+
+    this.toast.showInfo('Deleting video...');
 
     this.mediaService.deleteVideo(video._id).subscribe({
-      next: () => this.videos = this.videos.filter(v => v._id !== video._id),
-      error: (err) => console.error('Failed to delete video', err),
+      next: () => {
+        this.videos = this.videos.filter(v => v._id !== video._id);
+        this.toast.showSuccess('Video deleted successfully');
+      },
+      error: () => {
+        this.toast.showError('Failed to delete video');
+      }
     });
   }
 
-  // Filtered videos based on search term
-  get filteredVideos(): Video[] {
-    if (!this.searchTerm) return this.videos;
-    return this.videos.filter(v =>
-      (v.eventName ?? '').toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      (v.description ?? '').toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
 
   // Add at the top of VideosAdminComponent
   addingNewVideo: boolean = false;       // toggle form visibility
@@ -95,17 +116,23 @@ export class VideosAdminComponent implements OnInit {
   // Submit new video
   saveNewVideo(): void {
     if (!this.newVideoData.eventName || !this.newVideoData.youtubeLink) {
-      alert('Event Name and YouTube Link are required.');
+      this.toast.showError('Event Name and YouTube Link are required');
       return;
     }
 
+    this.toast.showInfo('Adding new video...');
+
     this.mediaService.createVideo(this.newVideoData).subscribe({
       next: (video) => {
-        this.videos.push(video);      // add to existing list
-        this.cancelAddNewVideo();      // close form
+        this.videos.push(video);
+        this.toast.showSuccess('Video added successfully');
+        this.cancelAddNewVideo();
       },
-      error: (err) => console.error('Failed to create video', err),
+      error: () => {
+        this.toast.showError('Failed to add video');
+      }
     });
   }
+
 
 }
