@@ -1,21 +1,38 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
-export function exportToExcel(data: any[], fileName: string): void {
-  const worksheet = XLSX.utils.json_to_sheet(data);
-  const workbook = {
-    Sheets: { data: worksheet },
-    SheetNames: ['data'],
-  };
+export async function exportToExcel(
+  data: any[],
+  fileName: string
+): Promise<void> {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Data');
 
-  const excelBuffer = XLSX.write(workbook, {
-    bookType: 'xlsx',
-    type: 'array',
+  if (!data || data.length === 0) {
+    return;
+  }
+
+  // Create columns dynamically from object keys
+  worksheet.columns = Object.keys(data[0]).map((key) => ({
+    header: key,
+    key: key,
+    width: 20,
+  }));
+
+  // Add rows
+  data.forEach((item) => {
+    worksheet.addRow(item);
   });
 
-  const blob = new Blob([excelBuffer], {
+  // Optional: make header bold
+  worksheet.getRow(1).font = { bold: true };
+
+  // Generate buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  const blob = new Blob([buffer], {
     type:
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
 
   saveAs(blob, `${fileName}.xlsx`);
