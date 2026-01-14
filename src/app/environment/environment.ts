@@ -1,1 +1,1 @@
-export const environment = { production: false, apiUrl: 'https://thirumaaligai-website.onrender.com/' };
+export const environment = { production: false, apiUrl: 'https://thirumaaligai-website.onrender.com' };
