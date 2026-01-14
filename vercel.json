@@ -1,12 +1,12 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/browser/(.*)",
-      "destination": "/browser/$1"
+      "src": "^/browser/(.*)",
+      "dest": "/browser/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/browser/index.html"
+      "src": "^/(.*)",
+      "dest": "/browser/index.html"
     }
   ]
 }
