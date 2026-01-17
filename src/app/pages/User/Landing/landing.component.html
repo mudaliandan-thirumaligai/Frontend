@@ -1,407 +1,431 @@
-<br><br><br>
 <main class="flex flex-col">
 
-<!-- ================= HERO ================= -->
-<section class="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-b from-slate-50 to-indigo-100 px-4">
+<!-- ================= HERO WITH ENHANCED TYPEWRITER ================= -->
+<section class="relative min-h-[95vh] flex items-center justify-center px-4 overflow-hidden">
+  
+  <!-- Full-width background image -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src="images/temple-wide-angle.jpg"
+      alt="Temple Background"
+      class="w-full h-full object-cover opacity-20">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-50/95 via-indigo-50/90 to-indigo-100/95"></div>
+  </div>
 
-  <!-- Soft radial accents -->
-  <div class="absolute inset-0 pointer-events-none">
+  <!-- Decorative accents -->
+  <div class="absolute inset-0 pointer-events-none z-0">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-400/10 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-3xl"></div>
   </div>
 
   <!-- Content Wrapper -->
-  <div class="relative z-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-
-    <!-- Left: Image -->
-    <div class="relative w-full md:w-1/2 flex flex-col items-center md:items-start">
-      <div class="relative animate-fadeInLeft">
-        <div class="absolute -inset-3 bg-indigo-100 rounded-2xl"></div>
-        <img
-          src="images/mudaliandan/aachariyan.png"
-          alt="Swamy"
-          class="relative rounded-2xl shadow-xl w-full md:w-auto max-w-sm">
+  <div class="relative z-10 max-w-7xl mx-auto w-full">
+    
+    <!-- Top: Main Headline with Typewriter -->
+    <div class="text-center mb-12">
+      <div class="inline-block mb-3">
+        <span class="px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+          Est. 1200 CE • 800+ Years of Heritage
+        </span>
+      </div>
+      
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-indigo-950 mb-4">
+        Preserving
+      </h1>
+      
+      <!-- Enhanced Typewriter Section -->
+      <div class="relative inline-block min-h-[80px] md:min-h-[100px]">
+        <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-indigo-600 mb-2">
+          {{ typedText }}<span class="animate-pulse">|</span>
+        </h2>
+        <!-- Subtitle that changes with typed text
+        <p class="text-sm md:text-base text-indigo-500 italic min-h-[24px]">
+          {{ typedSubtitle }}
+        </p> -->
       </div>
 
-      <!-- Caption below image -->
-      <p class="mt-3 text-indigo-900 dark:text-indigo-300 font-semibold text-lg md:text-xl">
-        Sri Mudhaliandan
-      </p>
-    </div>
-
-    <!-- Right: Text -->
-    <div class="w-full md:w-1/2 text-center md:text-left">
-      
-      <!-- Title -->
-      <h1 class="text-3xl md:text-5xl font-bold text-indigo-950 mb-4">
-        Preserving <span class="text-indigo-600">{{ typedText }}</span><span class="text-indigo-600">|</span>
-      </h1>
-
-      <!-- Quote -->
-      <p class="italic text-indigo-600 text-sm md:text-base mb-4">
+      <p class="italic text-indigo-600 text-lg md:text-xl mt-6 mb-4">
         "ஆசார்யன் திருவடிகளே சரணம்"
       </p>
 
-      <!-- Subtitle -->
-      <p class="text-lg md:text-xl font-semibold text-indigo-800 mb-10">
-         Sri Mudhaliandan Swamy Thirumaligai — the sacred seat of Acharya Bhakti,
-         Kainkaryam, and Sri Vaishnava Paramparai.
+      <p class="text-base md:text-lg text-indigo-800 max-w-3xl mx-auto leading-relaxed">
+        Sri Mudhaliandan Swamy Thirumaligai — the sacred seat of Acharya Bhakti,
+        Kainkaryam, and Sri Vaishnava Paramparai
       </p>
+    </div>
 
-      <!-- CTAs -->
-      <div class="flex flex-wrap justify-center md:justify-start gap-6">
-        <a routerLink="/about-swamy" class="inline-flex items-center gap-1 text-indigo-700 font-medium hover:text-indigo-800 transition">
-          Learn more about the lineage <span class="transition-transform duration-300 hover:translate-x-0.5">→</span>
-        </a>
-        <a routerLink="/calendar" class="inline-flex items-center gap-1 text-indigo-600 font-medium hover:text-indigo-700 transition">
-          View upcoming events <span class="transition-transform duration-300 hover:translate-x-0.5">→</span>
-        </a>
-        <a routerLink="/bank-info" class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-700 transition">
-          Contribute <span class="transition-transform duration-300 hover:translate-x-0.5">→</span>
-        </a>
+    <!-- Bottom: Image + Stats + CTAs -->
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8 max-w-5xl mx-auto">
+      
+      <!-- Center: Image -->
+      <div class="relative flex flex-col items-center">
+        <div class="relative animate-fadeInUp">
+          <div class="absolute -inset-3 bg-gradient-to-br from-indigo-200 to-indigo-300 rounded-2xl blur-xl opacity-50"></div>
+          <img
+            src="images/mudaliandan/aachariyan.png"
+            alt="Sri Mudhaliandan"
+            class="relative rounded-2xl shadow-2xl w-64 md:w-72 border-4 border-white">
+        </div>
+        <p class="mt-3 text-indigo-900 font-semibold text-lg">
+          Sri Mudhaliandan
+        </p>
       </div>
 
-      <!-- Scroll Indicator -->
-      <div class="mt-16 text-indigo-400 animate-bounce">↓</div>
+      <!-- Right Side: Stats + CTAs -->
+      <div class="flex flex-col items-center md:items-start gap-6">
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-6 bg-white/60 backdrop-blur-sm rounded-xl p-5 shadow-lg">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-indigo-700">800+</div>
+            <div class="text-xs text-indigo-600 mt-1">Years</div>
+          </div>
+          <div class="text-center border-x border-indigo-200">
+            <div class="text-3xl font-bold text-indigo-700">15K+</div>
+            <div class="text-xs text-indigo-600 mt-1">Devotees</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-indigo-700">50+</div>
+            <div class="text-xs text-indigo-600 mt-1">Events</div>
+          </div>
+        </div>
 
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-3 w-full">
+          <a routerLink="/about-swamy" 
+             class="flex-1 px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition shadow-lg hover:shadow-xl text-center">
+            Our Lineage →
+          </a>
+          <a routerLink="/calendar" 
+             class="flex-1 px-6 py-3 bg-white text-indigo-700 rounded-lg font-medium hover:bg-indigo-50 transition shadow-lg border border-indigo-200 text-center">
+            Events
+          </a>
+        </div>
+
+        <a routerLink="/bank-info"
+           class="text-indigo-600 font-medium hover:text-indigo-800 transition text-sm">
+          Support Our Mission →
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="text-center mt-12">
+      <div class="inline-block text-indigo-400 animate-bounce">
+        <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </div>
     </div>
   </div>
-
 </section>
 
-<!-- ================= ANIMATIONS ================= -->
 <style>
   @keyframes fadeInLeft {
     0% { opacity: 0; transform: translateX(-50px); }
     100% { opacity: 1; transform: translateX(0); }
   }
-
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
   .animate-fadeInLeft {
     animation: fadeInLeft 1s ease-out forwards;
+  }
+  .animate-fadeInUp {
+    animation: fadeInUp 1.2s ease-out forwards;
   }
 </style>
 
 
+<!-- ================= IMPACT STATS (MOVED UP) ================= -->
+<section class="relative py-16 px-4 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img
+      src="images/mudaliandan/wide-angle.png"
+      alt="Temple Panorama"
+      class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-indigo-900/85"></div>
+  </div>
 
-  <!-- ================= UPCOMING EVENT ================= -->
-<section class="bg-indigo-50 py-24 px-4">
-  <div class="max-w-4xl mx-auto">
+  <div class="relative z-10 max-w-6xl mx-auto text-center text-white">
+    <h2 class="text-2xl md:text-3xl font-semibold mb-3">
+      Our Impact & Legacy
+    </h2>
+    <p class="text-indigo-200 mb-10 max-w-2xl mx-auto">
+      Serving the spiritual community with dedication and preserving our sacred heritage
+    </p>
 
-    <!-- Section Intro -->
-    <div class="text-center mb-14">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        Upcoming Event
-      </h2>
-      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-        Join us in upcoming spiritual gatherings, festivals,
-        and sacred observances.
-      </p>
-      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
-    </div>
-
-    <!-- Event Card -->
-    <div *ngIf="nextEvent"
-         class="max-w-md mx-auto
-                bg-white rounded-2xl shadow-md
-                hover:shadow-xl transition
-                p-8">
-
-      <h3 class="text-xl font-semibold text-indigo-800 mb-2">
-        {{ nextEvent.name }}
-      </h3>
-
-      <div class="text-sm text-indigo-600 space-y-1 mb-4">
-        <p>Location: {{ nextEvent.location }}</p>
-        <p>Date: {{ nextEvent.startDate | date:'fullDate' }}</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
+        <div class="text-4xl font-bold mb-2">{{ visitorCount | number }}</div>
+        <div class="text-indigo-200">Devotees Served</div>
       </div>
-
-      <p class="text-indigo-700 leading-relaxed mb-6 line-clamp-3">
-        {{ nextEvent.description }}
-      </p>
-
-      <a
-        [routerLink]="['/calendar']"
-        [queryParams]="{ date: nextEvent.startDate }"
-        class="inline-flex items-center
-               text-indigo-700 font-medium
-               hover:text-indigo-900 transition">
-        View full details →
-      </a>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
+        <div class="text-4xl font-bold mb-2">200+</div>
+        <div class="text-indigo-200">Sacred Texts Preserved</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
+        <div class="text-4xl font-bold mb-2">50+</div>
+        <div class="text-indigo-200">Annual Festivals</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
+        <div class="text-4xl font-bold mb-2">800+</div>
+        <div class="text-indigo-200">Years of Heritage</div>
+      </div>
     </div>
-
-    <!-- No Event -->
-    <div *ngIf="!nextEvent"
-         class="text-center text-indigo-600 mt-10">
-      No upcoming events at the moment 🙏
-    </div>
-
   </div>
 </section>
 
 
-  <!-- ================= ABOUT ================= -->
-<section class="py-24 px-4">
+<!-- ================= ABOUT + MISSION ================= -->
+<section class="py-12 px-4 bg-white">
   <div class="max-w-6xl mx-auto">
 
-    <!-- Section Intro -->
-    <div class="text-center mb-16">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        About Thirumaaligai
-      </h2>
-      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-        Preserving sacred traditions, spiritual wisdom,
-        and dharmic values across generations.
-      </p>
-    </div>
-
-    <!-- Content -->
-    <div class="grid md:grid-cols-2 gap-14 items-center">
-
-      <!-- Image -->
-      <div class="relative">
-        <div class="absolute -inset-3 bg-indigo-100 rounded-2xl"></div>
-        <img
-          src="images/mudaliandan/aachariyan.png"
-          alt="Swamy"
-          class="relative rounded-2xl shadow-xl w-full">
-      </div>
-          <!-- Text -->
+    <div class="grid md:grid-cols-2 gap-10 items-center mb-12">
+      
+      <!-- Text -->
       <div>
-        <h3 class="text-xl font-semibold text-indigo-800 mb-4">
-          Sri Mudhaliandan Swamy Thirumaligai
-        </h3>
+        <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900 mb-3">
+          About Thirumaligai
+        </h2>
+        <div class="w-12 h-1 bg-indigo-300 mb-4 rounded-full"></div>
 
-        <p class="text-indigo-700 leading-relaxed mb-5">
+        <p class="text-indigo-700 leading-relaxed mb-4">
           Sri Mudhaliandan Swamy Thirumaligai is dedicated to preserving
           spiritual values, promoting dharma, and guiding devotees through
-          sacred practices rooted in tradition.
+          sacred practices rooted in centuries-old tradition.
         </p>
 
-        <p class="text-indigo-700 leading-relaxed mb-8">
+        <p class="text-indigo-700 leading-relaxed mb-6">
           Through teachings, festivals, and community service,
-          the Thirumaligai continues to serve as a spiritual
-          anchor for devotees seeking guidance and wisdom.
+          the Thirumaligai serves as a spiritual anchor for devotees
+          seeking guidance, wisdom, and connection to our rich heritage.
         </p>
 
-        <a
-          routerLink="/about-swamy"
-          class="inline-flex items-center text-indigo-700 font-medium
-                 hover:text-indigo-900 transition">
+        <a routerLink="/about-swamy"
+           class="inline-flex items-center text-indigo-700 font-medium hover:text-indigo-900 transition">
           Learn more about our lineage →
         </a>
       </div>
 
+      <!-- Image with overlay -->
+      <div class="relative rounded-2xl overflow-hidden shadow-xl h-80">
+        <img
+          src="images/temple-interior.jpg"
+          alt="Temple Interior"
+          class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/60 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h3 class="text-xl font-semibold mb-1">Sacred Heritage</h3>
+          <p class="text-sm opacity-90">Preserving traditions for future generations</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Cards -->
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="bg-indigo-50 p-6 rounded-xl hover:shadow-lg transition">
+        <div class="text-3xl mb-3">📿</div>
+        <h3 class="font-semibold text-indigo-900 mb-2">Spiritual Guidance</h3>
+        <p class="text-sm text-indigo-700">Traditional teachings and practices</p>
+      </div>
+      <div class="bg-indigo-50 p-6 rounded-xl hover:shadow-lg transition">
+        <div class="text-3xl mb-3">📚</div>
+        <h3 class="font-semibold text-indigo-900 mb-2">Knowledge Preservation</h3>
+        <p class="text-sm text-indigo-700">Sacred texts and historical records</p>
+      </div>
+      <div class="bg-indigo-50 p-6 rounded-xl hover:shadow-lg transition">
+        <div class="text-3xl mb-3">🙏</div>
+        <h3 class="font-semibold text-indigo-900 mb-2">Community Service</h3>
+        <p class="text-sm text-indigo-700">Festivals, rituals, and gatherings</p>
+      </div>
     </div>
   </div>
 </section>
 
 
-  <!-- ================= DOCUMENTS ================= -->
-<section class="bg-indigo-50 py-24 px-4">
-  <div class="max-w-6xl mx-auto">
+<!-- ================= EVENT + GALLERY (COMBINED) ================= -->
+<section class="relative py-12 px-4 overflow-hidden">
+  
+  <!-- Background Image -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src="images/festival-wide.jpg"
+      alt="Festival"
+      class="w-full h-full object-cover opacity-15">
+    <div class="absolute inset-0 bg-gradient-to-b from-indigo-50/98 to-white/95"></div>
+  </div>
 
-    <!-- Section Title -->
-    <div class="text-center mb-14">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        Spiritual Documents
+  <div class="relative z-10 max-w-6xl mx-auto">
+
+    <!-- Upcoming Event -->
+    <div class="mb-12">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900 text-center mb-3">
+        Upcoming Event
       </h2>
-      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-        Preserving sacred knowledge, hymns, and historical records
-        for generations to come.
-      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mb-8 rounded-full"></div>
+
+      <div *ngIf="nextEvent"
+           class="max-w-3xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 md:flex gap-6 items-center hover:shadow-xl transition">
+        
+        <div class="md:w-1/3 mb-4 md:mb-0">
+          <img
+            src="images/event-thumbnail.jpg"
+            alt="Event"
+            class="w-full h-40 object-cover rounded-xl">
+        </div>
+
+        <div class="md:w-2/3">
+          <h3 class="text-xl font-semibold text-indigo-800 mb-2">
+            {{ nextEvent.name }}
+          </h3>
+          <div class="text-sm text-indigo-600 space-y-1 mb-3">
+            <p>📍 {{ nextEvent.location }}</p>
+            <p>📅 {{ nextEvent.startDate | date:'fullDate' }}</p>
+          </div>
+          <p class="text-indigo-700 mb-4 text-sm">
+            {{ nextEvent.description }}
+          </p>
+          <a [routerLink]="['/calendar']"
+             [queryParams]="{ date: nextEvent.startDate }"
+             class="inline-flex items-center text-indigo-700 font-medium hover:text-indigo-900 transition">
+            View full details →
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="!nextEvent" class="text-center text-indigo-600">
+        No upcoming events at the moment 🙏
+      </div>
     </div>
 
-    <!-- Cards -->
-    <div class="grid sm:grid-cols-2 gap-10">
+    <!-- Gallery Preview -->
+    <div>
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900 text-center mb-3">
+        Gallery Highlights
+      </h2>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mb-8 rounded-full"></div>
 
-      <!-- Card 1 -->
-      <div
-        class="bg-white p-8 rounded-2xl shadow-md
-               hover:shadow-xl transition">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div *ngFor="let img of galleryImages | slice:0:4"
+             class="group overflow-hidden rounded-xl shadow-md aspect-square">
+          <img [src]="img"
+               alt="Gallery"
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        </div>
+      </div>
 
-        <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+      <div class="text-center">
+        <a routerLink="/gallery"
+           class="inline-flex items-center text-indigo-700 font-medium hover:text-indigo-800 transition">
+          View full gallery →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= DOCUMENTS ================= -->
+<section class="bg-white py-12 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Sacred Knowledge
+      </h2>
+      <p class="mt-2 text-indigo-600 max-w-2xl mx-auto">
+        Access our collection of spiritual documents and historical records
+      </p>
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-3 rounded-full"></div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-xl shadow-md hover:shadow-xl transition group">
+        <div class="text-4xl mb-3">📜</div>
+        <h3 class="text-lg font-semibold text-indigo-800 mb-2">
           Stotras & Granthas
         </h3>
-
-        <p class="text-indigo-600 leading-relaxed mb-6">
-          Sacred hymns, devotional verses, and spiritual teachings
-          carefully preserved for devotees and scholars.
+        <p class="text-sm text-indigo-600 mb-4">
+          Sacred hymns and devotional verses preserved for devotees
         </p>
-
-        <a
-          routerLink="/documents"
-          class="inline-flex items-center text-indigo-700 font-medium
-                 hover:text-indigo-900 transition">
+        <a routerLink="/documents"
+           class="inline-flex items-center text-indigo-700 font-medium group-hover:text-indigo-900 transition">
           Read Documents →
         </a>
       </div>
 
-      <!-- Card 2 -->
-      <div
-        class="bg-white p-8 rounded-2xl shadow-md
-               hover:shadow-xl transition">
-
-        <h3 class="text-xl font-semibold text-indigo-800 mb-3">
+      <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-xl shadow-md hover:shadow-xl transition group">
+        <div class="text-4xl mb-3">📖</div>
+        <h3 class="text-lg font-semibold text-indigo-800 mb-2">
           Historical Records
         </h3>
-
-        <p class="text-indigo-600 leading-relaxed mb-6">
-          Temple history, lineage details, and traditional records
-          passed down across generations.
+        <p class="text-sm text-indigo-600 mb-4">
+          Temple history and lineage details across generations
         </p>
-
-        <a
-          routerLink="/documents"
-          class="inline-flex items-center text-indigo-700 font-medium
-                 hover:text-indigo-900 transition">
+        <a routerLink="/documents"
+           class="inline-flex items-center text-indigo-700 font-medium group-hover:text-indigo-900 transition">
           Explore Records →
         </a>
       </div>
 
-    </div>
-  </div>
-</section>
-
-  <!-- ================= GALLERY ================= -->
-<section class="py-24 px-4">
-  <div class="max-w-6xl mx-auto">
-
-    <!-- Section Intro -->
-    <div class="text-center mb-14">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        Gallery Highlights
-      </h2>
-      <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-        A glimpse into sacred moments, rituals,
-        and memories preserved through images.
-      </p>
-      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
-    </div>
-
-    <!-- Images -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-      <div
-        *ngFor="let img of galleryImages | slice:0:4"
-        class="group overflow-hidden rounded-2xl shadow-md">
-
-        <img
-          [src]="img"
-          alt="Gallery"
-          class="w-full h-44 object-cover
-                 transition-transform duration-500
-                 group-hover:scale-105">
+      <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-xl shadow-md hover:shadow-xl transition group">
+        <div class="text-4xl mb-3">🎓</div>
+        <h3 class="text-lg font-semibold text-indigo-800 mb-2">
+          Teachings
+        </h3>
+        <p class="text-sm text-indigo-600 mb-4">
+          Spiritual wisdom and philosophical discourse
+        </p>
+        <a routerLink="/documents"
+           class="inline-flex items-center text-indigo-700 font-medium group-hover:text-indigo-900 transition">
+          Learn More →
+        </a>
       </div>
     </div>
-
-    <!-- CTA -->
-    <div class="text-center">
-      <a
-        routerLink="/gallery"
-        class="inline-flex items-center
-               text-indigo-700 font-medium
-               hover:text-indigo-800
-               transition">
-        View full gallery →
-      </a>
-    </div>
-
-  </div>
-</section>
-<!-- ================= COMMUNITY PRESENCE ================= -->
-<section class="bg-indigo-50 py-20 px-4">
-  <div class="max-w-3xl mx-auto text-center community-presence">
-
-    <p class="text-indigo-700 text-lg font-medium">
-      Serving a growing community of
-    </p>
-
-    <p class="visitor-count">
-      {{ visitorCount | number }}
-    </p>
-
-    <p class="text-indigo-600 mt-2">
-      devotees & visitors
-    </p>
-
   </div>
 </section>
 
 
+<!-- ================= CTA + DONATION (COMBINED) ================= -->
+<section class="bg-gradient-to-b from-indigo-50 to-white py-12 px-4">
+  <div class="max-w-5xl mx-auto">
 
-  <!-- ================= CTA ================= -->
-<section class="bg-indigo-50 py-24 px-4">
-  <div class="max-w-3xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-6">
+      
+      <!-- Stay Connected -->
+      <div class="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold text-indigo-900 mb-3">
+          Stay Connected
+        </h3>
+        <p class="text-indigo-700 mb-6">
+          Receive updates on upcoming events, announcements,
+          and spiritual activities.
+        </p>
+        <a routerLink="/registration"
+           class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition shadow-md">
+          Contact Us →
+        </a>
+      </div>
 
-    <!-- Section Intro -->
-    <div class="text-center mb-10">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        Stay Connected
-      </h2>
-      <p class="mt-3 text-indigo-600 max-w-xl mx-auto">
-        Receive updates on upcoming events, announcements,
-        and important communications.
-      </p>
-      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+      <!-- Donation -->
+      <div class="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold text-indigo-900 mb-3">
+          Support Our Mission
+        </h3>
+        <p class="text-indigo-700 mb-6">
+          Help sustain spiritual services, rituals, and cultural
+          heritage for future generations.
+        </p>
+        <a routerLink="/bank-info"
+           class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition shadow-md">
+          Contribute →
+        </a>
+      </div>
     </div>
-
-    <!-- Card -->
-    <div
-      class="bg-white rounded-2xl shadow-md p-10 text-center">
-
-      <p class="text-indigo-700 mb-6">
-        Join our communication list and stay connected
-        with the spiritual activities of the Thirumaligai.
-      </p>
-
-      <a
-        routerLink="/registration"
-        class="inline-flex items-center
-               text-indigo-700 font-medium
-               hover:text-indigo-800
-               transition">
-        Contact us →
-      </a>
-    </div>
-
   </div>
 </section>
-<!-- ================= DONATION ================= -->
-<section class="py-24 px-4">
-  <div class="max-w-3xl mx-auto">
-
-    <!-- Section Intro -->
-    <div class="text-center mb-10">
-      <h2 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-        Make a Contribution
-      </h2>
-      <p class="mt-3 text-indigo-600 max-w-xl mx-auto">
-        Support the preservation of dharmic traditions
-        and sacred temple activities.
-      </p>
-      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
-    </div>
-
-    <!-- Card -->
-    <div
-      class="bg-white rounded-2xl shadow-md p-10 text-center">
-
-      <p class="text-indigo-700 mb-6">
-        Your contribution helps sustain spiritual services,
-        rituals, and cultural heritage for future generations.
-      </p>
-
-      <a
-        routerLink="/bank-info"
-        class="inline-flex items-center
-               text-indigo-700 font-medium
-               hover:text-indigo-800
-               transition">
-        Contribute / Donate →
-      </a>
-    </div>
-
-  </div>
-</section>
-
 
 </main>
