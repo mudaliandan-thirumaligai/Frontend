@@ -30,10 +30,11 @@ export class AuthService {
 
   register(payload: RegisterPayload): Observable<any> {
     return this.http.post(`${environment.apiUrl}/auth/register`, payload).pipe(
-      tap(res => console.log('Registration successful')),
+      tap(() => console.log('Registration successful')),
       catchError(err => throwError(() => err))
     );
   }
+
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/auth/signin`, { username, password }).pipe(

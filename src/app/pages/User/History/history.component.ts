@@ -4,11 +4,6 @@ import { PageBreadcrumbComponent } from '../../../shared/components/common/page-
 import { Aacharya } from './aacharya.interface';
 import { AACHARYAS_DATA } from './aacharya.data';
 
-interface Folder {
-  name: string;
-  images: string[];
-  expanded: boolean;
-}
 
 @Component({
   selector: 'app-history',

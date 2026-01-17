@@ -7,7 +7,7 @@ interface DecodedToken {
   exp?: number;
 }
 
-export const adminGuard: CanActivateFn = (route, state) => {
+export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
   const token = sessionStorage.getItem('token');
 

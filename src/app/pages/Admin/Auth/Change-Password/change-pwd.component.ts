@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService, ChangePasswordPayload } from '../../../../shared/services/Auth/auth.service';
+import { AuthService } from '../../../../shared/services/Auth/auth.service';
 import { finalize } from 'rxjs/operators';
 import { ToastService } from '../../../../shared/services/toast.service';
 

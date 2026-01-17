@@ -86,20 +86,6 @@ export class LandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.startTypingEffect();
     this.initScrollAnimations();
-    // const elements = document.querySelectorAll('.animate-on-scroll');
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    // elements.forEach(el => observer.observe(el));
   }
 
 // Type writer effect

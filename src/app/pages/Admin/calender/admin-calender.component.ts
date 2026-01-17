@@ -24,11 +24,6 @@ interface CalendarEvent extends EventInput {
     googleDriveLink?: string;
   };
 }
-type EventColor =
-  | 'danger'
-  | 'success'
-  | 'primary'
-  | 'warning';
 
 @Component({
   selector: 'app-calender',

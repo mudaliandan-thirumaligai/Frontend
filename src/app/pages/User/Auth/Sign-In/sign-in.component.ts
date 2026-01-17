@@ -30,7 +30,7 @@ export class UserSignInComponent {
     this.authService.login(data.username, data.password)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
-        next: (res) => this.toast.showSuccess('Logged in successfully!'),
+        next: () => this.toast.showSuccess('Logged in successfully!'),
         error: (err) => {
           const apiMessage = err?.error?.message;
           const apiDetails = err?.error?.details;

@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component} from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 
-interface Folder {
-  name: string;
-  images: string[];
-  expanded: boolean;
-}
 
 @Component({
   selector: 'app-about-swamy',
