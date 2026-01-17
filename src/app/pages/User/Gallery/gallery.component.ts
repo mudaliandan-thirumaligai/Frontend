@@ -23,6 +23,9 @@ export class GalleryComponent {
   currentFolder: any = null;
   currentIndex: number = 0;
   isClosing = false;
+  touchStartX = 0;
+  touchEndX = 0;
+
 
   constructor(private http: HttpClient) {}
 
@@ -95,5 +98,27 @@ export class GalleryComponent {
       this.closeImage();
     }
   }
+    onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    this.handleSwipe();
+  }
+
+  handleSwipe() {
+    const deltaX = this.touchEndX - this.touchStartX;
+
+    // Ignore very small swipes
+    if (Math.abs(deltaX) < 50) return;
+
+    if (deltaX < 0) {
+      this.nextImage(); // swipe left → next
+    } else {
+      this.prevImage(); // swipe right → prev
+    }
+  }
+
 }
 

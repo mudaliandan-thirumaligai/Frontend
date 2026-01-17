@@ -35,6 +35,7 @@
                   transform transition-all duration-300 origin-top z-[9999]">
         <p *ngFor="let child of item.children"
           [routerLink]="child.route"
+          (click)="closeAllMenus()"
           class="px-4 py-2 hover:bg-indigo-100 dark:hover:bg-neutral-700 rounded-lg cursor-pointer">
           {{ child.label }}
         </p>
@@ -98,8 +99,9 @@
         {{ item.label }} ▼
       </button>
 
-      <ul *ngIf="item.open" class="pl-4 space-y-2 text-gray-700 dark:text-gray-300">
+      <ul *ngIf="item.open" class="pl-4 space-y-2 text-indigo-500 dark:text-indigo-400">
         <li *ngFor="let child of item.children"
+            (click)="closeAllMenus()"
             [routerLink]="child.route"
             class="cursor-pointer">
           {{ child.label }}
@@ -109,7 +111,8 @@
 
     <!-- Single link mobile -->
     <ng-template #mobileSingleLink>
-      <div [routerLink]="item.route" class="cursor-pointer">
+      <div [routerLink]="item.route" class="cursor-pointer" (click)="closeAllMenus()">
+        
         {{ item.label }}
       </div>
     </ng-template>

@@ -36,6 +36,7 @@ interface BankSection {
 
 export class BankDetailsComponent {
    selectedTab: BankSection;
+  mobileSidebarOpen = false;
 
   tabs: BankSection[] = [
     {

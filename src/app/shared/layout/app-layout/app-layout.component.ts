@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AppFooterComponent } from '../app-footer/app-footer.component';
 import { AuthService } from '../../services/Auth/auth.service';
 import { Observable } from 'rxjs';
@@ -66,11 +66,39 @@ export class AppLayoutComponent {
     }
   ];
 
-  constructor(private authService: AuthService) {
-    this.isAdmin$ = this.authService.role$.pipe(
-      map((role: string | null) => role === 'admin')
-    );
+  constructor(
+  private authService: AuthService,
+  private router: Router
+) {
+  this.isAdmin$ = this.authService.role$.pipe(
+    map((role: string | null) => role === 'admin')
+  );
+
+  // Auto-close menus on navigation
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationEnd) {
+      this.closeAllMenus();
+    }
+  });
+}
+closeAllMenus() {
+  this.isMenuOpen = false;
+
+  this.menu.forEach(item => {
+    item.isOpen = false; // desktop
+    item.open = false;   // mobile
+  });
+}
+@HostListener('window:resize', [])
+onResize() {
+  if (window.innerWidth >= 768) {
+    this.isMenuOpen = false;
+    this.menu.forEach(item => (item.open = false));
   }
+}
+
+
+
 
   openDropdown(item: MenuItem) {
     if (item.closeTimeout) clearTimeout(item.closeTimeout);
