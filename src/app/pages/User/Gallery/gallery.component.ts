@@ -30,17 +30,38 @@ export class GalleryComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Load JSON
-    this.http.get<any>('gallery.json').subscribe((data) => {
-      Object.keys(data).forEach((folderName, index) => {
-        this.folders.push({
-          name: folderName,
-          images: data[folderName],
-          expanded: index === 0 // first folder open
-        });
+    this.http
+      .get<any[]>('http://localhost:8080/gallery/search')
+      .subscribe((images) => {
+        this.folders = this.groupByUtsavam(images);
       });
-    });
   }
+  private groupByUtsavam(images: any[]): Folder[] {
+    const map = new Map<string, string[]>();
+
+    images.forEach((img) => {
+      if (!map.has(img.utsavamName)) {
+        map.set(img.utsavamName, []);
+      }
+      map.get(img.utsavamName)!.push(img.url);
+    });
+
+    return Array.from(map.entries()).map(([utsavamName, urls], index) => ({
+      name: utsavamName,
+      images: urls,
+      expanded: index === 0, // first group open
+    }));
+  }
+  loadByYear(year: number) {
+    this.http
+      .get<any[]>(`http://localhost:8080/gallery/search?year=${year}`)
+      .subscribe((images) => {
+        this.folders = this.groupByUtsavam(images);
+      });
+  }
+
+
+
 
   toggleFolder(folder: Folder) {
     folder.expanded = !folder.expanded;
