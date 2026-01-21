@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { environment } from '../../../environment/environment';
 
 interface Folder {
   name: string;
@@ -31,7 +32,7 @@ export class GalleryComponent {
 
   ngOnInit() {
     this.http
-      .get<any[]>('http://localhost:8080/gallery/search')
+      .get<any[]>( `${environment.apiUrl}/gallery`)
       .subscribe((images) => {
         this.folders = this.groupByUtsavam(images);
       });
