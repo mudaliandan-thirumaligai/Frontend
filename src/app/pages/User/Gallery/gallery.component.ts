@@ -26,17 +26,54 @@ export class GalleryComponent {
   isClosing = false;
   touchStartX = 0;
   touchEndX = 0;
+  years: number[] = [];
+  selectedYear: number | null = null;
 
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http
-      .get<any[]>( `${environment.apiUrl}/gallery`)
-      .subscribe((images) => {
-        this.folders = this.groupByUtsavam(images);
-      });
+    this.loadAll();
   }
+  loadAll() {
+  this.http
+    .get<any[]>(`${environment.apiUrl}/gallery`)
+    .subscribe(images => {
+      this.years = this.extractYears(images);
+      this.folders = this.groupByUtsavam(images);
+    });
+}
+private extractYears(images: any[]): number[] {
+  const yearSet = new Set<number>();
+
+  images.forEach(img => {
+    if (img.year) {
+      yearSet.add(Number(img.year));
+    }
+  });
+
+  return Array.from(yearSet).sort((a, b) => b - a); // latest first
+}
+
+
+onYearChange(yearValue: string) {
+  if (!yearValue) {
+    this.selectedYear = null;
+    this.loadAll();
+    return;
+  }
+
+  const year = Number(yearValue);
+  this.selectedYear = year;
+
+  this.http
+    .get<any[]>(`${environment.apiUrl}/gallery/search?year=${year}`)
+    .subscribe(images => {
+      this.folders = this.groupByUtsavam(images);
+    });
+}
+
+
   private groupByUtsavam(images: any[]): Folder[] {
     const map = new Map<string, string[]>();
 
@@ -53,14 +90,9 @@ export class GalleryComponent {
       expanded: index === 0, // first group open
     }));
   }
-  loadByYear(year: number) {
-    this.http
-      .get<any[]>(`http://localhost:8080/gallery/search?year=${year}`)
-      .subscribe((images) => {
-        this.folders = this.groupByUtsavam(images);
-      });
+  trackByImg(_: number, img: string): string {
+    return img;
   }
-
 
 
 
@@ -95,17 +127,15 @@ export class GalleryComponent {
     this.currentFolder = null;
   }
   scrollToFolder(folder: Folder) {
-    // Ensure the folder is expanded before scrolling
-    if (!folder.expanded) folder.expanded = true;
+  if (!folder.expanded) folder.expanded = true;
 
-    // Scroll to the folder section smoothly
-    setTimeout(() => {
-      const element = document.getElementById(folder.name);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 50); // small delay to ensure the folder section is rendered
-  }
+  setTimeout(() => {
+    const index = this.folders.indexOf(folder);
+    const element = document.getElementById(`folder-${index}`);
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
 
 
   // Keyboard navigation
