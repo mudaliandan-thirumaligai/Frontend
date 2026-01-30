@@ -118,16 +118,29 @@
   padding-bottom: 18px;
 }
 
-.grid img {
+/* NEW: grid item acts as image frame */
+.grid-item {
   width: 100%;
+  aspect-ratio: 4 / 3;   /* 🔥 change to 1 / 1 if you want square */
+  overflow: hidden;
   border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.grid img:hover {
+/* Image fills the frame */
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* 🔥 THIS fixes size mismatch */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+}
+
+/* Hover effect stays perfect */
+.grid-item img:hover {
   transform: scale(1.06);
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
+
 
 /* ====================== Animations ====================== */
 .fade {
