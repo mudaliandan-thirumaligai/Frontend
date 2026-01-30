@@ -31,7 +31,7 @@ import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.componen
 import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.component';
 import { DocumentsComponentAdmin } from './pages/Admin/Documents/documents-admin.component';
 import { SwamyScheduleAdminComponent } from './pages/Admin/Swamy-Schedule/swamy-schedule.component';
-
+import { SwamyScheduleComponent } from './pages/User/Swamy-schedule/swamy-schedule.component';
 export const routes: Routes = [
 
   // ================= PUBLIC LAYOUT =================
@@ -47,6 +47,7 @@ export const routes: Routes = [
       { path: 'documents', component: DocumentsComponent },
       { path: 'past-events', component: PastEventsComponent },
       { path: 'about-swamy', component: AboutSwamyComponent },
+      { path: 'swamy-schedule', component: SwamyScheduleComponent },
       { path: 'bank-info', component: BankDetailsComponent },
       { path: 'registration', component: ContactUsComponent },
       { path : 'thirumaligais', component: ThirumalagaiComponent }

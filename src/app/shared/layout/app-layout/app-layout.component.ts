@@ -38,6 +38,7 @@ export class AppLayoutComponent {
       label: 'About',
       children: [
         { label: 'About Swami', route: '/about-swamy' },
+        { label: 'Swamy Schedule', route: '/swamy-schedule' },
         { label: 'History', route: '/history' },
         { label: 'Our Thirumaligais', route: '/thirumaligais' }
       ]
