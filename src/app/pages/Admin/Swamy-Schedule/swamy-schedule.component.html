@@ -31,18 +31,24 @@
     <div class="space-y-3">
 
       <input type="date"
-             [(ngModel)]="newData.startDate"
-             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-                    bg-white/10 dark:bg-[#1A1F2B]/60
-                    text-indigo-700 dark:text-indigo-300
-                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+       [(ngModel)]="newData.startDate"
+       (click)="openDatePicker($event)"
+       class="w-full px-4 py-2 rounded-lg cursor-pointer
+              border border-indigo-300 dark:border-indigo-700
+              bg-white/10 dark:bg-[#1A1F2B]/60
+              text-indigo-700 dark:text-indigo-300
+              focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
 
       <input type="date"
-             [(ngModel)]="newData.endDate"
-             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-                    bg-white/10 dark:bg-[#1A1F2B]/60
-                    text-indigo-700 dark:text-indigo-300
-                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+       [(ngModel)]="newData.endDate"
+       (click)="openDatePicker($event)"
+       class="w-full px-4 py-2 rounded-lg cursor-pointer
+              border border-indigo-300 dark:border-indigo-700
+              bg-white/10 dark:bg-[#1A1F2B]/60
+              text-indigo-700 dark:text-indigo-300
+              focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
 
       <input type="text"
              [(ngModel)]="newData.place"

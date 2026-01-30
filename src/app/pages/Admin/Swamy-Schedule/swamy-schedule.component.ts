@@ -179,4 +179,11 @@ export class SwamyScheduleAdminComponent implements OnInit {
 
     return filtered;
   }
+  openDatePicker(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.showPicker) {
+      input.showPicker();
+    }
+  }
+
 }

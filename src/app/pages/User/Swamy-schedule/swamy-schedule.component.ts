@@ -13,7 +13,8 @@ import { ToastService } from '../../../shared/services/toast.service';
     FormsModule,
     PageBreadcrumbComponent
   ],
-  templateUrl: './swamy-schedule.component.html'
+  templateUrl: './swamy-schedule.component.html',
+  styleUrls: ['./swamy-schedule.component.scss'],
 })
 export class SwamyScheduleComponent implements OnInit {
 
