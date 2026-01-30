@@ -1,0 +1,220 @@
+<app-page-breadcrumb pageTitle="Admin Documents"></app-page-breadcrumb>
+
+<section class="px-4 py-4 max-w-6xl mx-auto">
+
+  <!-- Header + Add Button -->
+  <div class="flex justify-between items-center my-4">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Documents Management
+    </h1>
+    <button
+      (click)="startAddNewDocument()"
+      type="button"
+      class="inline-flex items-center text-indigo-700 font-medium
+             hover:text-indigo-900 transition
+             px-6 py-3 rounded-lg
+             border border-indigo-300 dark:border-indigo-700
+             focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      + Add New Document
+    </button>
+  </div>
+
+  <!-- Add New Document Form -->
+  <div *ngIf="addingNewDocument"
+       class="my-4 p-4 border rounded-lg bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm">
+
+    <h3 class="font-medium text-indigo-700 mb-2">New Document Details</h3>
+
+    <div class="space-y-3">
+      <input type="text"
+             [(ngModel)]="newDocumentData.title"
+             placeholder="Document Title"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+      <input type="text"
+             [(ngModel)]="newDocumentData.language"
+             placeholder="Language"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+      <input type="text"
+             [(ngModel)]="newDocumentData.url"
+             placeholder="Google Drive Preview Link"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+    </div>
+
+    <div class="flex gap-2 mt-3">
+      <button (click)="saveNewDocument()"
+              type="button"
+              class="inline-flex items-center text-indigo-700 font-medium
+                     hover:text-indigo-900 transition
+                     px-6 py-3 rounded-lg
+                     border border-indigo-300 dark:border-indigo-700
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Submit →
+      </button>
+
+      <button (click)="cancelAddNewDocument()"
+              type="button"
+              class="inline-flex items-center text-indigo-700 font-medium
+                     hover:text-indigo-900 transition
+                     px-6 py-3 rounded-lg
+                     border border-indigo-300 dark:border-indigo-700
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= FILTER BAR ================= -->
+<div class="flex flex-wrap gap-4 my-4 items-center">
+
+  <!-- Search -->
+  <input
+    type="text"
+    placeholder="Search by document name..."
+    [(ngModel)]="searchTerm"
+    class="flex-1 min-w-[220px] px-4 py-2 rounded-lg
+           border border-[#6379C8]/40 dark:border-[#5362A8]/40
+           bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+           text-indigo-700 dark:text-indigo-300
+           placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+           font-medium
+           focus:outline-none focus:ring-2 focus:ring-indigo-700
+           transition" />
+
+    <!-- Language Filter -->
+    <select
+      [(ngModel)]="selectedLanguage"
+      class="px-4 py-2 rounded-lg
+            border border-[#6379C8]/40 dark:border-[#5362A8]/40
+            bg-white/10 dark:bg-[#1A1F2B]/60
+            text-indigo-700 dark:text-indigo-300
+            font-medium
+            focus:outline-none focus:ring-2 focus:ring-indigo-700
+            transition">
+
+      <option value="">All languages</option>
+      <option *ngFor="let lang of availableLanguages" [value]="lang">
+        {{ lang }}
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- Documents Table -->
+  <table class="w-full border border-gray-300 rounded-lg text-indigo-700 dark:text-indigo-300">
+    <thead class="bg-gray-100 dark:bg-[#1A1F2B]/40">
+      <tr>
+        <th class="p-3 border">Title</th>
+        <th class="p-3 border">Language</th>
+        <th class="p-3 border">Drive Link</th>
+        <th class="p-3 border">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let doc of filteredDocuments"
+          class="hover:bg-indigo-50 dark:hover:bg-white/[0.05] transition">
+
+        <!-- Title -->
+        <td class="p-2 border">
+          <span *ngIf="editingDocumentId !== doc._id">{{ doc.title }}</span>
+          <input *ngIf="editingDocumentId === doc._id"
+                 [(ngModel)]="editedData.title"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+        </td>
+
+        <!-- Language -->
+        <td class="p-2 border">
+          <span *ngIf="editingDocumentId !== doc._id">{{ doc.language }}</span>
+          <input *ngIf="editingDocumentId === doc._id"
+                 [(ngModel)]="editedData.language"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+        </td>
+
+        <!-- URL -->
+        <td class="p-2 border">
+          <!-- View Mode -->
+          <button *ngIf="editingDocumentId !== doc._id"
+                  type="button"
+                  (click)="openDocument(doc.url)"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                        hover:text-indigo-900 transition
+                        px-6 py-3 rounded-lg
+                        border border-indigo-300 dark:border-indigo-700
+                        focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Open
+          </button>
+
+          <!-- Edit Mode -->
+          <input *ngIf="editingDocumentId === doc._id"
+                [(ngModel)]="editedData.url"
+                class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+        </td>
+
+
+
+        <!-- Actions -->
+        <td class="p-2 border flex gap-2 flex-wrap">
+          <button *ngIf="editingDocumentId !== doc._id"
+                  (click)="startEdit(doc)"
+                  type="button"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Edit
+          </button>
+
+          <button *ngIf="editingDocumentId === doc._id"
+                  (click)="saveEdit()"
+                  type="button"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Save
+          </button>
+
+          <button *ngIf="editingDocumentId === doc._id"
+                  (click)="cancelEdit()"
+                  type="button"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Cancel
+          </button>
+
+          <button (click)="deleteDocument(doc)"
+                  type="button"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Delete
+          </button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</section>

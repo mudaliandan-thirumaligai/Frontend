@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component} from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-
+import { DocumentModel, DocumentsService } from '../../../service/documents.service';
 
 @Component({
   selector: 'app-documents',
@@ -11,20 +10,14 @@ import { PageBreadcrumbComponent } from '../../../shared/components/common/page-
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent {
-  // 🔹 Add your documents here
-  documents = [
-    {
-      title: 'Aarthi Prabandham',
-      language: 'Tamil',
-      url: 'documents/SreeMudhaliandanThirumaligai-AarthiPrabandham.pdf'
-    },
-    {
-      title: 'DhattiPanchakam',
-      language: 'English',
-      url: 'documents/SreeMudhaliandanThirumaligai-DhattiPanchakam - English.pdf'
-    }
-  ];
-  
-}
+export class DocumentsComponent implements OnInit {
+  documents: DocumentModel[] = [];
 
+  constructor(private documentsService: DocumentsService) {}
+
+  ngOnInit() {
+    this.documentsService.getAll().subscribe(data => {
+      this.documents = data;
+    });
+  }
+}

@@ -29,7 +29,7 @@ import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.compon
 import { AdminLayoutComponent } from './pages/Admin/Layout/admin-layout.component';
 import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.component';
 import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.component';
-
+import { DocumentsComponentAdmin } from './pages/Admin/Documents/documents-admin.component';
 export const routes: Routes = [
 
   // ================= PUBLIC LAYOUT =================
@@ -60,6 +60,7 @@ export const routes: Routes = [
       { path: 'calendar', component: AdminCalenderComponent },
       { path: 'addUser', component: AddNewAdmin },
       { path: 'change-pwd', component: ChangePasswordComponent },
+      { path: 'documents', component: DocumentsComponentAdmin },
       { path: 'videos', component: VideosAdminComponent },
       { path: 'shishya-info', component: ShishyaListComponent }
     ]
