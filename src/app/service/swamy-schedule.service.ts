@@ -10,6 +10,7 @@ export interface ScheduleModel {
   place: string;
   address?: string;
   contact?: string;
+  additionalInfo?: string;
 }
 
 

@@ -23,6 +23,15 @@ export class SwamyScheduleAdminComponent implements OnInit {
 
   filterYear: number | null = null;
   filterMonth: number | null = null;
+  searchTerm: string = '';
+
+  availableYears: number[] = [];
+  months: { name: string, value: number }[] = [
+    { name: 'January', value: 1 }, { name: 'February', value: 2 }, { name: 'March', value: 3 },
+    { name: 'April', value: 4 }, { name: 'May', value: 5 }, { name: 'June', value: 6 },
+    { name: 'July', value: 7 }, { name: 'August', value: 8 }, { name: 'September', value: 9 },
+    { name: 'October', value: 10 }, { name: 'November', value: 11 }, { name: 'December', value: 12 }
+  ];
 
   constructor(
     private service: ScheduleService,
@@ -35,7 +44,14 @@ export class SwamyScheduleAdminComponent implements OnInit {
 
   loadSchedules(): void {
     this.service.getAll().subscribe({
-      next: data => this.schedules = data,
+      next: data => {
+        this.schedules = data;
+
+        // populate unique years for dropdown
+        const yearsSet = new Set<number>();
+        this.schedules.forEach(s => yearsSet.add(new Date(s.startDate).getFullYear()));
+        this.availableYears = Array.from(yearsSet).sort((a, b) => b - a);
+      },
       error: () => this.toast.showError('Failed to load schedules')
     });
   }
@@ -105,9 +121,13 @@ export class SwamyScheduleAdminComponent implements OnInit {
   get filteredSchedules(): ScheduleModel[] {
     return this.schedules.filter(s => {
       const start = new Date(s.startDate);
-      const matchYear = !this.filterYear || start.getFullYear() === this.filterYear;
-      const matchMonth = !this.filterMonth || start.getMonth() + 1 === this.filterMonth;
-      return matchYear && matchMonth;
+      const matchesYear = !this.filterYear || start.getFullYear() === this.filterYear;
+      const matchesMonth = !this.filterMonth || start.getMonth() + 1 === this.filterMonth;
+      const search = this.searchTerm.toLowerCase();
+      const matchesSearch = !search || 
+        s.place.toLowerCase().includes(search) || 
+        (s.additionalInfo && s.additionalInfo.toLowerCase().includes(search));
+      return matchesYear && matchesMonth && matchesSearch;
     });
   }
 }

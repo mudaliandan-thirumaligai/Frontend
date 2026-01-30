@@ -1,68 +1,176 @@
-<app-page-breadcrumb pageTitle="Swamy Schedule" />
+<app-page-breadcrumb pageTitle="Swamy Schedule"></app-page-breadcrumb>
 
-<section class="py-8 px-2">
-  <div class="max-w-6xl mx-auto text-center">
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-      Swamy Schedule Admin
-    </h1>
-    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-      Manage upcoming visits of Swamy — add, edit, delete, or filter by year and month.
-    </p>
-    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+<section class="px-4 py-4 max-w-6xl mx-auto">
+
+  <!-- Header + Add Button -->
+  <div class="flex justify-between items-center my-4">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">Swamy Schedule Admin</h1>
+    <button *ngIf="!addingNew" type="button" (click)="startAddNew()"
+            class="inline-flex items-center text-indigo-700 font-medium
+                   hover:text-indigo-900 transition
+                   px-6 py-3 rounded-lg
+                   border border-indigo-300 dark:border-indigo-700
+                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      + Add New Schedule
+    </button>
   </div>
+
+  <!-- Add / Edit Form -->
+  <div *ngIf="addingNew"
+     class="my-4 p-4 border rounded-lg bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm">
+  <h3 class="font-medium text-indigo-700 mb-2">New Schedule Details</h3>
+
+  <div class="space-y-3">
+    <input type="date" [(ngModel)]="newData.startDate" placeholder="Start Date"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <input type="date" [(ngModel)]="newData.endDate" placeholder="End Date"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <input type="text" [(ngModel)]="newData.place" placeholder="Place"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <input type="text" [(ngModel)]="newData.address" placeholder="Address"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <input type="text" [(ngModel)]="newData.contact" placeholder="Contact"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <input type="text" [(ngModel)]="newData.additionalInfo" placeholder="Additional Info"
+      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+    </div>
+
+    <div class="flex gap-2 mt-3">
+      <button (click)="saveNew()" type="button"
+        class="inline-flex items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Submit →
+      </button>
+
+      <button (click)="cancelAddNew()" type="button"
+        class="inline-flex items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+
+    <!-- Filters -->
+    <div class="my-4 flex flex-wrap gap-3">
+
+    <select [(ngModel)]="filterYear"
+      class="w-full md:w-auto px-4 py-2 rounded-lg
+            border border-[#6379C8]/40 dark:border-[#5362A8]/40
+            bg-white/10 dark:bg-[#1A1F2B]/60
+            text-indigo-700 dark:text-indigo-300
+            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="">All Years</option>
+      <option *ngFor="let y of availableYears" [value]="y">{{ y }}</option>
+    </select>
+
+    <select [(ngModel)]="filterMonth"
+      class="w-full md:w-auto px-4 py-2 rounded-lg
+            border border-[#6379C8]/40 dark:border-[#5362A8]/40
+            bg-white/10 dark:bg-[#1A1F2B]/60
+            text-indigo-700 dark:text-indigo-300
+            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="">All Months</option>
+      <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+    </select>
+
+    <input type="text" [(ngModel)]="searchTerm"
+      placeholder="Search by place / info"
+      class="w-full md:w-auto px-4 py-2 rounded-lg
+            border border-[#6379C8]/40 dark:border-[#5362A8]/40
+            bg-white/10 dark:bg-[#1A1F2B]/60
+            text-indigo-700 dark:text-indigo-300
+            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <button (click)="loadSchedules()" type="button"
+      class="inline-flex items-center text-indigo-700 font-medium
+            hover:text-indigo-900 transition
+            px-6 py-3 rounded-lg
+            border border-indigo-300 dark:border-indigo-700
+            focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      Reset
+    </button>
+  </div>
+
+
+  <!-- Schedules Table -->
+  <table class="w-full border border-gray-300 rounded-lg text-indigo-700 dark:text-indigo-300">
+    <thead class="bg-gray-100 dark:bg-[#1A1F2B]/40">
+      <tr>
+        <th class="p-3 border">Start Date</th>
+        <th class="p-3 border">End Date</th>
+        <th class="p-3 border">Place</th>
+        <th class="p-3 border">Address</th>
+        <th class="p-3 border">Contact</th>
+        <th class="p-3 border">Additional Info</th>
+        <th class="p-3 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of filteredSchedules" class="hover:bg-indigo-50 dark:hover:bg-white/[0.05] transition">
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.startDate | date }}</span>
+          <input *ngIf="editingId === s._id" type="date" [(ngModel)]="editedData.startDate" class="input"/>
+        </td>
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.endDate | date }}</span>
+          <input *ngIf="editingId === s._id" type="date" [(ngModel)]="editedData.endDate" class="input"/>
+        </td>
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.place }}</span>
+          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.place" class="input"/>
+        </td>
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.address }}</span>
+          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.address" class="input"/>
+        </td>
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.contact }}</span>
+          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.contact" class="input"/>
+        </td>
+
+        <td class="p-2 border">
+          <span *ngIf="editingId !== s._id">{{ s.additionalInfo }}</span>
+          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.additionalInfo" class="input"/>
+        </td>
+
+        <td class="p-2 border flex gap-2 flex-wrap">
+          <button *ngIf="editingId !== s._id" (click)="startEdit(s)" class="btn">Edit</button>
+          <button *ngIf="editingId === s._id" (click)="saveEdit()" class="btn">Save</button>
+          <button *ngIf="editingId === s._id" (click)="cancelEdit()" class="btn">Cancel</button>
+          <button (click)="deleteSchedule(s)" class="btn">Delete</button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
 </section>
-
-<div class="max-w-6xl mx-auto p-6 flex flex-col gap-6">
-
-  <!-- Filters -->
-  <div class="flex gap-4">
-    <input type="number" [(ngModel)]="filterYear" placeholder="Filter by year" class="px-3 py-2 border rounded"/>
-    <input type="number" [(ngModel)]="filterMonth" placeholder="Filter by month (1-12)" class="px-3 py-2 border rounded"/>
-    <button class="px-4 py-2 bg-indigo-600 text-white rounded" (click)="loadSchedules()">Reset</button>
-  </div>
-
-  <!-- Add New -->
-  <div>
-    <button *ngIf="!addingNew" class="px-4 py-2 bg-green-600 text-white rounded" (click)="startAddNew()">Add New Schedule</button>
-
-    <div *ngIf="addingNew" class="p-4 border rounded flex flex-col gap-2 bg-indigo-50">
-      <input type="date" [(ngModel)]="newData.startDate" placeholder="Start Date" class="px-3 py-2 border rounded"/>
-      <input type="date" [(ngModel)]="newData.endDate" placeholder="End Date" class="px-3 py-2 border rounded"/>
-      <input type="text" [(ngModel)]="newData.place" placeholder="Place" class="px-3 py-2 border rounded"/>
-      <input type="text" [(ngModel)]="newData.address" placeholder="Address" class="px-3 py-2 border rounded"/>
-      <input type="text" [(ngModel)]="newData.contact" placeholder="Contact" class="px-3 py-2 border rounded"/>
-      <div class="flex gap-2 mt-2">
-        <button class="px-4 py-2 bg-green-600 text-white rounded" (click)="saveNew()">Save</button>
-        <button class="px-4 py-2 bg-gray-400 text-white rounded" (click)="cancelAddNew()">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Schedule List -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <div *ngFor="let s of filteredSchedules" class="p-4 border rounded bg-white">
-      <div *ngIf="editingId !== s._id">
-        <h3 class="font-semibold">{{ s.place }}</h3>
-        <p>{{ s.startDate | date }} → {{ s.endDate | date }}</p>
-        <p>{{ s.address }}</p>
-        <p>{{ s.contact }}</p>
-        <div class="flex gap-2 mt-2">
-          <button class="px-2 py-1 bg-blue-600 text-white rounded" (click)="startEdit(s)">Edit</button>
-          <button class="px-2 py-1 bg-red-600 text-white rounded" (click)="deleteSchedule(s)">Delete</button>
-        </div>
-      </div>
-
-      <div *ngIf="editingId === s._id" class="flex flex-col gap-2">
-        <input type="date" [(ngModel)]="editedData.startDate" class="px-2 py-1 border rounded"/>
-        <input type="date" [(ngModel)]="editedData.endDate" class="px-2 py-1 border rounded"/>
-        <input type="text" [(ngModel)]="editedData.place" class="px-2 py-1 border rounded"/>
-        <input type="text" [(ngModel)]="editedData.address" class="px-2 py-1 border rounded"/>
-        <input type="text" [(ngModel)]="editedData.contact" class="px-2 py-1 border rounded"/>
-        <div class="flex gap-2 mt-2">
-          <button class="px-2 py-1 bg-green-600 text-white rounded" (click)="saveEdit()">Save</button>
-          <button class="px-2 py-1 bg-gray-400 text-white rounded" (click)="cancelEdit()">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
