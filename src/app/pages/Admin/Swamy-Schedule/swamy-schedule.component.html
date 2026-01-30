@@ -4,8 +4,13 @@
 
   <!-- Header + Add Button -->
   <div class="flex justify-between items-center my-4">
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">Swamy Schedule Admin</h1>
-    <button *ngIf="!addingNew" type="button" (click)="startAddNew()"
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Swamy Schedule Management
+    </h1>
+
+    <button *ngIf="!addingNew"
+            (click)="startAddNew()"
+            type="button"
             class="inline-flex items-center text-indigo-700 font-medium
                    hover:text-indigo-900 transition
                    px-6 py-3 rounded-lg
@@ -15,108 +20,143 @@
     </button>
   </div>
 
-  <!-- Add / Edit Form -->
+  <!-- Add New Schedule Form -->
   <div *ngIf="addingNew"
-     class="my-4 p-4 border rounded-lg bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm">
-  <h3 class="font-medium text-indigo-700 mb-2">New Schedule Details</h3>
+       class="my-4 p-4 border rounded-lg bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm">
 
-  <div class="space-y-3">
-    <input type="date" [(ngModel)]="newData.startDate" placeholder="Start Date"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+    <h3 class="font-medium text-indigo-700 mb-2">
+      New Schedule Details
+    </h3>
 
-    <input type="date" [(ngModel)]="newData.endDate" placeholder="End Date"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+    <div class="space-y-3">
 
-    <input type="text" [(ngModel)]="newData.place" placeholder="Place"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+      <input type="date"
+             [(ngModel)]="newData.startDate"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
 
-    <input type="text" [(ngModel)]="newData.address" placeholder="Address"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+      <input type="date"
+             [(ngModel)]="newData.endDate"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
 
-    <input type="text" [(ngModel)]="newData.contact" placeholder="Contact"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+      <input type="text"
+             [(ngModel)]="newData.place"
+             placeholder="Place"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
 
-    <input type="text" [(ngModel)]="newData.additionalInfo" placeholder="Additional Info"
-      class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
-             bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-             focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+      <input type="text"
+             [(ngModel)]="newData.address"
+             placeholder="Address"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+      <input type="text"
+             [(ngModel)]="newData.contact"
+             placeholder="Contact"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+      <input type="text"
+             [(ngModel)]="newData.additionalInfo"
+             placeholder="Additional Info"
+             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                    bg-white/10 dark:bg-[#1A1F2B]/60
+                    text-indigo-700 dark:text-indigo-300
+                    placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
     </div>
 
     <div class="flex gap-2 mt-3">
-      <button (click)="saveNew()" type="button"
-        class="inline-flex items-center text-indigo-700 font-medium
-              hover:text-indigo-900 transition
-              px-6 py-3 rounded-lg
-              border border-indigo-300 dark:border-indigo-700
-              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      <button (click)="saveNew()"
+              type="button"
+              class="inline-flex items-center text-indigo-700 font-medium
+                     hover:text-indigo-900 transition
+                     px-6 py-3 rounded-lg
+                     border border-indigo-300 dark:border-indigo-700
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
         Submit →
       </button>
 
-      <button (click)="cancelAddNew()" type="button"
-        class="inline-flex items-center text-indigo-700 font-medium
-              hover:text-indigo-900 transition
-              px-6 py-3 rounded-lg
-              border border-indigo-300 dark:border-indigo-700
-              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      <button (click)="cancelAddNew()"
+              type="button"
+              class="inline-flex items-center text-indigo-700 font-medium
+                     hover:text-indigo-900 transition
+                     px-6 py-3 rounded-lg
+                     border border-indigo-300 dark:border-indigo-700
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
         Cancel
       </button>
     </div>
   </div>
 
-
-    <!-- Filters -->
-    <div class="my-4 flex flex-wrap gap-3">
+  <!-- Filters -->
+  <div class="my-4 flex flex-wrap gap-3">
 
     <select [(ngModel)]="filterYear"
-      class="w-full md:w-auto px-4 py-2 rounded-lg
-            border border-[#6379C8]/40 dark:border-[#5362A8]/40
-            bg-white/10 dark:bg-[#1A1F2B]/60
-            text-indigo-700 dark:text-indigo-300
-            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
-      <option value="">All Years</option>
+            class="w-full md:w-auto px-4 py-2 rounded-lg
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   bg-white/10 dark:bg-[#1A1F2B]/60
+                   text-indigo-700 dark:text-indigo-300
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="" disabled selected hidden>
+        Filter by Year
+      </option>
+      <option value="all">All Years</option>
+
       <option *ngFor="let y of availableYears" [value]="y">{{ y }}</option>
     </select>
 
     <select [(ngModel)]="filterMonth"
-      class="w-full md:w-auto px-4 py-2 rounded-lg
-            border border-[#6379C8]/40 dark:border-[#5362A8]/40
-            bg-white/10 dark:bg-[#1A1F2B]/60
-            text-indigo-700 dark:text-indigo-300
-            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
-      <option value="">All Months</option>
+            class="w-full md:w-auto px-4 py-2 rounded-lg
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   bg-white/10 dark:bg-[#1A1F2B]/60
+                   text-indigo-700 dark:text-indigo-300
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="" disabled selected hidden>
+        Filter by Month
+      </option>
+      <option value="all">All Months</option>
+
       <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
     </select>
 
-    <input type="text" [(ngModel)]="searchTerm"
-      placeholder="Search by place / info"
-      class="w-full md:w-auto px-4 py-2 rounded-lg
-            border border-[#6379C8]/40 dark:border-[#5362A8]/40
-            bg-white/10 dark:bg-[#1A1F2B]/60
-            text-indigo-700 dark:text-indigo-300
-            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+    <input type="text"
+           [(ngModel)]="searchTerm"
+           placeholder="Search by place or info..."
+           class="w-full md:w-auto px-4 py-2 rounded-lg
+                  border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                  bg-white/10 dark:bg-[#1A1F2B]/60
+                  text-indigo-700 dark:text-indigo-300
+                  placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                  focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
 
-    <button (click)="loadSchedules()" type="button"
-      class="inline-flex items-center text-indigo-700 font-medium
-            hover:text-indigo-900 transition
-            px-6 py-3 rounded-lg
-            border border-indigo-300 dark:border-indigo-700
-            focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
-      Reset
+    <button (click)="loadSchedules()"
+            type="button"
+            class="inline-flex items-center text-indigo-700 font-medium
+                   hover:text-indigo-900 transition
+                   px-6 py-3 rounded-lg
+                   border border-indigo-300 dark:border-indigo-700
+                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      Reload Schedules
     </button>
   </div>
 
-
-  <!-- Schedules Table -->
+  <!-- Schedule Table -->
   <table class="w-full border border-gray-300 rounded-lg text-indigo-700 dark:text-indigo-300">
     <thead class="bg-gray-100 dark:bg-[#1A1F2B]/40">
       <tr>
@@ -129,48 +169,126 @@
         <th class="p-3 border">Actions</th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let s of filteredSchedules" class="hover:bg-indigo-50 dark:hover:bg-white/[0.05] transition">
 
+    <tbody>
+      <tr *ngFor="let s of filteredSchedules"
+          class="hover:bg-indigo-50 dark:hover:bg-white/[0.05] transition">
+
+        <!-- Start Date -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.startDate | date }}</span>
-          <input *ngIf="editingId === s._id" type="date" [(ngModel)]="editedData.startDate" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="date"
+                 [(ngModel)]="editedData.startDate"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- End Date -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.endDate | date }}</span>
-          <input *ngIf="editingId === s._id" type="date" [(ngModel)]="editedData.endDate" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="date"
+                 [(ngModel)]="editedData.endDate"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- Place -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.place }}</span>
-          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.place" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="text"
+                 [(ngModel)]="editedData.place"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- Address -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.address }}</span>
-          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.address" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="text"
+                 [(ngModel)]="editedData.address"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- Contact -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.contact }}</span>
-          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.contact" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="text"
+                 [(ngModel)]="editedData.contact"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- Additional Info -->
         <td class="p-2 border">
           <span *ngIf="editingId !== s._id">{{ s.additionalInfo }}</span>
-          <input *ngIf="editingId === s._id" type="text" [(ngModel)]="editedData.additionalInfo" class="input"/>
+          <input *ngIf="editingId === s._id"
+                 type="text"
+                 [(ngModel)]="editedData.additionalInfo"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
 
+        <!-- Actions -->
         <td class="p-2 border flex gap-2 flex-wrap">
-          <button *ngIf="editingId !== s._id" (click)="startEdit(s)" class="btn">Edit</button>
-          <button *ngIf="editingId === s._id" (click)="saveEdit()" class="btn">Save</button>
-          <button *ngIf="editingId === s._id" (click)="cancelEdit()" class="btn">Cancel</button>
-          <button (click)="deleteSchedule(s)" class="btn">Delete</button>
+          <button *ngIf="editingId !== s._id"
+                  (click)="startEdit(s)"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Edit
+          </button>
+
+          <button *ngIf="editingId === s._id"
+                  (click)="saveEdit()"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Save
+          </button>
+
+          <button *ngIf="editingId === s._id"
+                  (click)="cancelEdit()"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Cancel
+          </button>
+
+          <button (click)="deleteSchedule(s)"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Delete
+          </button>
         </td>
 
       </tr>
     </tbody>
   </table>
-
 </section>
