@@ -33,12 +33,16 @@
                     bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
                     focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
 
-      <input type="text"
-             [(ngModel)]="newDocumentData.language"
-             placeholder="Language"
-             class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+      <!-- Language Dropdown -->
+      <select [(ngModel)]="newDocumentData.language"
+              class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
                     bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+                    focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"
+              [ngClass]="{'italic text-indigo-400': !newDocumentData.language}">
+        <option value="">Select Language</option>
+        <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+      </select>
+
 
       <input type="text"
              [(ngModel)]="newDocumentData.url"
@@ -50,6 +54,7 @@
 
     <div class="flex gap-2 mt-3">
       <button (click)="saveNewDocument()"
+              [disabled]="!newDocumentData.title || !newDocumentData.url || !newDocumentData.language"
               type="button"
               class="inline-flex items-center text-indigo-700 font-medium
                      hover:text-indigo-900 transition
@@ -72,21 +77,21 @@
   </div>
 
   <!-- ================= FILTER BAR ================= -->
-<div class="flex flex-wrap gap-4 my-4 items-center">
+  <div class="flex flex-wrap gap-4 my-4 items-center">
 
-  <!-- Search -->
-  <input
-    type="text"
-    placeholder="Search by document name..."
-    [(ngModel)]="searchTerm"
-    class="flex-1 min-w-[220px] px-4 py-2 rounded-lg
-           border border-[#6379C8]/40 dark:border-[#5362A8]/40
-           bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
-           text-indigo-700 dark:text-indigo-300
-           placeholder-indigo-700/50 dark:placeholder-indigo-300/50
-           font-medium
-           focus:outline-none focus:ring-2 focus:ring-indigo-700
-           transition" />
+    <!-- Search -->
+    <input
+      type="text"
+      placeholder="Search by document name..."
+      [(ngModel)]="searchTerm"
+      class="flex-1 min-w-[220px] px-4 py-2 rounded-lg
+             border border-[#6379C8]/40 dark:border-[#5362A8]/40
+             bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+             text-indigo-700 dark:text-indigo-300
+             placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+             font-medium
+             focus:outline-none focus:ring-2 focus:ring-indigo-700
+             transition" />
 
     <!-- Language Filter -->
     <select
@@ -107,7 +112,6 @@
     </select>
 
   </div>
-
 
   <!-- Documents Table -->
   <table class="w-full border border-gray-300 rounded-lg text-indigo-700 dark:text-indigo-300">
@@ -137,11 +141,14 @@
         <!-- Language -->
         <td class="p-2 border">
           <span *ngIf="editingDocumentId !== doc._id">{{ doc.language }}</span>
-          <input *ngIf="editingDocumentId === doc._id"
-                 [(ngModel)]="editedData.language"
-                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
-                        bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
-                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+          <select *ngIf="editingDocumentId === doc._id"
+                  [(ngModel)]="editedData.language"
+                  class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                         bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
+                         focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+            <option value="">Select Language</option>
+            <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+          </select>
         </td>
 
         <!-- URL -->
@@ -160,13 +167,11 @@
 
           <!-- Edit Mode -->
           <input *ngIf="editingDocumentId === doc._id"
-                [(ngModel)]="editedData.url"
-                class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                 [(ngModel)]="editedData.url"
+                 class="w-full px-2 py-1 rounded-lg border border-[#6379C8]/40 dark:border-[#5362A8]/40
                         bg-white/10 dark:bg-[#1A1F2B]/60 text-indigo-700 dark:text-indigo-300
                         focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
         </td>
-
-
 
         <!-- Actions -->
         <td class="p-2 border flex gap-2 flex-wrap">

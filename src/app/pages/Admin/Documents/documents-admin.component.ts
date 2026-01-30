@@ -18,6 +18,7 @@ export class DocumentsComponentAdmin implements OnInit {
   editedData: Partial<DocumentModel> = {};
   searchTerm = '';
   selectedLanguage: string = '';
+  languages: string[] = ['English', 'Tamil', 'Sanskrit','Others'];
 
   addingNewDocument = false;
   newDocumentData: Partial<DocumentModel> = {};
