@@ -26,6 +26,7 @@ export class AdminSidebarComponent {
     { label: 'Calendar', route: '/admin/calendar' },
     { label: 'Change Password', route: '/admin/change-pwd' },
     { label: 'Documents', route: '/admin/documents' },
+    { label: 'Swamy Schedule', route: '/admin/swamy-schedule' },
     { label: 'Videos', route: '/admin/videos' },
     { label: 'Shishya Info', route: '/admin/shishya-info' },
     { label: 'Logout', action: () => this.logout() }

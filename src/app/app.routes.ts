@@ -30,6 +30,8 @@ import { AdminLayoutComponent } from './pages/Admin/Layout/admin-layout.componen
 import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.component';
 import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.component';
 import { DocumentsComponentAdmin } from './pages/Admin/Documents/documents-admin.component';
+import { SwamyScheduleAdminComponent } from './pages/Admin/Swamy-Schedule/swamy-schedule.component';
+
 export const routes: Routes = [
 
   // ================= PUBLIC LAYOUT =================
@@ -61,6 +63,7 @@ export const routes: Routes = [
       { path: 'addUser', component: AddNewAdmin },
       { path: 'change-pwd', component: ChangePasswordComponent },
       { path: 'documents', component: DocumentsComponentAdmin },
+      { path: 'swamy-schedule', component: SwamyScheduleAdminComponent },
       { path: 'videos', component: VideosAdminComponent },
       { path: 'shishya-info', component: ShishyaListComponent }
     ]

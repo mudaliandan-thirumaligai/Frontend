@@ -1,0 +1,68 @@
+<app-page-breadcrumb pageTitle="Swamy Schedule" />
+
+<section class="py-8 px-2">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Swamy Schedule Admin
+    </h1>
+    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+      Manage upcoming visits of Swamy — add, edit, delete, or filter by year and month.
+    </p>
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+  </div>
+</section>
+
+<div class="max-w-6xl mx-auto p-6 flex flex-col gap-6">
+
+  <!-- Filters -->
+  <div class="flex gap-4">
+    <input type="number" [(ngModel)]="filterYear" placeholder="Filter by year" class="px-3 py-2 border rounded"/>
+    <input type="number" [(ngModel)]="filterMonth" placeholder="Filter by month (1-12)" class="px-3 py-2 border rounded"/>
+    <button class="px-4 py-2 bg-indigo-600 text-white rounded" (click)="loadSchedules()">Reset</button>
+  </div>
+
+  <!-- Add New -->
+  <div>
+    <button *ngIf="!addingNew" class="px-4 py-2 bg-green-600 text-white rounded" (click)="startAddNew()">Add New Schedule</button>
+
+    <div *ngIf="addingNew" class="p-4 border rounded flex flex-col gap-2 bg-indigo-50">
+      <input type="date" [(ngModel)]="newData.startDate" placeholder="Start Date" class="px-3 py-2 border rounded"/>
+      <input type="date" [(ngModel)]="newData.endDate" placeholder="End Date" class="px-3 py-2 border rounded"/>
+      <input type="text" [(ngModel)]="newData.place" placeholder="Place" class="px-3 py-2 border rounded"/>
+      <input type="text" [(ngModel)]="newData.address" placeholder="Address" class="px-3 py-2 border rounded"/>
+      <input type="text" [(ngModel)]="newData.contact" placeholder="Contact" class="px-3 py-2 border rounded"/>
+      <div class="flex gap-2 mt-2">
+        <button class="px-4 py-2 bg-green-600 text-white rounded" (click)="saveNew()">Save</button>
+        <button class="px-4 py-2 bg-gray-400 text-white rounded" (click)="cancelAddNew()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule List -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let s of filteredSchedules" class="p-4 border rounded bg-white">
+      <div *ngIf="editingId !== s._id">
+        <h3 class="font-semibold">{{ s.place }}</h3>
+        <p>{{ s.startDate | date }} → {{ s.endDate | date }}</p>
+        <p>{{ s.address }}</p>
+        <p>{{ s.contact }}</p>
+        <div class="flex gap-2 mt-2">
+          <button class="px-2 py-1 bg-blue-600 text-white rounded" (click)="startEdit(s)">Edit</button>
+          <button class="px-2 py-1 bg-red-600 text-white rounded" (click)="deleteSchedule(s)">Delete</button>
+        </div>
+      </div>
+
+      <div *ngIf="editingId === s._id" class="flex flex-col gap-2">
+        <input type="date" [(ngModel)]="editedData.startDate" class="px-2 py-1 border rounded"/>
+        <input type="date" [(ngModel)]="editedData.endDate" class="px-2 py-1 border rounded"/>
+        <input type="text" [(ngModel)]="editedData.place" class="px-2 py-1 border rounded"/>
+        <input type="text" [(ngModel)]="editedData.address" class="px-2 py-1 border rounded"/>
+        <input type="text" [(ngModel)]="editedData.contact" class="px-2 py-1 border rounded"/>
+        <div class="flex gap-2 mt-2">
+          <button class="px-2 py-1 bg-green-600 text-white rounded" (click)="saveEdit()">Save</button>
+          <button class="px-2 py-1 bg-gray-400 text-white rounded" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
