@@ -37,9 +37,12 @@ export class AppLayoutComponent {
     {
       label: 'About',
       children: [
-        { label: 'About Swami', route: '/about-swamy' },
+        { label: 'About Mudaliandan Thirumaaligai', route: '/about-thirumaaligai' },
+        { label: 'Varthamaana Swami', route: '/about-swamy' },
         { label: 'Swamy Schedule', route: '/swamy-schedule' },
-        { label: 'History', route: '/history' },
+        { label: 'Azhwargal', route: '/alwargal' },
+        { label: 'Guru Parampara', route: '/history' },
+        { label: 'Puruvachaariyargal', route: '/puruvachariyargal' },
         { label: 'Our Thirumaligais', route: '/thirumaligais' }
       ]
     },
@@ -51,7 +54,7 @@ export class AppLayoutComponent {
       ]
     },
     {
-      label: 'Media',
+      label: 'Archive',
       children: [
         { label: 'Photo Gallery', route: '/gallery' },
         { label: 'Videos', route: '/videos' },

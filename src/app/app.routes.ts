@@ -33,6 +33,7 @@ import { DocumentsComponentAdmin } from './pages/Admin/Documents/documents-admin
 import { SwamyScheduleAdminComponent } from './pages/Admin/Swamy-Schedule/swamy-schedule.component';
 import { SwamyScheduleComponent } from './pages/User/Swamy-schedule/swamy-schedule.component';
 import { ThirumaligaiDetailComponent } from './pages/User/Thirumaligai/Thirumaligai-Details/thirumaaligai-detail.component';
+import { AzhwargalComponent } from './pages/User/Azhwargal/azhwargal.component';
 
 
 
@@ -49,6 +50,7 @@ export const routes: Routes = [
       { path: 'gallery', component: GalleryComponent },
       { path: 'history', component: HistoryComponent },
       { path: 'videos', component: VideosComponent },
+      { path: 'alwargal', component: AzhwargalComponent },
       { path: 'documents', component: DocumentsComponent },
       { path: 'past-events', component: PastEventsComponent },
       { path: 'about-swamy', component: AboutSwamyComponent },
