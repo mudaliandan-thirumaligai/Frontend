@@ -2,14 +2,14 @@
   <nav>
     <ol class="flex items-center gap-1">
 
-      <!-- Home link -->
+      <!-- Home -->
       <li>
         <a
+          routerLink="/"
           class="inline-flex items-center gap-1
                  text-sm md:text-base font-medium
                  text-indigo-700 dark:text-indigo-300
-                 tracking-wide leading-snug"
-          routerLink="/"
+                 tracking-wide leading-snug hover:underline"
         >
           Home
           <svg
@@ -18,7 +18,34 @@
             height="14"
             viewBox="0 0 17 16"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.0765 12.667L10.2432 8.50033L6.0765 4.33366"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </li>
+
+      <!-- OPTIONAL parent -->
+      <li *ngIf="parentLabel && parentLink">
+        <a
+          [routerLink]="parentLink"
+          class="inline-flex items-center gap-1
+                 text-sm md:text-base font-medium
+                 text-indigo-700 dark:text-indigo-300
+                 tracking-wide leading-snug hover:underline"
+        >
+          {{ parentLabel }}
+          <svg
+            class="stroke-current"
+            width="14"
+            height="14"
+            viewBox="0 0 17 16"
+            fill="none"
           >
             <path
               d="M6.0765 12.667L10.2432 8.50033L6.0765 4.33366"
@@ -32,9 +59,11 @@
       </li>
 
       <!-- Current page -->
-      <li class="text-sm md:text-base font-medium
-                 text-indigo-700 dark:text-indigo-300
-                 tracking-wide leading-snug">
+      <li
+        class="text-sm md:text-base font-medium
+               text-indigo-900 dark:text-indigo-200
+               tracking-wide leading-snug"
+      >
         {{ pageTitle }}
       </li>
 

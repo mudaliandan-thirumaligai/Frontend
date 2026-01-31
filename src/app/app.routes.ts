@@ -32,6 +32,11 @@ import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.co
 import { DocumentsComponentAdmin } from './pages/Admin/Documents/documents-admin.component';
 import { SwamyScheduleAdminComponent } from './pages/Admin/Swamy-Schedule/swamy-schedule.component';
 import { SwamyScheduleComponent } from './pages/User/Swamy-schedule/swamy-schedule.component';
+import { ThirumaligaiDetailComponent } from './pages/User/Thirumaligai/Thirumaligai-Details/thirumaaligai-detail.component';
+
+
+
+
 export const routes: Routes = [
 
   // ================= PUBLIC LAYOUT =================
@@ -50,7 +55,8 @@ export const routes: Routes = [
       { path: 'swamy-schedule', component: SwamyScheduleComponent },
       { path: 'bank-info', component: BankDetailsComponent },
       { path: 'registration', component: ContactUsComponent },
-      { path : 'thirumaligais', component: ThirumalagaiComponent }
+      { path : 'thirumaligais', component: ThirumalagaiComponent },
+      { path : 'thirumaligais/:slug', component: ThirumaligaiDetailComponent }
     ]
   },
 
