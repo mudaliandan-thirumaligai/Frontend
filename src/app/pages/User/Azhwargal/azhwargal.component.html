@@ -1,15 +1,140 @@
-<div>
-  <app-page-breadcrumb pageTitle="Blank Page" />
-  <div class="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-    <div class="mx-auto w-full max-w-[630px] text-center">
-      <h3 class="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
-        Card Title Here
+<app-page-breadcrumb pageTitle="Azhwargal" />
+
+<!-- ================= AZHWARGAL INTRO ================= -->
+<section class="py-6 px-2">
+  <div class="max-w-6xl mx-auto text-center">
+
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      The Twelve Azhwargal
+    </h1>
+
+    <p class="mt-2 text-indigo-600 max-w-2xl mx-auto text-base">
+      The divine saints whose hymns form the spiritual foundation of Sri Vaishnavism.
+    </p>
+
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-3 rounded-full"></div>
+
+  </div>
+</section>
+
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="gallery-container">
+
+  <!-- LEFT CONTENT -->
+  <div class="gallery-content">
+
+    <div
+      class="bg-indigo-50 dark:bg-indigo-950/40
+             border border-indigo-100 dark:border-indigo-900
+             rounded-xl p-6">
+
+      <!-- HEADER SECTION (TIGHTENED) -->
+      <div class="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6 mb-4">
+
+        <!-- IMAGE (LEFT) -->
+        <div *ngIf="selected.image" class="flex justify-center md:justify-start">
+          <img
+            [src]="selected.image"
+            [alt]="selected.name"
+            class="w-56 h-72 object-contain" />
+        </div>
+
+        <!-- TEXT (RIGHT) -->
+        <div>
+
+          <!-- NAME -->
+          <h1 class="text-2xl font-semibold text-indigo-700 dark:text-indigo-300 mb-1 leading-snug">
+            {{ selected.name }}
+            <span class="text-lg font-normal">
+              ({{ selected.tamilName }})
+            </span>
+          </h1>
+
+          <!-- DETAILS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-0.5 gap-x-6
+                      text-sm text-indigo-700 dark:text-indigo-300 leading-snug">
+            <p><strong>Year:</strong> {{ selected.year }}</p>
+            <p><strong>Birth Place:</strong> {{ selected.birthPlace }}</p>
+            <p><strong>Month:</strong> {{ selected.month }}</p>
+            <p><strong>Thiru Natchathiram:</strong> {{ selected.thiruNatchathiram }}</p>
+            <p><strong>Amsam:</strong> {{ selected.amsam }}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- THANIAN -->
+      <div class="bg-white dark:bg-indigo-900
+                  border border-indigo-100 dark:border-indigo-800
+                  rounded-lg p-4 mb-4
+                  text-indigo-700 dark:text-indigo-300
+                  text-base leading-relaxed
+                  whitespace-pre-line">
+        <p class="font-medium mb-2">
+          Thanian
+          <span *ngIf="selected.thanian.author" class="font-normal">
+            (By {{ selected.thanian.author }})
+          </span>
+        </p>
+        {{ selected.thanian.text }}
+      </div>
+
+      <!-- OTHER NAMES -->
+      <div class="mb-4 text-base text-indigo-700 dark:text-indigo-300">
+        <p class="font-medium mb-1">Other Names</p>
+        <p>{{ selected.otherNames.join(', ') }}</p>
+      </div>
+
+      <!-- BIOGRAPHY -->
+      <div class="space-y-3
+                  text-[15px] leading-relaxed
+                  text-indigo-700 dark:text-indigo-300 mb-4">
+        <p *ngFor="let para of selected.biography">
+          {{ para }}
+        </p>
+      </div>
+
+      <!-- ADDITIONAL INFO -->
+      <div class="text-base italic
+                  text-indigo-600 dark:text-indigo-400
+                  border-t border-indigo-200 dark:border-indigo-800
+                  pt-3">
+        {{ selected.additionalInfo }}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+
+    <div
+      class="bg-indigo-50 dark:bg-indigo-950/40
+             border border-indigo-100 dark:border-indigo-900
+             rounded-xl p-4">
+
+      <h3 class="text-sm font-semibold
+                 text-indigo-700 dark:text-indigo-300 mb-3">
+        Azhwargal
       </h3>
 
-      <p class="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
-        Start putting content on grids or panels, you can also use different
-        combinations of grids.Please check out the dashboard and other pages
-      </p>
+      <ul class="space-y-1">
+        <li *ngFor="let a of azhwars">
+          <button
+            (click)="selectAzhwar(a)"
+            class="w-full text-left px-3 py-2 rounded-md
+                   text-sm
+                   text-indigo-700 dark:text-indigo-300
+                   hover:bg-indigo-100 dark:hover:bg-indigo-900
+                   transition"
+            [class.bg-indigo-200]="a.id === selected.id"
+            [class.dark:bg-indigo-800]="a.id === selected.id">
+            {{ a.name }}
+          </button>
+        </li>
+      </ul>
+
     </div>
+
   </div>
 </div>
