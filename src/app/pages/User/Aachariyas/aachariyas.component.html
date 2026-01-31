@@ -1,0 +1,93 @@
+<app-page-breadcrumb pageTitle="Acharyas" />
+
+<!-- ================= ACHARYAS HEADER ================= -->
+<section class="py-6 px-2">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      {{ selected?.name }}
+    </h1>
+    <p *ngIf="selected?.tamilName" class="mt-2 text-indigo-600 max-w-2xl mx-auto text-base">
+      ({{ selected?.tamilName }})
+    </p>
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-3 rounded-full"></div>
+  </div>
+</section>
+
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="gallery-container">
+
+  <!-- LEFT CONTENT -->
+  <div class="gallery-content">
+
+    <div
+      class="bg-indigo-50 dark:bg-indigo-950/40
+             border border-indigo-100 dark:border-indigo-900
+             rounded-xl p-6">
+
+      <!-- HEADER SECTION -->
+      <div class="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6 mb-4">
+        <!-- IMAGE -->
+        <div *ngIf="selected?.image" class="flex justify-center md:justify-start">
+          <img [src]="selected?.image" [alt]="selected?.name" class="w-56 h-72 object-contain" />
+        </div>
+
+        <!-- DETAILS -->
+        <div>
+          <h1 class="text-2xl font-semibold text-indigo-700 dark:text-indigo-300 mb-1 leading-snug">
+            {{ selected?.name }}
+            <span *ngIf="selected?.tamilName" class="text-lg font-normal">({{ selected?.tamilName }})</span>
+          </h1>
+
+          <div *ngIf="selected?.details" class="grid grid-cols-1 sm:grid-cols-2 gap-y-0.5 gap-x-6 text-sm text-indigo-700 dark:text-indigo-300 leading-snug">
+            <p *ngIf="selected.details?.year"><strong>Year:</strong> {{ selected.details?.year }}</p>
+            <p *ngIf="selected.details?.birthPlace"><strong>Birth Place:</strong> {{ selected.details?.birthPlace }}</p>
+            <p *ngIf="selected.details?.month"><strong>Month:</strong> {{ selected.details?.month }}</p>
+            <p *ngIf="selected.details?.thiruNatchathiram"><strong>Thiru Natchathiram:</strong> {{ selected.details?.thiruNatchathiram }}</p>
+            <p *ngIf="selected.details?.amsam"><strong>Amsam:</strong> {{ selected.details?.amsam }}</p>
+            <p *ngIf="selected.details?.otherNames?.length"><strong>Other Names:</strong> {{ selected.details?.otherNames?.join(', ') }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT BLOCKS -->
+      <div *ngFor="let block of selected?.blocks" class="mb-4">
+        <p *ngIf="block?.type==='paragraph'" class="text-gray-800 dark:text-gray-300 leading-relaxed">
+          {{ block?.text }}
+        </p>
+
+        <h2 *ngIf="block?.type==='subheading'" class="text-2xl font-semibold text-indigo-800 dark:text-indigo-300 mt-6 mb-2">
+          {{ block?.text }}
+        </h2>
+
+        <blockquote *ngIf="block?.type==='thanian'" class="border-l-4 border-indigo-500 pl-4 italic text-gray-700 dark:text-gray-200 bg-indigo-50 dark:bg-indigo-900 p-2 rounded">
+          {{ block?.text }}
+        </blockquote>
+
+        <img *ngIf="block?.type==='image'" [src]="block?.src" class="w-full rounded-lg shadow-md my-4" />
+
+        <ul *ngIf="block?.type==='list'" class="list-disc list-inside ml-4 text-gray-800 dark:text-gray-300">
+          <li *ngFor="let item of block?.items">{{ item }}</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+    <div class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900 rounded-xl p-4">
+      <h3 class="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-3">Acharyas</h3>
+      <ul class="space-y-1">
+        <li *ngFor="let a of acharyans">
+          <button (click)="selectAcharya(a)"
+                  class="w-full text-left px-3 py-2 rounded-md text-sm text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
+                  [class.bg-indigo-200]="a?.id===selected?.id"
+                  [class.dark:bg-indigo-800]="a?.id===selected?.id">
+            {{ a?.name }}
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
