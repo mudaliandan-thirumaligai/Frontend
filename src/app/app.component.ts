@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'Sri Dasarathy Trust';
+  title = 'Sri Mudaliandan Swamy Thirumaligai';
   constructor(private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
