@@ -1,21 +1,41 @@
+
 export interface Aacharya {
   id: string;
   name: string;
   tamilName: string;
   period: string;
-  birthDetails: {
+
+  birthDetails?: {
     year: string;
     place: string;
     month: string;
     star: string;
-    amsam: string;
+    amsam?: string;
   };
-  otherNames: string[];
+
+  otherNames?: string[];
+
   thanian?: string;
-  biography: string[];
+
+  content: ContentBlock[];
+
   writings?: {
     title: string;
-    description: string;
+    description?: string;
   }[];
-  images?: string[];
 }
+
+export type ContentBlock =
+  | {
+      type: 'paragraph';
+      text: string;
+    }
+  | {
+      type: 'image';
+      src: string;
+      caption?: string;
+    }
+  | {
+      type: 'heading';
+      text: string;
+    };

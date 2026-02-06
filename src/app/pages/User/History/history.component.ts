@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { Aacharya } from './aacharya.interface';
-import { AACHARYAS_DATA } from './aacharya.data';
-
+import { AACHARYAS_DATA } from './data';
 
 @Component({
   selector: 'app-history',
@@ -12,19 +11,18 @@ import { AACHARYAS_DATA } from './aacharya.data';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent {
+export class HistoryComponent implements OnInit {
+
   aacharyas: Aacharya[] = [];
   selected!: Aacharya;
 
   ngOnInit(): void {
     this.aacharyas = AACHARYAS_DATA;
-    this.selected = this.aacharyas[0]; // default
+    this.selected = this.aacharyas[0];
   }
 
   selectAacharya(a: Aacharya): void {
     this.selected = a;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  
 }
-
