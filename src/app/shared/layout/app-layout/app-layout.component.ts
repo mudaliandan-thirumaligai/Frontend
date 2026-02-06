@@ -41,7 +41,7 @@ export class AppLayoutComponent {
         { label: 'Varthamaana Swami', route: '/about-swamy' },
         { label: 'Swamy Schedule', route: '/swamy-schedule' },
         { label: 'Azhwargal', route: '/alwargal' },
-        { label: 'Guru Parampara', route: '/history' },
+        { label: 'History', route: '/history' },
         // { label: 'Puruvachaariyargal', route: '/puruvachariyargal' },
         { label: 'Our Thirumaligais', route: '/thirumaligais' },
         // { label: 'Sri Dasarathi Trust', route: '/sri-dasarathi-trust' }
