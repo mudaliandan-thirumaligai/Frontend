@@ -31,11 +31,21 @@ export type ContentBlock =
       text: string;
     }
   | {
-      type: 'image';
-      src: string;
-      caption?: string;
-    }
-  | {
       type: 'heading';
       text: string;
+    }
+  | {
+      type: 'list';
+      title?: string;
+      items: string[];
+    }
+  | {
+      type: 'imageGroup';
+      layout: 'single' | 'two' | 'three' | 'full';
+      images: {
+        src: string;
+        caption?: string;
+        alt?: string;
+      }[];
     };
+

@@ -35,10 +35,10 @@ thasya daasarathe: paadav Sirasa dhaarayaam yaham ||
       type: 'paragraph',
       text: 'Lord Rama later took the avatar of Mudaliandan to uplift Jeevathmas.'
     },
-    {
-      type: 'image',
-      src: 'images/swamy/pooramchennai13/img_7.JPG'
-    },
+    // {
+    //   type: 'image',
+    //   src: 'images/swamy/pooramchennai13/img_7.JPG'
+    // },
     {
       type: 'paragraph',
       text: 'Mudaliandan Vaibhavam is available in both English and Tamil.'

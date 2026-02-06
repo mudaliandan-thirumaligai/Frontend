@@ -39,22 +39,43 @@ Srimath thathangri yugalam pranamAmi moordhnA ||||
     },
 
     {
-      type: 'image',
-      src: 'images/Aachariyas/Nammazhwar-1.png',
-      caption: 'Swami Nammazhwar'
-    },
+    type: 'imageGroup',
+    layout: 'three',
+    images: [
+      {
+        src: 'images/Aachariyas/Nammazhwar-1.png',
+        caption: 'Swami Nammazhwar'
+      },
+      {
+        src: 'images/Aachariyas/Nammazhwar-2.png',
+        caption: 'Swami Nammazhwar'
+      },
+      {
+        src: 'images/Aachariyas/Nammazhwar-3.png',
+        caption: 'Swami Nammazhwar'
+      }
+    ]
+  },
+  
     {
       type: 'paragraph',
       text: `He was born fully enlightened and as a child showed no response to external stimuli. His parents left him at the feet of Lord Sri Adhinathar at Azhwarthirunagari. He later entered deep meditation inside a tamarind tree for sixteen years.`
     },
+    {
+      type: 'imageGroup',
+      layout: 'single',
+      images: [
+        {
+          src: 'images/Aachariyas/Nammazhwar-1.png',
+          caption: 'Swami Nammazhwar'
+        }
+      ]
+    },
+
 
     {
       type: 'paragraph',
       text: `Madhurakavi Azhwar followed a divine light and discovered Nammazhwar. Through a profound riddle and answer, Madhurakavi realized the divinity of the child and became his disciple.`
-    },
-    {
-      type: 'image',
-      src: 'images/Aachariyas/Nammazhwar-2.png'
     },
 
     {
@@ -67,9 +88,20 @@ Srimath thathangri yugalam pranamAmi moordhnA ||||
       text: `Nammazhwar’s teachings explain the nature of Paramatma, Jeevatma, the means to attain Moksha, and the obstacles along the spiritual path.`
     },
     {
-      type: 'image',
-      src: 'images/Aachariyas/Nammazhwar-3.png'
-    },
+    type: 'imageGroup',
+    layout: 'two',
+    images: [
+      {
+        src: 'images/Aachariyas/Nammazhwar-1.png',
+        caption: 'Swami Nammazhwar'
+      },
+      {
+        src: 'images/Aachariyas/Nammazhwar-1.png',
+        caption: 'Swami Nammazhwar'
+      }
+    ]
+  }
+
   ],
   
 

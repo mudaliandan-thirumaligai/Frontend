@@ -83,25 +83,37 @@
             {{ block.text }}
           </h3>
 
-          <!-- IMAGE -->
-          <figure *ngIf="block.type === 'image'"
-                  class="my-6 flex flex-col items-center">
+          <!-- IMAGE GROUP -->
+          <div *ngIf="block.type === 'imageGroup'"
+              class="my-8 grid gap-4"
+              [ngClass]="{
+                'grid-cols-1': block.layout === 'single' || block.layout === 'full',
+                'grid-cols-2': block.layout === 'two',
+                'grid-cols-3': block.layout === 'three'
+              }">
 
-            <img
-              [src]="block.src"
-              class="rounded-md
-                    max-w-xs sm:max-w-sm md:max-w-md
-                    max-h-80
-                    object-contain" />
+            <figure *ngFor="let img of block.images"
+                    class="flex flex-col items-center">
 
-            <figcaption *ngIf="block.caption"
-                        class="text-sm text-center
-                              text-indigo-600 dark:text-indigo-400
-                              mt-2">
-              {{ block.caption }}
-            </figcaption>
+              <img
+                [src]="img.src"
+                [alt]="img.alt || ''"
+                class="rounded-lg
+                      w-full
+                      object-contain
+                      max-h-[28rem]"
+                [class.max-w-4xl]="block.layout === 'full'" />
 
-          </figure>
+              <figcaption *ngIf="img.caption"
+                          class="mt-2 text-sm text-center
+                                text-indigo-600 dark:text-indigo-400">
+                {{ img.caption }}
+              </figcaption>
+
+            </figure>
+
+          </div>
+
 
 
         </ng-container>
