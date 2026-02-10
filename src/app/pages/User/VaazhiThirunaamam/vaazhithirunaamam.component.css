@@ -1,0 +1,22 @@
+/* ================= CARD GRID LAYOUT ================= */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Tablets and above */
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* ================= CARD HOVER ================= */
+
+.card-grid > div:hover {
+  transform: translateY(-6px);
+  transition: transform 0.3s ease;
+}
