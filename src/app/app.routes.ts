@@ -35,8 +35,8 @@ import { SwamyScheduleComponent } from './pages/User/Swamy-schedule/swamy-schedu
 import { ThirumaligaiDetailComponent } from './pages/User/Thirumaligai/Thirumaligai-Details/thirumaaligai-detail.component';
 import { AzhwargalComponent } from './pages/User/Azhwargal/azhwargal.component';
 
-
-
+import { AboutThirumaligaiComponent } from './pages/User/About-Thirumaligai/about-thirumaligai.component';
+import { ThaniyansComponent } from './pages/User/Thaniyans/thaniyans.component';
 
 export const routes: Routes = [
 
@@ -50,10 +50,12 @@ export const routes: Routes = [
       { path: 'gallery', component: GalleryComponent },
       { path: 'history', component: HistoryComponent },
       { path: 'videos', component: VideosComponent },
+      { path: 'thaniyans', component: ThaniyansComponent },
       { path: 'alwargal', component: AzhwargalComponent },
       { path: 'documents', component: DocumentsComponent },
       { path: 'past-events', component: PastEventsComponent },
       { path: 'about-swamy', component: AboutSwamyComponent },
+      { path: 'about-thirumaaligai', component: AboutThirumaligaiComponent },
       { path: 'swamy-schedule', component: SwamyScheduleComponent },
       { path: 'bank-info', component: BankDetailsComponent },
       { path: 'registration', component: ContactUsComponent },
