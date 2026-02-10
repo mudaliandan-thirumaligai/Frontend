@@ -8,7 +8,7 @@ export interface CalendarEvent {
   location: string;
   tamilYear: string;
   tamilMonth: string;
-  googleDriveLink?: string; // optional
-  eventLevel?: string;      // optional
-  pathirikai?: string;      // optional
+  googleDriveLink?: string; 
+  eventLevel?: string;     
+  pathirikai?: string;    
 }
