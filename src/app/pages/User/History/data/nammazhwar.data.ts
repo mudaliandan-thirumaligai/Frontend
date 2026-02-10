@@ -44,15 +44,15 @@ Srimath thathangri yugalam pranamAmi moordhnA ||||`,
       layout: 'three',
       images: [
         {
-          src: 'images/Aachariyas/Nammazhwar-1.png',
+          src: 'images/Aachariyas/Nammazhwar/Nammazhwar-1.png',
           alt: 'Swami Nammazhwar',
         },
         {
-          src: 'images/Aachariyas/Nammazhwar-2.png',
+          src: 'images/Aachariyas/Nammazhwar/Nammazhwar-2.png',
           alt: 'Swami Nammazhwar illustration',
         },
         {
-          src: 'images/Aachariyas/Nammazhwar-3.png',
+          src: 'images/Aachariyas/Nammazhwar/Nammazhwar-3.png',
           alt: 'Swami Nammazhwar artwork',
         },
       ],
