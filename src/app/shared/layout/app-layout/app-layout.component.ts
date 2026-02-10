@@ -43,6 +43,8 @@ export class AppLayoutComponent {
         { label: 'Azhwargal', route: '/alwargal' },
         { label: 'History', route: '/history' },
         { label: 'Thaniyans', route: '/thaniyans' },
+        { label: 'Samashrayanam', route: '/samashrayanam' },
+        { label: 'Vaazhi Thirunaamam', route: '/vaazhi-thirunaamam' },
         // { label: 'Puruvachaariyargal', route: '/puruvachariyargal' },
         { label: 'Our Thirumaligais', route: '/thirumaligais' },
         // { label: 'Sri Dasarathi Trust', route: '/sri-dasarathi-trust' }
