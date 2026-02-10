@@ -10,4 +10,5 @@ export interface CalendarEvent {
   tamilMonth: string;
   googleDriveLink?: string; // optional
   eventLevel?: string;      // optional
+  pathirikai?: string;      // optional
 }

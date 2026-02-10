@@ -22,6 +22,7 @@ interface CalendarEvent extends EventInput {
     tamilMonth?: string;
     eventNumber?: number;
     googleDriveLink?: string;
+    pathirikai?: string;
   };
 }
 
@@ -39,7 +40,7 @@ interface CalendarEvent extends EventInput {
 })
 export class AdminCalenderComponent {
 
-  constructor(private eventService: EventService, private toast: ToastService) {}
+  constructor(private eventService: EventService, private toast: ToastService) { }
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   events: CalendarEvent[] = [];
@@ -54,8 +55,9 @@ export class AdminCalenderComponent {
   eventEndDate = '';
   eventLevel = '';
   eventGoogleDriveLink = '';
+  eventPathirikaiLink = '';
   isOpen = false;
-  
+
 
   calendarsEvents: Record<string, string> = {
     utsavam: 'danger',
@@ -67,69 +69,71 @@ export class AdminCalenderComponent {
   calendarOptions!: CalendarOptions;
 
   ngOnInit() {
-  // 1. Initialize calendar options immediately
-  this.calendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    headerToolbar: {
-      left: 'prev,next addEventButton',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    selectable: true,
-    allDayMaintainDuration: true,
-    events: [],  // <-- keep empty initially
-    select: (info) => this.handleDateSelect(info),
-    eventClick: (info) => this.handleEventClick(info),
-    customButtons: {
-      addEventButton: {
-        text: 'Add Event +',
-        click: () => this.openModal()
-      }
-    },
-    eventContent: (arg) => this.renderEventContent(arg)
-  };
-
-  // 2. Load API events
-  this.loadEventsFromAPI();
-}
-loadEventsFromAPI() {
-  this.eventService.getAllEvents().subscribe(
-    (data: any[]) => {
-      console.log('Fetched Events from API:', data);
-      const formattedEvents = data.map(event => ({
-        id: event.eventNumber.toString(),
-        title: event.name,
-        start: event.startDate,
-        end: event.endDate,
-        extendedProps: {
-          calendar: event.eventLevel || 'others', // keep original name for API
-          description: event.description,
-          location: event.location,
-          tamilYear: event.tamilYear,
-          tamilMonth: event.tamilMonth,
-          eventNumber: event.eventNumber
+    // 1. Initialize calendar options immediately
+    this.calendarOptions = {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next addEventButton',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      selectable: true,
+      allDayMaintainDuration: true,
+      events: [],  // <-- keep empty initially
+      select: (info) => this.handleDateSelect(info),
+      eventClick: (info) => this.handleEventClick(info),
+      customButtons: {
+        addEventButton: {
+          text: 'Add Event +',
+          click: () => this.openModal()
         }
-      }));
-      this.calendarOptions.events = formattedEvents;
+      },
+      eventContent: (arg) => this.renderEventContent(arg)
+    };
+
+    // 2. Load API events
+    this.loadEventsFromAPI();
+  }
+  loadEventsFromAPI() {
+    this.eventService.getAllEvents().subscribe(
+      (data: any[]) => {
+        console.log('Fetched Events from API:', data);
+        const formattedEvents = data.map(event => ({
+          id: event.eventNumber.toString(),
+          title: event.name,
+          start: event.startDate,
+          end: event.endDate,
+          extendedProps: {
+            calendar: event.eventLevel || 'others', // keep original name for API
+            description: event.description,
+            location: event.location,
+            tamilYear: event.tamilYear,
+            tamilMonth: event.tamilMonth,
+            eventNumber: event.eventNumber,
+            pathirikai: event.pathirikai,
+            googleDriveLink: event.googleDriveLink
+          }
+        }));
+        this.calendarOptions.events = formattedEvents;
 
 
-      // Update only the events array - updating this should refresh the calendar
-      this.calendarOptions.events = formattedEvents;
-    },
-    (error) => {
-      console.error('Error fetching events:', error);
-    }
-  );
-}
+        // Update only the events array - updating this should refresh the calendar
+        this.calendarOptions.events = formattedEvents;
+      },
+      (error) => {
+        console.error('Error fetching events:', error);
+      }
+    );
+  }
 
 
   handleDateSelect(selectInfo: DateSelectArg) {
     this.resetModalFields();
-    
+
     // Mark that this is a new event
     this.selectedEvent = null;
-    
+
     // Populate date fields from selection
     this.eventStartDate = selectInfo.startStr.split('T')[0];
     this.eventEndDate = selectInfo.endStr ? selectInfo.endStr.split('T')[0] : this.eventStartDate;
@@ -143,17 +147,19 @@ loadEventsFromAPI() {
   handleEventClick(clickInfo: EventClickArg) {
     const event = clickInfo.event;
     this.selectedEvent = {
-      
+
       title: event.title,
       start: event.startStr,
       end: event.endStr,
       extendedProps: {
-        eventNumber: event.extendedProps['eventNumber'], 
+        eventNumber: event.extendedProps['eventNumber'],
         calendar: event.extendedProps['calendar'],
         description: event.extendedProps['description'],
         location: event.extendedProps['location'],
         tamilYear: event.extendedProps['tamilYear'],
-        tamilMonth: event.extendedProps['tamilMonth']
+        tamilMonth: event.extendedProps['tamilMonth'],
+        pathirikai: event.extendedProps['pathirikai'],
+        googleDriveLink: event.extendedProps['googleDriveLink']
       }
     };
 
@@ -167,152 +173,159 @@ loadEventsFromAPI() {
     this.eventTamilYear = event.extendedProps['tamilYear'] || '';
     this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
     this.eventGoogleDriveLink = event.extendedProps['googleDriveLink'] || '';
+    this.eventPathirikaiLink = event.extendedProps['pathirikai'] || '';
 
     this.openModal();
   }
 
 
   // Update or Create Event
-handleAddOrUpdateEvent() {
-  const apiPayload: any = {
-    eventNumber: this.eventNumber || this.selectedEvent?.extendedProps.eventNumber,
-    name: this.eventTitle,
-    description: this.eventDescription,
-    startDate: new Date(this.eventStartDate),
-    endDate: new Date(this.eventEndDate),
-    location: this.eventLocation,
-    tamilYear: this.eventTamilYear,
-    tamilMonth: this.eventTamilMonth,
-    eventLevel: this.eventLevel,
-    googleDriveLink: this.eventGoogleDriveLink
-  };
+  handleAddOrUpdateEvent() {
+    const apiPayload: any = {
+      eventNumber: this.eventNumber || this.selectedEvent?.extendedProps.eventNumber,
+      name: this.eventTitle,
+      description: this.eventDescription,
+      startDate: new Date(this.eventStartDate),
+      endDate: new Date(this.eventEndDate),
+      location: this.eventLocation,
+      tamilYear: this.eventTamilYear,
+      tamilMonth: this.eventTamilMonth,
+      eventLevel: this.eventLevel,
+      googleDriveLink: this.eventGoogleDriveLink,
+      pathirikai: this.eventPathirikaiLink
+    };
 
-  if (this.selectedEvent) {
-    // UPDATE
-    console.log('Updating event:', apiPayload.eventNumber);
-    this.eventService.updateEvent(apiPayload.eventNumber, apiPayload).subscribe({
-      next: (updatedEvent) => {
-        console.log('API update response:', updatedEvent);
-        this.toast.showSuccess(`Event "${updatedEvent.name}" updated successfully!`);
+    if (this.selectedEvent) {
+      // UPDATE
+      console.log('Updating event:', apiPayload.eventNumber);
+      this.eventService.updateEvent(apiPayload.eventNumber, apiPayload).subscribe({
+        next: (updatedEvent) => {
+          console.log('API update response:', updatedEvent);
+          this.toast.showSuccess(`Event "${updatedEvent.name}" updated successfully!`);
 
-        const calendarApi = this.calendarComponent.getApi();
-        const existingEvent = calendarApi.getEventById(updatedEvent.eventNumber.toString());
+          const calendarApi = this.calendarComponent.getApi();
+          const existingEvent = calendarApi.getEventById(updatedEvent.eventNumber.toString());
 
-        if (existingEvent) {
-          existingEvent.setProp('title', updatedEvent.name);
-          existingEvent.setStart(new Date(updatedEvent.startDate));
-          existingEvent.setEnd(new Date(updatedEvent.endDate));
-          existingEvent.setAllDay(true);
-          existingEvent.setExtendedProp('calendar', this.eventLevel);
-          existingEvent.setExtendedProp('description', updatedEvent.description);
-          existingEvent.setExtendedProp('location', updatedEvent.location);
-          existingEvent.setExtendedProp('tamilYear', updatedEvent.tamilYear);
-          existingEvent.setExtendedProp('tamilMonth', updatedEvent.tamilMonth);
-          existingEvent.setExtendedProp('eventNumber', Number(updatedEvent.eventNumber));
-          existingEvent.setExtendedProp('googleDriveLink', updatedEvent.googleDriveLink);
+          if (existingEvent) {
+            existingEvent.setProp('title', updatedEvent.name);
+            existingEvent.setStart(new Date(updatedEvent.startDate));
+            existingEvent.setEnd(new Date(updatedEvent.endDate));
+            existingEvent.setAllDay(true);
+            existingEvent.setExtendedProp('calendar', this.eventLevel);
+            existingEvent.setExtendedProp('description', updatedEvent.description);
+            existingEvent.setExtendedProp('location', updatedEvent.location);
+            existingEvent.setExtendedProp('tamilYear', updatedEvent.tamilYear);
+            existingEvent.setExtendedProp('tamilMonth', updatedEvent.tamilMonth);
+            existingEvent.setExtendedProp('eventNumber', Number(updatedEvent.eventNumber));
+            existingEvent.setExtendedProp('googleDriveLink', updatedEvent.googleDriveLink || apiPayload.googleDriveLink);
+            existingEvent.setExtendedProp('pathirikai', updatedEvent.pathirikai || apiPayload.pathirikai);
+          }
+
+          // Update local events array
+          const index = this.events.findIndex(
+            ev => ev.extendedProps.eventNumber === Number(updatedEvent.eventNumber)
+          );
+          if (index > -1) {
+            this.events[index] = {
+              ...this.events[index],
+              title: updatedEvent.name,
+              start: new Date(updatedEvent.startDate),
+              end: new Date(updatedEvent.endDate),
+              extendedProps: {
+                ...this.events[index].extendedProps,
+                calendar: this.eventLevel,
+                description: updatedEvent.description,
+                location: updatedEvent.location,
+                tamilYear: updatedEvent.tamilYear,
+                tamilMonth: updatedEvent.tamilMonth,
+                eventNumber: Number(updatedEvent.eventNumber),
+                googleDriveLink: updatedEvent.googleDriveLink || apiPayload.googleDriveLink,
+                pathirikai: updatedEvent.pathirikai || apiPayload.pathirikai
+              }
+            };
+          }
+
+
+          this.closeModal();
+          this.resetModalFields();
+        },
+
+        error: (err) => {
+          console.error('Error updating event:', err);
+          this.toast.showError(err?.error?.message || 'Failed to update event');
         }
 
-        // Update local events array
-        const index = this.events.findIndex(
-          ev => ev.extendedProps.eventNumber === Number(updatedEvent.eventNumber)
-        );
-        if (index > -1) {
-          this.events[index] = {
-            ...this.events[index],
-            title: updatedEvent.name,
-            start: new Date(updatedEvent.startDate),
-            end: new Date(updatedEvent.endDate),
+      });
+    } else {
+      // CREATE
+      console.log('Creating new event...');
+      this.eventService.createEvent(apiPayload).subscribe({
+        next: (createdEvent) => {
+          console.log('API create response:', createdEvent);
+
+          // Add toast message
+          this.toast.showSuccess(`Event "${createdEvent.name}" created successfully!`);
+
+          const newCalendarEvent: CalendarEvent = {
+            id: createdEvent.eventNumber.toString(),
+            title: createdEvent.name,
+            start: new Date(createdEvent.startDate),
+            end: new Date(createdEvent.endDate),
+            allDay: true,
             extendedProps: {
-              ...this.events[index].extendedProps,
-              calendar: this.eventLevel,
-              description: updatedEvent.description,
-              location: updatedEvent.location,
-              tamilYear: updatedEvent.tamilYear,
-              tamilMonth: updatedEvent.tamilMonth,
-              eventNumber: Number(updatedEvent.eventNumber),
-              googleDriveLink: updatedEvent.googleDriveLink
+              calendar: this.eventLevel, // send this to backend
+              description: createdEvent.description,
+              location: createdEvent.location,
+              tamilYear: createdEvent.tamilYear,
+              tamilMonth: createdEvent.tamilMonth,
+              eventNumber: Number(createdEvent.eventNumber),
+              pathirikai: createdEvent.pathirikai
             }
           };
-        }
 
+
+          this.events.push(newCalendarEvent);
+          this.calendarComponent.getApi().addEvent(newCalendarEvent);
+
+          this.closeModal();
+          this.resetModalFields();
+        },
+        error: (err) => {
+          console.error('Error creating event:', err);
+          this.toast.showError(err?.error?.message || 'Failed to create event');
+        }
+      });
+    }
+  }
+
+  // Delete Event
+  handleDeleteEvent() {
+    if (!this.selectedEvent) return;
+
+    const eventNumber = this.selectedEvent.extendedProps?.eventNumber;
+    if (!eventNumber) {
+      console.error('Cannot delete event: eventNumber is missing');
+      this.toast.showError('Cannot delete event: event number is missing');
+      return;
+    }
+    console.log(`Attempting to delete event with eventNumber: ${eventNumber}`);
+    this.eventService.deleteEvent(eventNumber.toString()).subscribe({
+      next: () => {
+        // Remove from FullCalendar
+        console.log(`API confirmed deletion of eventNumber: ${eventNumber}`);
+        this.toast.showSuccess('Event deleted successfully!');
+        const calendarApi = this.calendarComponent.getApi();
+        const existingEvent = calendarApi.getEventById(eventNumber.toString());
+        if (existingEvent) existingEvent.remove();
+
+        // Remove from local events array
+        this.events = this.events.filter(ev => ev.extendedProps.eventNumber !== eventNumber);
 
         this.closeModal();
         this.resetModalFields();
       },
-      
-      error: (err) => {console.error('Error updating event:', err);
-        this.toast.showError(err?.error?.message || 'Failed to update event');
-      }
-      
-    });
-  } else {
-    // CREATE
-    console.log('Creating new event...');
-    this.eventService.createEvent(apiPayload).subscribe({
-  next: (createdEvent) => {
-    console.log('API create response:', createdEvent);
-
-    // Add toast message
-    this.toast.showSuccess(`Event "${createdEvent.name}" created successfully!`);
-
-    const newCalendarEvent: CalendarEvent = {
-      id: createdEvent.eventNumber.toString(),
-      title: createdEvent.name,
-      start: new Date(createdEvent.startDate),
-      end: new Date(createdEvent.endDate),
-      allDay: true,
-      extendedProps: {
-        calendar: this.eventLevel, // send this to backend
-        description: createdEvent.description,
-        location: createdEvent.location,
-        tamilYear: createdEvent.tamilYear,
-        tamilMonth: createdEvent.tamilMonth,
-        eventNumber: Number(createdEvent.eventNumber)
-      }
-    };
-
-
-    this.events.push(newCalendarEvent);
-    this.calendarComponent.getApi().addEvent(newCalendarEvent);
-
-    this.closeModal();
-    this.resetModalFields();
-  },
-    error: (err) => {
-      console.error('Error creating event:', err);
-      this.toast.showError(err?.error?.message || 'Failed to create event');
-    }
-  });
-  }
-}
-
-// Delete Event
-handleDeleteEvent() {
-  if (!this.selectedEvent) return;
-
-  const eventNumber = this.selectedEvent.extendedProps?.eventNumber;
-  if (!eventNumber) {
-    console.error('Cannot delete event: eventNumber is missing');
-    this.toast.showError('Cannot delete event: event number is missing');
-    return;
-  }
-  console.log(`Attempting to delete event with eventNumber: ${eventNumber}`);
-  this.eventService.deleteEvent(eventNumber.toString()).subscribe({
-    next: () => {
-      // Remove from FullCalendar
-      console.log(`API confirmed deletion of eventNumber: ${eventNumber}`);
-      this.toast.showSuccess('Event deleted successfully!');
-      const calendarApi = this.calendarComponent.getApi();
-      const existingEvent = calendarApi.getEventById(eventNumber.toString());
-      if (existingEvent) existingEvent.remove();
-
-      // Remove from local events array
-      this.events = this.events.filter(ev => ev.extendedProps.eventNumber !== eventNumber);
-
-      this.closeModal();
-      this.resetModalFields();
-    },
-    error: (err) => {console.error('Error deleting event:', err)
+      error: (err) => {
+        console.error('Error deleting event:', err)
         // Prefer API message + details if available
         const apiMessage = err?.error?.message;
         const apiDetails = err?.error?.details;
@@ -324,9 +337,9 @@ handleDeleteEvent() {
           : 'Failed to delete event';
 
         this.toast.showError(toastMessage);
-    }
-  });
-}
+      }
+    });
+  }
 
 
 
@@ -340,6 +353,7 @@ handleDeleteEvent() {
     this.eventTamilYear = '';
     this.eventTamilMonth = '';
     this.eventGoogleDriveLink = '';
+    this.eventPathirikaiLink = '';
     this.selectedEvent = null;
   }
 

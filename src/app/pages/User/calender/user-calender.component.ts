@@ -20,6 +20,7 @@ interface CalendarEvent extends EventInput {
     tamilYear?: string;
     tamilMonth?: string;
     googleDriveLink?: string;
+    pathirikai?: string;
     eventNumber?: number;
   };
 }
@@ -43,7 +44,7 @@ export class UserCalenderComponent {
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
@@ -67,6 +68,7 @@ export class UserCalenderComponent {
   eventEndDate = '';
   eventLevel = '';
   eventGoogleDriveLink = '';
+  eventPathirikaiLink = '';
   isOpen = false;
 
   calendarOptions!: CalendarOptions;
@@ -105,32 +107,33 @@ export class UserCalenderComponent {
   }
 
   loadEventsFromAPI() {
-  this.eventService.getAllEvents().subscribe((data: any[]) => {
-    const formattedEvents: EventInput[] = data.map(event => ({
-      id: event.eventNumber.toString(),
-      title: event.name,
-      start: event.startDate,
-      end: event.endDate,
-      allDay: true,
-      extendedProps: {
-        calendar: event.eventLevel || 'others',
-        description: event.description,
-        location: event.location,
-        tamilYear: event.tamilYear,
-        tamilMonth: event.tamilMonth,
-        googleDriveLink: event.googleDriveLink
-      }
-    }));
-
-    this.calendarOptions.events = formattedEvents;
-
-        // 🔹 Jump to event month if coming from landing page
-        if (this.targetDateFromRoute) {
-          setTimeout(() => {
-            this.goToEventMonth(this.targetDateFromRoute!);
-          });
+    this.eventService.getAllEvents().subscribe((data: any[]) => {
+      const formattedEvents: EventInput[] = data.map(event => ({
+        id: event.eventNumber.toString(),
+        title: event.name,
+        start: event.startDate,
+        end: event.endDate,
+        allDay: true,
+        extendedProps: {
+          calendar: event.eventLevel || 'others',
+          description: event.description,
+          location: event.location,
+          tamilYear: event.tamilYear,
+          tamilMonth: event.tamilMonth,
+          googleDriveLink: event.googleDriveLink,
+          pathirikai: event.pathirikai
         }
-      },
+      }));
+
+      this.calendarOptions.events = formattedEvents;
+
+      // 🔹 Jump to event month if coming from landing page
+      if (this.targetDateFromRoute) {
+        setTimeout(() => {
+          this.goToEventMonth(this.targetDateFromRoute!);
+        });
+      }
+    },
       (error) => {
         console.error('Error fetching events:', error);
       }
@@ -156,6 +159,7 @@ export class UserCalenderComponent {
     this.eventTamilYear = event.extendedProps['tamilYear'] || '';
     this.eventTamilMonth = event.extendedProps['tamilMonth'] || '';
     this.eventGoogleDriveLink = event.extendedProps['googleDriveLink'] || '';
+    this.eventPathirikaiLink = event.extendedProps['pathirikai'] || '';
 
     this.openModal();
   }
@@ -173,6 +177,11 @@ export class UserCalenderComponent {
     window.open(this.eventGoogleDriveLink, '_blank', 'noopener');
   }
 
+  openPathirikai() {
+    if (!this.eventPathirikaiLink) return;
+    window.open(this.eventPathirikaiLink, '_blank', 'noopener');
+  }
+
 
   resetModalFields() {
     this.eventTitle = '';
@@ -183,6 +192,8 @@ export class UserCalenderComponent {
     this.eventLocation = '';
     this.eventTamilYear = '';
     this.eventTamilMonth = '';
+    this.eventGoogleDriveLink = '';
+    this.eventPathirikaiLink = '';
     this.selectedEvent = null;
   }
 
