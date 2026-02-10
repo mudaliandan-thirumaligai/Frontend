@@ -39,6 +39,7 @@ import { AboutThirumaligaiComponent } from './pages/User/About-Thirumaligai/abou
 import { ThaniyansComponent } from './pages/User/Thaniyans/thaniyans.component';
 import { SamashrayanamComponent } from './pages/User/Samashrayanam/samashrayanam.component';
 import { VaazhithirunaamamComponent } from './pages/User/VaazhiThirunaamam/vaazhithirunaamam.component';
+import { PothuThaniyansComponent } from './pages/User/Pothu-thaniyans/pothu-thaniyans.component';
 
 export const routes: Routes = [
 
@@ -53,6 +54,7 @@ export const routes: Routes = [
       { path: 'history', component: HistoryComponent },
       { path: 'videos', component: VideosComponent },
       { path: 'samashrayanam', component: SamashrayanamComponent },
+      { path: 'pothu-thaniyans', component: PothuThaniyansComponent },
       { path: 'thaniyans', component: ThaniyansComponent },
       { path: 'vaazhi-thirunaamam', component: VaazhithirunaamamComponent },
       { path: 'alwargal', component: AzhwargalComponent },

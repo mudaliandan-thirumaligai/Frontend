@@ -42,6 +42,7 @@ export class AppLayoutComponent {
         { label: 'Swamy Schedule', route: '/swamy-schedule' },
         { label: 'Azhwargal', route: '/alwargal' },
         { label: 'History', route: '/history' },
+        { label: 'Pothu Thaniyans', route: '/pothu-thaniyans' },
         { label: 'Thaniyans', route: '/thaniyans' },
         { label: 'Samashrayanam', route: '/samashrayanam' },
         { label: 'Vaazhi Thirunaamam', route: '/vaazhi-thirunaamam' },
