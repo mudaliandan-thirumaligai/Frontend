@@ -19,6 +19,8 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class SwamyScheduleComponent implements OnInit {
 
   allSchedules: ScheduleModel[] = [];
+  availableYears: number[] = [];
+  availableMonths: { name: string; value: number }[] = [];
   nextSchedule: ScheduleModel | null = null;
 
   filterYear = '';
@@ -48,6 +50,27 @@ export class SwamyScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.loadSchedules();
   }
+  generateAvailableMonths(): void {
+  let filtered = this.allSchedules;
+
+  // If year selected → filter schedules for that year
+  if (this.filterYear) {
+    filtered = filtered.filter(s =>
+      new Date(s.startDate).getFullYear() === Number(this.filterYear)
+    );
+  }
+
+  const monthNumbers = filtered.map(s =>
+    new Date(s.startDate).getMonth() + 1
+  );
+
+  const uniqueMonths = [...new Set(monthNumbers)].sort((a, b) => a - b);
+
+  this.availableMonths = this.months.filter(m =>
+    uniqueMonths.includes(m.value)
+  );
+}
+
 
   loadSchedules(): void {
     this.scheduleService.getAll().subscribe({
@@ -64,10 +87,23 @@ export class SwamyScheduleComponent implements OnInit {
 
         this.nextSchedule = upcoming.length ? upcoming[0] : null;
         this.allSchedules = upcoming.slice(1);
+        this.generateAvailableMonths();
+
+        const years = upcoming.map(s =>
+          new Date(s.startDate).getFullYear()
+        );
+
+        this.availableYears = [...new Set(years)].sort((a, b) => a - b);
       },
       error: () => this.toast.showError('Failed to load schedules')
     });
   }
+  onYearChange(): void {
+    this.filterMonth = ''; // reset month when year changes
+    this.generateAvailableMonths();
+  }
+
+
 
   get filteredSchedules(): ScheduleModel[] {
     return this.allSchedules.filter(s => {

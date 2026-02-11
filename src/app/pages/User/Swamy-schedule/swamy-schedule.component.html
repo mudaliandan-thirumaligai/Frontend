@@ -88,7 +88,7 @@
            focus:outline-none
            focus:ring-2 focus:ring-indigo-300">
     <option value="">All Years</option>
-    <option *ngFor="let y of [2024, 2025, 2026, 2027]" [value]="y">
+    <option *ngFor="let y of availableYears" [value]="y">
       {{ y }}
     </option>
   </select>
@@ -101,7 +101,7 @@
            focus:outline-none
            focus:ring-2 focus:ring-indigo-300">
     <option value="">All Months</option>
-    <option *ngFor="let m of months" [value]="m.value">
+    <option *ngFor="let m of availableMonths" [value]="m.value">
       {{ m.name }}
     </option>
   </select>
