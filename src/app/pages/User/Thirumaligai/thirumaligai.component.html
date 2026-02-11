@@ -12,7 +12,8 @@
 
     <!-- Subtitle -->
     <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-      Sacred locations where our Thirumaligais stand as centers of devotion, learning, and peace. Explore the places that continue to inspire spiritual connection.
+      Sacred locations where our Thirumaligais stand as centers of devotion, learning, and peace. Explore the places
+      that continue to inspire spiritual connection.
     </p>
 
     <!-- Divider -->
@@ -26,8 +27,7 @@
   <!-- 🛕 LOCATIONS GRID -->
   <section class="pb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-    <div *ngFor="let place of thirumaligais"
-         class="group rounded-xl
+    <div *ngFor="let place of thirumaligais" class="group rounded-xl
                 bg-indigo-50 dark:bg-indigo-950/20
                 border border-indigo-100 dark:border-indigo-900
                 shadow-sm hover:shadow-md
@@ -42,16 +42,14 @@
         </h3>
 
         <p class="mt-2 text-sm md:text-base text-indigo-700 dark:text-indigo-300 leading-relaxed">
-          {{ place.description }}
+          {{ place.shortDescription }}
         </p>
       </div>
 
       <!-- details Button -->
       <div class="mt-4">
         <a [routerLink]="['/thirumaligais', place.slug]">
-          <button
-            type="button"
-            class="inline-flex items-center text-indigo-700 font-medium
+          <button type="button" class="inline-flex items-center text-indigo-700 font-medium
                   hover:text-indigo-900 transition
                   px-6 py-3 rounded-lg
                   border border-indigo-300 dark:border-indigo-700
