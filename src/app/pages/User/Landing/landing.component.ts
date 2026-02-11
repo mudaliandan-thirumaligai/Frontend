@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -15,15 +15,17 @@ import { VisitorService } from '../../../service/visitors.service';
   styleUrl: './landing.component.css',
   encapsulation: ViewEncapsulation.None
 })
-export class LandingComponent implements OnInit, AfterViewInit {
+export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
+
   visitorCount = 0;
-
-
 
   // 🔹 Upcoming Event
   nextEvent: CalendarEvent | null = null;
   loadingEvent = true;
   noUpcomingEvent = false;
+
+  // 🔹 Scroll observer reference (kept for cleanup)
+  private scrollObserver: IntersectionObserver | null = null;
 
   constructor(private eventService: EventService, private visitorService: VisitorService) {}
 
@@ -32,12 +34,28 @@ export class LandingComponent implements OnInit, AfterViewInit {
     this.trackVisitor();
   }
 
+  ngAfterViewInit(): void {
+    this.startTypingEffect();
+    this.initScrollAnimations();
+  }
+
+  ngOnDestroy(): void {
+    // Disconnect observer to prevent memory leaks when navigating away
+    if (this.scrollObserver) {
+      this.scrollObserver.disconnect();
+      this.scrollObserver = null;
+    }
+  }
+
+  // ─── Event fetching ────────────────────────────────────────────
+
   fetchNextUpcomingEvent(): void {
     this.eventService.getNextUpcomingEvent().subscribe({
       next: (events: CalendarEvent[]) => {
         this.nextEvent = events.length ? events[0] : null;
         this.noUpcomingEvent = !this.nextEvent;
         this.loadingEvent = false;
+        // Re-run after event data renders into the DOM
         setTimeout(() => this.initScrollAnimations());
       },
       error: (err: HttpErrorResponse) => {
@@ -47,21 +65,23 @@ export class LandingComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  private trackVisitor(): void {
-  const visitorId = this.getVisitorId();
 
-  this.visitorService.registerVisit(visitorId).subscribe({
-    next: res => {
-      this.visitorCount = res.count;
-    },
-    error: () => {
-      // fallback: still show count if visit fails
-      this.visitorService.getCount().subscribe(res => {
+  // ─── Visitor tracking ──────────────────────────────────────────
+
+  private trackVisitor(): void {
+    const visitorId = this.getVisitorId();
+
+    this.visitorService.registerVisit(visitorId).subscribe({
+      next: res => {
         this.visitorCount = res.count;
-      });
-    }
-  });
-}
+      },
+      error: () => {
+        this.visitorService.getCount().subscribe(res => {
+          this.visitorCount = res.count;
+        });
+      }
+    });
+  }
 
   private getVisitorId(): string {
     const key = 'tm_visitor_id';
@@ -73,30 +93,23 @@ export class LandingComponent implements OnInit, AfterViewInit {
     }
 
     return id;
-}
-
-  ngAfterViewInit(): void {
-    this.startTypingEffect();
-    this.initScrollAnimations();
   }
 
-// Type writer effect
-words: string[] = [
-  'ஆசார்ய நிஷ்டை',
-  'கைங்கர்யம்',
-  'ஸ்ரீ வைஷ்ணவ சம்பிரதாயம்',
-  'ராமானுஜ சம்பந்தம்'
-];
+  // ─── Typewriter effect ─────────────────────────────────────────
 
+  words: string[] = [
+    'ஆசார்ய நிஷ்டை',
+    'கைங்கர்யம்',
+    'ஸ்ரீ வைஷ்ணவ சம்பிரதாயம்',
+    'ராமானுஜ சம்பந்தம்'
+  ];
 
-typedText = '';
-wordIndex = 0;
-charIndex = 0;
-isDeleting = false;
+  typedText = '';
+  wordIndex = 0;
+  charIndex = 0;
+  isDeleting = false;
 
-
-
-  startTypingEffect() {
+  startTypingEffect(): void {
     const currentWord = this.words[this.wordIndex];
 
     if (this.isDeleting) {
@@ -115,25 +128,39 @@ isDeleting = false;
     setTimeout(() => this.startTypingEffect(), this.isDeleting ? 60 : 120);
   }
 
-  initScrollAnimations() {
+  // ─── Scroll-triggered animations ──────────────────────────────
+  //
+  // Looks for every element with class .animate-on-scroll.
+  // When the element scrolls into view, adds .visible,
+  // which triggers the matching CSS animation.
+  // Stops observing each element after it has animated once.
+
+  initScrollAnimations(): void {
+    // Disconnect any previous observer before creating a new one
+    // (called twice: once in ngAfterViewInit, once after event data loads)
+    if (this.scrollObserver) {
+      this.scrollObserver.disconnect();
+    }
+
     const elements = document.querySelectorAll('.animate-on-scroll');
 
     if (!elements.length) return;
 
-    const observer = new IntersectionObserver(
+    this.scrollObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            observer.unobserve(entry.target); // ⚡ important
+            this.scrollObserver?.unobserve(entry.target); // fire once only
           }
         });
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.12,                  // trigger when 12% of element is visible
+        rootMargin: '0px 0px -40px 0px'  // start slightly before fully in view
+      }
     );
 
-    elements.forEach(el => observer.observe(el));
+    elements.forEach(el => this.scrollObserver!.observe(el));
   }
-
-
 }

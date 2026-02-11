@@ -1,4 +1,4 @@
-<main class="flex flex-col overflow-x-hidden text-indigo-900 dark:text-indigo-200">
+<main class="flex flex-col overflow-x-hidden text-indigo-900 dark:text-indigo-300">
 
 <!-- ================= HERO SECTION ================= -->
 <section class="relative min-h-[90vh] flex items-center justify-center px-4 overflow-hidden">
@@ -24,28 +24,27 @@
     <!-- Top Section -->
     <div class="text-center mb-10 animate-fade-in-down">
       
-      <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-indigo-900 dark:text-indigo-200    mb-6 font-heading animate-slide-up">
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-6 animate-slide-up">
         Sri Mudaliandan Swamy
       </h1>
 
-      
       <!-- Typewriter Effect -->
       <div class="relative inline-block min-h-[80px] md:min-h-[100px] mb-6">
-        <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-indigo-700dark:text-indigo-200 font-heading">
+        <h2 class="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-wide leading-tight text-indigo-700 dark:text-indigo-300">
           <span class="typewriter">{{ typedText }}</span><span class="cursor animate-blink">|</span>
         </h2>
       </div>
 
-      <p class="italic text-[#6379C8] text-xl md:text-2xl mb-6 animate-fade-in-delay-1">
+      <p class="italic text-lg text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6 animate-fade-in-delay-1">
         "ஆசார்யன் திருவடிகளே சரணம்"
       </p>
 
-      <p class="text-lg md:text-xl text-indigo-900/80 dark:text-indigo-200 max-w-3xl mx-auto leading-relaxed font-body animate-fade-in-delay-2">
+      <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight text-lg md:text-xl max-w-3xl mx-auto animate-fade-in-delay-2">
         The sacred seat of Acharya Bhakti, Kainkaryam, and Sri Vaishnava Paramparai
       </p>
     </div>
 
-    <!-- Center: Main Image & Stats -->
+    <!-- Center: Main Image & CTAs -->
     <div class="flex flex-col items-center gap-8 mb-10">
       
       <!-- Image with elegant animation -->
@@ -58,21 +57,35 @@
           class="relative rounded-2xl shadow-2xl w-80 md:w-96 border-4 border-white transform hover:scale-105 transition-transform duration-500">
       </div>
 
-      <!-- Primary CTAs with hover effects -->
+      <!-- Primary CTAs -->
       <div class="flex flex-col sm:flex-row gap-4 w-full max-w-2xl animate-fade-in-up-delay">
-        <a routerLink="/about-swamy" 
-           class="group flex-1 px-8 py-4 bg-[#3B5BA9] text-white rounded-xl font-semibold text-lg hover:bg-[#6379C8] transition-all duration-300 shadow-lg hover:shadow-2xl text-center font-body relative overflow-hidden transform hover:scale-105">
-          <span class="relative z-10">Our Lineage</span>
-          <div class="absolute inset-0 bg-gradient-to-r from-[#6379C8] to-[#B49CFF] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <a routerLink="/about-swamy"
+           class="flex-1 inline-flex items-center justify-center px-8 py-3 rounded-lg
+                  font-medium tracking-wide leading-tight text-lg
+                  text-indigo-700 dark:text-indigo-300
+                  border border-indigo-300 dark:border-indigo-700
+                  hover:text-indigo-900 dark:hover:text-indigo-100
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                  transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          Our Lineage →
         </a>
-        <a routerLink="/calendar" 
-           class="group flex-1 px-8 py-4 bg-white text-indigo-700 dark:text-indigo-200 rounded-xl font-semibold text-lg hover:bg-[#F4F6FB] transition-all duration-300 shadow-lg border-2 border-[#3B5BA9] text-center font-body transform hover:scale-105">
-          Upcoming Events
+        <a routerLink="/calendar"
+           class="flex-1 inline-flex items-center justify-center px-8 py-3 rounded-lg
+                  font-medium tracking-wide leading-tight text-lg
+                  text-indigo-700 dark:text-indigo-300
+                  border border-indigo-300 dark:border-indigo-700
+                  hover:text-indigo-900 dark:hover:text-indigo-100
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                  transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          Upcoming Events →
         </a>
       </div>
 
       <a routerLink="/bank-info"
-         class="text-indigo-700 dark:text-indigo-200 font-semibold hover:text-[#6379C8] transition-all duration-300 text-lg underline decoration-2 underline-offset-4 font-body animate-fade-in-delay-3 hover:decoration-[#D2B670]">
+         class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight
+                hover:text-indigo-900 transition text-lg
+                underline decoration-2 underline-offset-4
+                animate-fade-in-delay-3 hover:decoration-[#D2B670]">
          Support Our Mission
       </a>
     </div>
@@ -85,7 +98,7 @@
   <div class="max-w-7xl mx-auto">
 
     <div class="text-center mb-12 animate-fade-in-up">
-      <h2 class="text-4xl md:text-5xl font-bold text-indigo-900 dark:text-indigo-200mb-4 font-heading">
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-4">
         Explore Our Heritage
       </h2>
       <div class="w-16 h-1.5 bg-gradient-to-r from-[#3B5BA9] via-[#B49CFF] to-[#D2B670] mx-auto rounded-full animate-width-expand"></div>
@@ -97,7 +110,7 @@
       <!-- About Us Card -->
       <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.1s">
         <div class="h-48 bg-gradient-to-br from-[#3B5BA9] to-[#6379C8] relative overflow-hidden">
-          <img src="images/temple-interior.jpg" alt="About" class="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700">
+          <!-- <img src="images/temple-interior.jpg" alt="About" class="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700"> -->
           <div class="absolute inset-0 bg-gradient-to-t from-[#3B5BA9]/50 to-transparent"></div>
           <div class="absolute inset-0 flex items-center justify-center">
             <div class="text-6xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">🙏</div>
@@ -105,18 +118,25 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700 transition-colors">About Us</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">About Us</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Discover our 800-year legacy, lineage, and the teachings of our Varthamaana Swami and Azhwargal.
           </p>
           <div class="space-y-2 mb-6">
-            <a routerLink="/about-thirumaaligai" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ About Thirumaligai</a>
-            <a routerLink="/about-swamy" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Varthamaana Swami</a>
-            <a routerLink="/history" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Our History</a>
-            <a routerLink="/thirumaligais" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Our Thirumaligais</a>
+            <a routerLink="/about-thirumaaligai" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ About Thirumaligai</a>
+            <a routerLink="/about-swamy" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Varthamaana Swami</a>
+            <a routerLink="/history" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Our History</a>
+            <a routerLink="/thirumaligais" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Our Thirumaligais</a>
           </div>
-          <a routerLink="/about-thirumaaligai" class="inline-flex items-center px-5 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-base font-body group-hover:shadow-lg transform hover:scale-105">
-            Learn More
+          <a routerLink="/about-thirumaaligai"
+             class="inline-flex items-center px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Learn More →
           </a>
         </div>
       </div>
@@ -124,7 +144,7 @@
       <!-- Events Card -->
       <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.2s">
         <div class="h-48 bg-gradient-to-br from-[#D2B670] to-[#B49CFF] relative overflow-hidden">
-          <img src="images/festival-wide.jpg" alt="Events" class="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700">
+          <!-- <img src="images/festival-wide.jpg" alt="Events" class="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700"> -->
           <div class="absolute inset-0 bg-gradient-to-t from-[#D2B670]/50 to-transparent"></div>
           <div class="absolute inset-0 flex items-center justify-center">
             <div class="text-6xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">📅</div>
@@ -132,24 +152,38 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D2B670] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700 transition-colors">Events & Festivals</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Events & Festivals</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Join our sacred celebrations, rituals, and spiritual gatherings throughout the year.
           </p>
           
           <!-- Next Event Preview -->
           <div *ngIf="nextEvent" class="bg-[#F4F6FB] rounded-lg p-4 mb-6 border-l-4 border-[#3B5BA9] hover:border-[#D2B670] transition-colors duration-300">
-            <p class="text-sm text-[#6379C8] font-semibold mb-1 font-body">UPCOMING</p>
-            <p class="font-bold text-indigo-900 dark:text-indigo-200 mb-1 font-heading">{{ nextEvent.name }}</p>
-            <p class="text-sm text-indigo-900/70 dark:text-indigo-200 font-body">{{ nextEvent.startDate | date:'MMM d, y' }}</p>
+            <p class="text-sm text-indigo-600 dark:text-indigo-300 font-medium tracking-wide mb-1">UPCOMING</p>
+            <p class="font-semibold tracking-wide text-indigo-900 dark:text-indigo-300 mb-1">{{ nextEvent.name }}</p>
+            <p class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide">{{ nextEvent.startDate | date:'MMM d, y' }}</p>
           </div>
 
           <div class="flex gap-3">
-            <a routerLink="/calendar" class="flex-1 px-4 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-center text-base font-body transform hover:scale-105">
-              Event Calendar
+            <a routerLink="/calendar"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Event Calendar →
             </a>
-            <a routerLink="/past-events" class="flex-1 px-4 py-2.5 border-2 border-[#3B5BA9] text-indigo-700 dark:text-indigo-200 rounded-lg font-semibold hover:bg-[#F4F6FB] transition-all duration-300 text-center text-base font-body">
-              Past Events
+            <a routerLink="/past-events"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Past Events →
             </a>
           </div>
         </div>
@@ -165,18 +199,25 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700 dark:text-indigo-200 transition-colors">Spiritual Knowledge</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Spiritual Knowledge</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Access sacred texts, Thaniyans, teachings, and the path of Samashrayanam.
           </p>
           <div class="space-y-2 mb-6">
-            <a routerLink="/pothu-thaniyans" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Pothu Thaniyans</a>
-            <a routerLink="/thaniyans" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Thaniyans</a>
-            <a routerLink="/samashrayanam" class="block text-indigo-700 dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Samashrayanam</a>
-            <a routerLink="/vaazhi-thirunaamam" class="block text-indigo-700  dark:text-indigo-200 hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base font-body">→ Vaazhi Thirunaamam</a>
+            <a routerLink="/pothu-thaniyans" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Pothu Thaniyans</a>
+            <a routerLink="/thaniyans" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Thaniyans</a>
+            <a routerLink="/samashrayanam" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Samashrayanam</a>
+            <a routerLink="/vaazhi-thirunaamam" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Vaazhi Thirunaamam</a>
           </div>
-          <a routerLink="/documents" class="inline-flex items-center px-5 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-base font-body group-hover:shadow-lg transform hover:scale-105">
-            View Documents
+          <a routerLink="/documents"
+             class="inline-flex items-center px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            View Documents →
           </a>
         </div>
       </div>
@@ -191,17 +232,30 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700 transition-colors">Media Archive</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Media Archive</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Browse our collection of photos, videos, and documents from festivals and events.
           </p>
-
           <div class="flex gap-3">
-            <a routerLink="/gallery" class="flex-1 px-4 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-center text-base font-body transform hover:scale-105">
-              Photos
+            <a routerLink="/gallery"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Photos →
             </a>
-            <a routerLink="/videos" class="flex-1 px-4 py-2.5 border-2 border-[#3B5BA9] text-indigo-700 dark:text-indigo-200 rounded-lg font-semibold hover:bg-[#F4F6FB] transition-all duration-300 text-center text-base font-body">
-              Videos
+            <a routerLink="/videos"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Videos →
             </a>
           </div>
         </div>
@@ -217,12 +271,19 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700 transition-colors">Swamy Schedule</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Swamy Schedule</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             View the schedule and availability of our Varthamaana Swami for spiritual guidance.
           </p>
-          <a routerLink="/swamy-schedule" class="inline-flex items-center px-5 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-base font-body w-full justify-center group-hover:shadow-lg transform hover:scale-105">
-            View Schedule
+          <a routerLink="/swamy-schedule"
+             class="inline-flex items-center justify-center w-full px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            View Schedule →
           </a>
         </div>
       </div>
@@ -237,16 +298,30 @@
         </div>
         <div class="p-6 relative">
           <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D2B670] to-[#B49CFF] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          <h3 class="text-2xl font-bold text-indigo-900 dark:text-indigo-200 mb-3 font-heading group-hover:text-indigo-700  transition-colors">Connect With Us</h3>
-          <p class="text-indigo-900/70 dark:text-indigo-200 mb-6 leading-relaxed font-body">
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Connect With Us</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Register for updates, contribute to our mission, and stay connected with our community.
           </p>
           <div class="flex gap-3">
-            <a routerLink="/registration" class="flex-1 px-4 py-2.5 bg-[#3B5BA9] text-white rounded-lg font-semibold hover:bg-[#6379C8] transition-all duration-300 text-center text-base font-body transform hover:scale-105">
-              Register
+            <a routerLink="/registration"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Register →
             </a>
-            <a routerLink="/bank-info" class="flex-1 px-4 py-2.5 border-2 border-[#3B5BA9] text-indigo-700 dark:text-indigo-200 rounded-lg font-semibold hover:bg-[#F4F6FB] transition-all duration-300 text-center text-base font-body">
-              Donate
+            <a routerLink="/bank-info"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Donate →
             </a>
           </div>
         </div>
@@ -264,13 +339,19 @@
       
       <div class="relative z-10">
         <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-500 inline-block">✨</div>
-        <h3 class="text-3xl md:text-4xl font-bold mb-4 font-heading">Azhwargal</h3>
-        <p class="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed font-body">
+        <h3 class="text-3xl md:text-4xl font-semibold tracking-wide leading-tight mb-4">Azhwargal</h3>
+        <p class="text-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium tracking-wide leading-relaxed">
           Learn about the 12 divine Azhwargal, their contributions to Sri Vaishnavism, 
           and their timeless teachings that guide our spiritual journey.
         </p>
-        <a routerLink="/alwargal" class="inline-flex items-center px-8 py-4 bg-white text-indigo-700 rounded-xl dark:text-indigo-200 font-bold text-lg hover:bg-[#F4F6FB] transition-all duration-300 shadow-lg font-body transform hover:scale-105">
-          Discover the Azhwargal
+        <a routerLink="/alwargal"
+           class="inline-flex items-center px-8 py-3 rounded-xl
+                  font-medium tracking-wide text-lg
+                  text-indigo-700
+                  bg-white border border-indigo-200
+                  hover:text-indigo-900 hover:bg-indigo-50
+                  transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white/40">
+          12 Azhwargal →
         </a>
       </div>
     </div>
