@@ -19,14 +19,6 @@ export class LandingComponent implements OnInit, AfterViewInit {
   visitorCount = 0;
 
 
-  // 🔹 Gallery Preview Images
-  galleryImages: string[] = [
-    'images/swamy/pooramchennai13/img_1.JPG',
-    'images/swamy/pooramchennai13/img_2.JPG',
-    'images/swamy/pooramchennai13/img_3.JPG',
-    'images/swamy/pooramchennai13/img_4.JPG',
-    'images/swamy/pooramchennai13/img_5.JPG'
-  ];
 
   // 🔹 Upcoming Event
   nextEvent: CalendarEvent | null = null;
