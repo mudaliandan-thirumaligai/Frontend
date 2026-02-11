@@ -1,17 +1,4 @@
-/* ============================================================
-   home.component.css
-   Animations only — no layout or style overrides.
 
-   SCROLL STRATEGY:
-   - Hero elements (above fold): animate immediately on load.
-   - Below-fold elements: hidden by default via [data-scroll].
-     The TypeScript observer adds .in-view when they enter
-     the viewport, which triggers the animation.
-   - Infinite/decorative animations always run regardless.
-   ============================================================ */
-
-
-/* ── Keyframes ─────────────────────────────────────────────── */
 
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-24px); }
