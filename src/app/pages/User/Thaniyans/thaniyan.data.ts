@@ -7,6 +7,18 @@ export interface Thanian {
 
 export const MUDALIANDAN_THANIYANS: Thanian[] = [
   {
+    id: '24',
+    title: 'Kumara Bhakthisaracharya Swami',
+    nakshatram: 'Margazhi Magam',
+    content: `shreemadh vadhoola kulavenkata soori pouthram |
+vaadhoola ramanuja desika gorooththama puthra rathnam |
+tat paada yugma sharanam thathupaasithaaram |
+shree bhakthisara guruvaryamaham prapadhye ||
+
+shree vengkataarya thanayam thath paadha kamalaashrayam |
+vaadhoolaanvaya poornendhum raamaanuja gurum bhaje ||`
+  },
+  {
     id: '23',
     title: 'Kumara Ramanujacharya Swami',
     nakshatram: 'Karthikai Pooram',
