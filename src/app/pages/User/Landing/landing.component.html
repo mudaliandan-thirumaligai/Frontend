@@ -337,23 +337,63 @@
         <div class="absolute bottom-0 right-0 w-40 h-40 border-2 border-white rounded-full animate-spin-reverse"></div>
       </div>
       
-      <div class="relative z-10">
-        <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-500 inline-block">✨</div>
-        <h3 class="text-3xl md:text-4xl font-semibold tracking-wide leading-tight mb-4">Azhwargal</h3>
-        <p class="text-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium tracking-wide leading-relaxed">
-          Learn about the 12 divine Azhwargal, their contributions to Sri Vaishnavism, 
-          and their timeless teachings that guide our spiritual journey.
-        </p>
-        <a routerLink="/alwargal"
-           class="inline-flex items-center px-8 py-3 rounded-xl
-                  font-medium tracking-wide text-lg
-                  text-indigo-700
-                  bg-white border border-indigo-200
-                  hover:text-indigo-900 hover:bg-indigo-50
-                  transition shadow-lg focus:outline-none focus:ring-2 focus:ring-white/40">
-          12 Azhwargal →
-        </a>
-      </div>
+      <section class="relative py-12 px-4">
+
+        <div class="relative z-10 text-center max-w-5xl mx-auto">
+
+          <!-- Icon -->
+          <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-500 inline-block">
+            ✨
+          </div>
+
+          <!-- Heading -->
+          <h3 class="text-2xl md:text-3xl font-semibold tracking-wide leading-tight mb-4 text-white">
+            Azhwargal & Aachariyargal
+          </h3>
+
+          <!-- Description -->
+          <p class="text-base md:text-lg text-white/90 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
+            Discover the divine Azhwargal and the revered Aachariyargal who preserved
+            and spread the philosophy of Sri Vaishnavism across generations,
+            guiding our spiritual journey.
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+
+            <!-- Azhwargal Button -->
+            <a routerLink="/alwargal"
+              class="inline-flex items-center justify-center
+                      px-6 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700
+                      bg-white border border-indigo-200
+                      hover:text-indigo-900 hover:bg-indigo-50
+                      transition shadow-md
+                      focus:outline-none focus:ring-2 focus:ring-white/40">
+              12 Azhwargal →
+            </a>
+
+            <!-- Aachariyargal Button -->
+            <a routerLink="/history"
+              class="inline-flex items-center justify-center
+                      px-6 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700
+                      bg-white border border-indigo-200
+                      hover:text-indigo-900 hover:bg-indigo-50
+                      transition shadow-md
+                      focus:outline-none focus:ring-2 focus:ring-white/40">
+              Aachariyargal →
+            </a>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
     </div>
 
   </div>
