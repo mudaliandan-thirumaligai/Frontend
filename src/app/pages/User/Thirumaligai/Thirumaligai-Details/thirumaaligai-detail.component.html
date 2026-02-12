@@ -20,20 +20,34 @@
     {{ place.description }}
   </p>
 
-  <div class="mt-10">
+  <div class="mt-10 flex flex-wrap gap-4 items-center">
+
+    <!-- View on Maps -->
     <a [href]="place.mapLink" target="_blank" rel="noopener noreferrer">
       <button
         class="inline-flex items-center text-indigo-700 font-medium
-                  hover:text-indigo-900 transition
-                  px-6 py-3 rounded-lg
-                  border border-indigo-300 dark:border-indigo-700
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
         📍 View on Google Maps
       </button>
     </a>
-  </div>
 
+    <!-- Go Back -->
+    <button
+      routerLink="/thirumaligais"
+      class="inline-flex items-center text-indigo-700 font-medium
+            hover:text-indigo-900 transition
+            px-6 py-3 rounded-lg
+            border border-indigo-300 dark:border-indigo-700
+            focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      ← Go Back
+    </button>
+  </div>
 </section>
+
+
 
 <ng-template #loading>
   <p class="text-center text-indigo-600 py-20">
