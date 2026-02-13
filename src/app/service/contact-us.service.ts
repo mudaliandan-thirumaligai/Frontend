@@ -10,7 +10,7 @@ export class ContactService {
   constructor(private http: HttpClient) {}
 
   submitContact(data: Contact): Observable<any> {
-    return this.http.post(this.baseUrl, data);
+    return this.http.post(`${this.baseUrl}/contact`, data);
   }
 
   getPaginated(params: {
