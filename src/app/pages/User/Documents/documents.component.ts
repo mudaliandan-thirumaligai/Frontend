@@ -12,23 +12,40 @@ import { DocumentModel, DocumentsService } from '../../../service/documents.serv
   styleUrls: ['./documents.component.css']
 })
 export class DocumentsComponent implements OnInit {
+
   documents: DocumentModel[] = [];
+
   searchTerm: string = '';
   selectedLanguage: string = '';
 
-  // Languages list for filter
-  languages: string[] = ['English', 'Tamil', 'Sanskrit'];
+  // Dynamically populated languages
+  languages: string[] = [];
 
   constructor(private documentsService: DocumentsService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.documentsService.getAll().subscribe(data => {
       this.documents = data;
+      this.extractLanguages();
     });
+  }
+
+  // Extract unique languages from API response
+  private extractLanguages(): void {
+    const languageSet = new Set<string>();
+
+    this.documents.forEach(doc => {
+      if (doc.language) {
+        languageSet.add(doc.language);
+      }
+    });
+
+    this.languages = Array.from(languageSet).sort();
   }
 
   get filteredDocuments(): DocumentModel[] {
     return this.documents.filter(doc => {
+
       const matchesName =
         !this.searchTerm ||
         doc.title.toLowerCase().includes(this.searchTerm.toLowerCase());
