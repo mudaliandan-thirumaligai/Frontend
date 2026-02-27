@@ -32,7 +32,8 @@ Nootrantaadhi Paadi Vilanga seidhan Parindu`
 
     biography: [
       'Poigai Azhwar is one of the revered Mudhal Azhwars and a pioneer of the Sri Vaishnava Bhakti movement.',
-      'Through his hymns, especially Mudhal Thiruvandhaadhi, he established that Lord Narayana is the supreme essence of the Vedas.'
+      'He is born as the amsam of panchajanya shankam,in tiruvekkha shetram,in a golden pond,inside a golden lotus flower. As the shankha announces its presence so does alwar announce',
+      'through his hymn, MUDHAL TIRUVANDAAHDHI  that Lord SRIMAN NARAYANA is the supreme LORD '
     ],
 
     additionalInfo:
@@ -59,9 +60,14 @@ Budathaar Ponnan Kazhal`
     thiruNatchathiram: 'Avittam',
     amsam: 'Kaumodakee,Gadhai (Mace)',
 
-    otherNames: [],
+    otherNames: ['KANdan mallai', 'ponan kazhal', 'mallai'],
 
     biography: [
+      'alwar is born in mahabalipuram, in a golden mountain,',
+      'in a madavi flower as the amsam of Kaumodakee gada.',
+       'He is called as budathar because of his dark complexion.',
+        'He is also called as kadan mallai because of his love for Lord\'s lotus feet. ',
+        'He is also called as ponan kazhal because of his love for Lord\'s golden anklets.',
       'Irandam Thiruanthathi. He expressed the Para Gnanam through his devotional songs.'
     ],
 
