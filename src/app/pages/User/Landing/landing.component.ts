@@ -98,7 +98,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   // ─── Typewriter effect ─────────────────────────────────────────
 
   words: string[] = [
-    'ஆசார்ய நிஷ்டை',
+    'ஆசார்ய பக்தி',
     'கைங்கர்யம்',
     'ஸ்ரீ வைஷ்ணவ சம்பிரதாயம்',
     'ராமானுஜ சம்பந்தம்'
