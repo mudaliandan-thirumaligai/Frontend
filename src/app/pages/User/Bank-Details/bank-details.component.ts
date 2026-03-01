@@ -42,7 +42,7 @@ export class BankDetailsComponent {
     {
       title: 'Sri Dasarathy Trust - CUB',
       description:
-        'On behalf of Sri Amirthavalli Thayar Sametha Sri Pachai Varana Perumal Koil Sri Mudaliandan Swami Aadheena Thiru Avathara Sthalam, Sri Mudaliandan Swami Thirumaligai and with the guidance of our beloved Sri Mudaliandan Swamigal (Kumara Ramanujachar), Sri Dasarathy Trust has considered giving a golden plate (Approx. 2 Kg) as a humble offering to Sri Adhikesava perumal Sri Bhashyakara swamy Devasthanam, Sriperumbudur.Therefore, we make a humble plea to all members and patrons of the Trust to offer their contributions in the form of gold or money to Sri Dasarathy Trust in order to facilitate our Trust\'scontribution to the millennial celebrations. The contributions can also be made to the Trust in the form of money.Contributors can obtain proper receipt for their offerings by notifying Sri Lakshmi Narasimhan Swami on 89252 56626 or sridasarathy@gmail.com with your full name, address, E Mail ID, Mobile Number, Payment details.',
+        'All funds in this account will be used by Sri Dasarathy Trust.',
       image: '/images/mudaliandan/bank-2.png',
       bankDetails: {
         bank: 'City Union Bank',
