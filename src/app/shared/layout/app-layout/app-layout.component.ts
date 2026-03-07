@@ -38,7 +38,7 @@ export class AppLayoutComponent {
       label: 'About',
       children: [
         { label: 'About Mudaliandan Thirumaaligai', route: '/about-thirumaaligai' },
-        // { label: 'Aachariyan Perumai', route: '/about-swamy' },
+        { label: 'Aachariyan Perumai', route: '/about-swamy' },
         { label: 'Swamy Schedule', route: '/swamy-schedule' },
         { label: 'Azhwargal', route: '/alwargal' },
         { label: 'Aacharyas', route: '/aachariyargal' },

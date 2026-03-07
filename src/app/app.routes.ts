@@ -25,7 +25,7 @@ import { HistoryComponent } from './pages/User/History/history.component';
 import { VideosComponent } from './pages/User/Videos/videos.component';
 import { DocumentsComponent } from './pages/User/Documents/documents.component';
 import { PastEventsComponent } from './pages/User/Past-Events/past-events.component';
-// import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
+import { AboutSwamyComponent } from './pages/User/About-Swamy/about-swamy.component';
 import { AdminLayoutComponent } from './pages/Admin/Layout/admin-layout.component';
 import { VideosAdminComponent } from './pages/Admin/Videos/videos-admin.component';
 import { ShishyaListComponent } from './pages/Admin/Shishya-List/shishya-list.component';
@@ -60,7 +60,7 @@ export const routes: Routes = [
       { path: 'alwargal', component: AzhwargalComponent },
       { path: 'documents', component: DocumentsComponent },
       { path: 'past-events', component: PastEventsComponent },
-      // { path: 'about-swamy', component: AboutSwamyComponent },
+      { path: 'about-swamy', component: AboutSwamyComponent },
       { path: 'about-thirumaaligai', component: AboutThirumaligaiComponent },
       { path: 'swamy-schedule', component: SwamyScheduleComponent },
       { path: 'bank-info', component: BankDetailsComponent },
