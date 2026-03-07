@@ -1,10 +1,13 @@
 .gallery-container {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 1rem 3rem;
+}
+
+@media (min-width: 1024px) {
+  .gallery-container {
+    grid-template-columns: 1fr 280px;
+  }
 }
 
 .card {

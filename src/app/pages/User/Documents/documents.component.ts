@@ -42,6 +42,9 @@ export class DocumentsComponent implements OnInit {
 
     this.languages = Array.from(languageSet).sort();
   }
+  openDocument(url: string) {
+    window.open(url, '_blank');
+  }
 
   get filteredDocuments(): DocumentModel[] {
     return this.documents.filter(doc => {

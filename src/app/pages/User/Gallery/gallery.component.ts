@@ -108,18 +108,47 @@ onYearChange(yearValue: string) {
     this.currentFolder = folder;
     this.currentIndex = folder.images.indexOf(img);
   }
+  preloadAdjacent() {
+    if (!this.currentFolder) return;
+
+    const next =
+      this.currentFolder.images[
+        (this.currentIndex + 1) % this.currentFolder.images.length
+      ];
+
+    const prev =
+      this.currentFolder.images[
+        (this.currentIndex - 1 + this.currentFolder.images.length) %
+        this.currentFolder.images.length
+      ];
+
+    [next, prev].forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
 
   prevImage() {
     if (!this.currentFolder) return;
-    this.currentIndex = (this.currentIndex - 1 + this.currentFolder.images.length) 
-                        % this.currentFolder.images.length;
+
+    this.currentIndex =
+      (this.currentIndex - 1 + this.currentFolder.images.length) %
+      this.currentFolder.images.length;
+
     this.selectedImage = this.currentFolder.images[this.currentIndex];
+
+    this.preloadAdjacent();
   }
 
   nextImage() {
     if (!this.currentFolder) return;
-    this.currentIndex = (this.currentIndex + 1) % this.currentFolder.images.length;
+
+    this.currentIndex =
+      (this.currentIndex + 1) % this.currentFolder.images.length;
+
     this.selectedImage = this.currentFolder.images[this.currentIndex];
+
+    this.preloadAdjacent();
   }
 
   closeImage() {
@@ -150,11 +179,17 @@ onYearChange(yearValue: string) {
       this.closeImage();
     }
   }
-    onTouchStart(event: TouchEvent) {
+   
+  onTouchStart(event: TouchEvent) {
+    // Ignore pinch gestures
+    if (event.touches.length > 1) return;
+
     this.touchStartX = event.changedTouches[0].screenX;
   }
 
   onTouchEnd(event: TouchEvent) {
+    if (event.changedTouches.length > 1) return;
+
     this.touchEndX = event.changedTouches[0].screenX;
     this.handleSwipe();
   }
@@ -162,13 +197,13 @@ onYearChange(yearValue: string) {
   handleSwipe() {
     const deltaX = this.touchEndX - this.touchStartX;
 
-    // Ignore very small swipes
-    if (Math.abs(deltaX) < 50) return;
+    // Ignore tiny movement
+    if (Math.abs(deltaX) < 60) return;
 
     if (deltaX < 0) {
-      this.nextImage(); // swipe left → next
+      this.nextImage();
     } else {
-      this.prevImage(); // swipe right → prev
+      this.prevImage();
     }
   }
 

@@ -163,10 +163,13 @@
               <img
                 [src]="img.src"
                 [alt]="img.alt || ''"
+                (click)="openImage(img.src)"
                 class="rounded-lg
                       w-full
                       object-contain
-                      max-h-[28rem]"
+                      max-h-[28rem]
+                      cursor-zoom-in
+                      transition hover:scale-[1.02]"
                 [class.max-w-4xl]="block.layout === 'full'" />
 
               <figcaption *ngIf="img.caption"
@@ -311,4 +314,26 @@
     </div>
 
   </div>
+</div>
+<!-- IMAGE POPUP -->
+<div
+  *ngIf="popupImage"
+  class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+  (click)="closeImage()"
+>
+
+  <!-- Close Button -->
+  <button
+    class="absolute top-4 right-5 text-white text-3xl"
+    (click)="closeImage()">
+    ✕
+  </button>
+
+  <!-- Image -->
+  <img
+    [src]="popupImage"
+    class="max-w-full max-h-full rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"
+  />
+
 </div>

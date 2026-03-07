@@ -85,7 +85,9 @@
           <img
             [src]="selected.image"
             [alt]="selected.name"
-            class="w-56 h-72 object-contain" />
+            (click)="openImage(selected.image)"
+            class="w-56 h-72 object-contain cursor-zoom-in transition hover:scale-105"
+          />
         </div>
 
         <!-- TEXT (RIGHT) -->
@@ -189,4 +191,27 @@
     </div>
 
   </div>
+</div>
+
+<!-- IMAGE POPUP -->
+<div
+  *ngIf="popupImage"
+  class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+  (click)="closeImage()"
+>
+
+  <!-- Close Button -->
+  <button
+    class="absolute top-4 right-4 text-white text-3xl font-light"
+    (click)="closeImage()">
+    ✕
+  </button>
+
+  <!-- Image -->
+  <img
+    [src]="popupImage"
+    class="max-w-full max-h-full rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"
+  />
+
 </div>

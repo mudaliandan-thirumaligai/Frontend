@@ -26,4 +26,13 @@ export class HistoryComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   mobileSidebarOpen = false;
+  popupImage: string | null = null;
+
+  openImage(img: string) {
+    this.popupImage = img;
+  }
+
+  closeImage() {
+    this.popupImage = null;
+  }
 }

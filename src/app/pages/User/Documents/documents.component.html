@@ -21,9 +21,15 @@
   <div class="documents-grid flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 order-2 lg:order-1">
     <div
       *ngFor="let doc of filteredDocuments"
+      (click)="openDocument(doc.url)"
+      (keydown.enter)="openDocument(doc.url)"
+      tabindex="0"
+      role="button"
       class="group bg-white dark:bg-neutral-900
-             rounded-2xl shadow-sm hover:shadow-lg
-             hover:-translate-y-1 transition-transform duration-300 p-4 flex flex-col justify-between"
+            rounded-2xl shadow-sm hover:shadow-lg
+            hover:-translate-y-1 transition-transform duration-300
+            p-4 flex flex-col justify-between
+            cursor-pointer"
     >
       <!-- Cover Icon -->
       <div
@@ -58,11 +64,12 @@
       <a
         [href]="doc.url"
         target="_blank"
+        (click)="$event.stopPropagation()"
         class="mt-4 inline-flex items-center text-sm font-medium
-               text-indigo-600 dark:text-indigo-400
-               underline-offset-4
-               transition-transform duration-200
-               hover:-translate-y-0.5 hover:text-indigo-700"
+              text-indigo-600 dark:text-indigo-400
+              underline-offset-4
+              transition-transform duration-200
+              hover:-translate-y-0.5 hover:text-indigo-700"
       >
         Open document
       </a>
