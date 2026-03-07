@@ -1,27 +1,63 @@
 <br>
-<app-page-breadcrumb pageTitle="About Thirumaaligai" />
+<app-page-breadcrumb pageTitle="About Thirumaligai" />
 
-<!-- ================= ABOUT THIRUMAALIGAI INTRO ================= -->
-<section class="py-8 px-2">
-  <div class="max-w-6xl mx-auto text-center">
+<!-- ================= ABOUT SWAMY INTRO ================= -->
+<section class="py-2 px-2">
+  <div class="max-w-5xl mx-auto text-center">
 
     <!-- Title -->
     <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-      Sri Mudaliandan Swami Thirumaaligai
+      Sri Mudaliandan Swamy Thirumaligai
     </h1>
 
-    <!-- Subtitle -->
-    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
-      Preserving the sacred Acharya lineage and spiritual legacy of
-      Swami Mudaliandan, the foremost disciple of Sri Ramanujacharya.
-    </p>
-
     <!-- Divider -->
-    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-2 rounded-full"></div>
+
+    <!-- Full Width Banner -->
+    <div class="w-full mt-16">
+      <div class="relative w-full">
+
+        <!-- Soft background frame -->
+        <div class="absolute inset-0 bg-indigo-100"></div>
+
+        <!-- Clickable Image -->
+        <img
+          src="images/Landing/New_Banner.jpg"
+          alt="Sri Mudaliandan Swamy"
+          (click)="openModal()"
+          class="relative w-full h-auto object-cover cursor-pointer"
+        />
+
+      </div>
+    </div>
 
   </div>
 </section>
 
+
+<!-- Image Popup Modal -->
+<div
+  *ngIf="showImageModal"
+  class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+  (click)="closeModal()"
+>
+
+  <!-- Close button -->
+  <span
+    class="absolute top-5 right-6 text-white text-4xl cursor-pointer"
+    (click)="closeModal()"
+  >
+    &times;
+  </span>
+
+  <!-- Popup Image -->
+  <img
+    src="images/Landing/New_Banner.jpg"
+    class="max-w-[95%] max-h-[90%] rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"
+  />
+
+</div>
 <!-- ================= ABOUT CONTENT ================= -->
 <section class="px-4 pb-12">
   <div class="max-w-4xl mx-auto
@@ -36,43 +72,105 @@
                 font-medium tracking-wide leading-relaxed">
 
       <p>
-        <strong>Sri Mudaliandan Swami Thirumaaligai</strong> represents a revered
-        spiritual lineage rooted directly in the life and service of
-        <strong>Swami Mudaliandan</strong>, also known as <em>Dasarathy</em>.
-        He was the divine nephew and most trusted disciple of
-        <strong>Sri Ramanujacharya</strong>, revered as the living embodiment
-        of his Acharya’s will and service.
+        ஆசிரியர் – ஆசிரியன் என்பவன் எப்பொழுதும் எல்லாருக்கும் எப்பொழுதும் அறுப்படும் பெரிய பரிசாகள். 
+        “மாற்றி மாற்றி பல் பிறப்பும் மறந்து” என்றபடி சரிசமமாய் என்ற பிள்ளைகள் கவலைகள், சாந்ததாள் வரும் 
+        இந்துப் பங்களிலேயே போது போகவேண்டும். “மென்மை” எனப்படுகின்றன. இவை இச்சமயம் கற்றுக் கொடுக்கும் 
+        மாணவன் ஆசிரியன். தேசம் தேசம் ஆடா ஆசிரியர் போற்றி பெறுபவன். அவன் அறிவும் அருளும் ஆசிரியன் மூலம் 
+        பெற்றுக் கொள்கிறான்.
       </p>
 
       <p>
-        In Sri Vaishnava tradition, the term <strong>“Thirumaaligai”</strong>
-        signifies far more than a physical residence. It denotes an Acharya
-        parampara — a sacred custodianship of sampradayic values, practices,
-        and teachings passed down faithfully across generations.
+        “எம்மாறு நிவர்த்தகமான (பிரசவிக் கடல் – தாண்டுவது) பெரிய இருளைத்தான் உணர்வதுமான் ஆசிரியன்” 
+        என்று பெரியோர் கூறுவர். ஒருவன் ஒரு ஆசிரியன் அறிவுணர்ந்து “திருத்திவிடு பணிகள் வேணும்” என்று 
+        வேண்டிக்கொள்ளும் மாணவ வைகைகளுக்கு நிகரில்லாதவன் இப்படி வேண்டுவன் ஆசிரியன் செவியில் வைத்திருப்பான்.
       </p>
 
       <p>
-        Swami Mudaliandan’s devotion was so complete that Sri Ramanujacharya
-        is said to have regarded him as his own <em>Tridandam</em> — the sacred
-        staff of renunciation. Entrusted with temple administration,
-        disciple guidance, and sampradaya protection, Mudaliandan Swami
-        played a central role in shaping the early foundations of
-        Sri Vaishnavism.
+        இவர் சமயாசாரமும் – புத்தசமயம் கர்மம் என்னும் அணைக்கப்படுமே. இதில் முக்கியமான என்பார் – 
+        திருவள்ளுவர் – எம்பெருமானின் திருப்பாதங்கள் நினைவாகும். திருவள்ளுவின் அடையாளங்கள் புதர்களில் 
+        பெருமை. நல்வழி தருவான் மாணவர்க்கு குருபரம்பரை மூலவழி. சேயனுக்கு ஆசிரியன் உடற்கடவுள். 
+        இந்த சமயத்தில் பயின்ற ஆசிரியனின் திருவடி எம்பெருந்தந்தை. இப்படி ஆசிரியனிடம் பெற்றவற்றைக் 
+        குறித்துச் செல்வோம் என்று சொல்லப்படும்.
       </p>
 
       <p>
-        The Mudaliandan Swami Thirumaaligai continues this legacy through
-        unwavering commitment to <em>Acharya Kainkaryam</em>,
-        Guruparampara anushtanam, and the propagation of
-        Visishtadvaita philosophy as taught by Sri Ramanujacharya.
+        மரபியல் என்பது வங்கியில் (Savings Bank) சேமிப்பது போல சேமித்து பலன் பெறுவது. நம்முடைய ஆசை 
+        காரணமாகச் சேமித்து வைத்திருப்பதை அடுத்த தலைமுறைக்கு கொடுக்க வேண்டிய அவசியம் உண்டு. 
+        மனித வாழ்க்கையின் முக்கிய அம்சமாக இது கருதப்படுகிறது.
       </p>
 
       <p>
-        Today, the Thirumaaligai stands as a beacon of tradition, discipline,
-        and devotion — guiding aspirants on the timeless path of surrender,
-        humility, and service to Bhagavan and Acharya.
+        ஆசிரியரின் பொறுப்பும் – மாணவர்களின் நலனும் சமூக முன்னேற்றமும் இதனோடு சம்பந்தப்பட்டவை. 
+        புதிய தலைமுறைக்கு நல்ல வழிகாட்டுதலாக ஆசிரியர் இருக்க வேண்டும். அறிவும் ஒழுக்கமும் வளர்த்திட 
+        ஆசிரியர் முனைப்புடன் செயற்பட வேண்டும்.
+      </p>
+
+      <p>
+        செய்யப்பட்ட பணாசாரியர் எம்பெருமான் என்பதும் ராமானுஜர் வழியில் பரவியது. அவர் நியமித்ததினால் 
+        74 சிம்மாசனாதிபதிகள் என்றும் கூறப்படுகின்றனர். அவர்கள் மூலம் சமய வழிபாடுகள் பரவின.
+      </p>
+
+      <p>
+        முதலான நூல்கள் – ஸ்ரீபாஷ்யம், கீதாபாஷ்யம் போன்ற நூல்களை எழுதியவர் ராமானுஜர். 
+        அவரது உபதேசங்கள் மூலம் பக்தியும் ஞானமும் பரவி வளர்ந்தன.
+      </p>
+
+      <p>
+        பாரதியார் கவிதைகளில் சுதந்திரம், சமத்துவம், மனிதநேயம் ஆகியவை பிரதானமாகக் கூறப்படுகின்றன. 
+        எல்லோரும் சமம் என்ற எண்ணத்தை அவர் வலியுறுத்தினார். பெண்கள் கல்வி பெற வேண்டும் என்ற கருத்தையும் 
+        துணிவுடன் வெளிப்படுத்தினார்.
+      </p>
+
+      <p>
+        அவரது பாடல்கள் மக்களின் மனதில் தீப்பொறியாக எழுச்சி ஏற்படுத்தின. தேசப்பற்று வளர்க்கும் 
+        பாடல்கள் பலவற்றை அவர் எழுதியுள்ளார். இதனால் தமிழ் இலக்கியத்தில் அவருக்கு முக்கிய இடம் 
+        கிடைத்துள்ளது.
       </p>
 
     </div>
   </div>
 </section>
+
+<div class="mt-10 px-4">
+  <div class="max-w-5xl mx-auto
+              grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+              gap-4">
+
+    <!-- PDF 1 -->
+    <a [href]="oldPhotosPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      CLICK HERE to see old photos of our Thirumaligai Aacharyas
+    </a>
+
+    <!-- PDF 2 -->
+    <a [href]="yatirajaPadukaPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      Click here to take a look at Yatiraja Paduka
+    </a>
+
+    <!-- PDF 3 -->
+    <a [href]="sadabhishekaPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      Click here to view Sadabhisheka Vaibhava Patrikai
+    </a>
+
+  </div>
+</div>

@@ -25,4 +25,5 @@ export class AzhwargalComponent implements OnInit {
     this.selected = a;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  mobileSidebarOpen = false;
 }

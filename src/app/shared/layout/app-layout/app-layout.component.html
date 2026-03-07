@@ -88,8 +88,14 @@
 
 
 <!-- 🔹 MOBILE MENU -->
-<div *ngIf="isMenuOpen" 
-     class="md:hidden mt-20 px-6 space-y-3 text-indigo-700 dark:text-indigo-300 font-medium">
+<div *ngIf="isMenuOpen"
+     class="fixed top-24 left-0 right-0 z-40
+            md:hidden
+            max-h-[calc(100vh-6rem)] overflow-y-auto
+            px-6 py-4 space-y-3
+            bg-white dark:bg-neutral-900
+            shadow-lg
+            text-indigo-700 dark:text-indigo-300 font-medium">
 
   <div *ngFor="let item of menu">
 
@@ -108,12 +114,14 @@
           {{ child.label }}
         </li>
       </ul>
+
     </div>
 
     <!-- Single link mobile -->
     <ng-template #mobileSingleLink>
-      <div [routerLink]="item.route" class="cursor-pointer" (click)="closeAllMenus()">
-        
+      <div [routerLink]="item.route"
+           class="cursor-pointer"
+           (click)="closeAllMenus()">
         {{ item.label }}
       </div>
     </ng-template>
@@ -121,7 +129,6 @@
   </div>
 
 </div>
-
 
 
 <!-- 🔹 Scroll Progress Indicator -->
