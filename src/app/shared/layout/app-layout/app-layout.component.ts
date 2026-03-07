@@ -106,6 +106,17 @@ onResize() {
   }
 }
 
+// Any outside clock should close the mobile menu
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  // If click is NOT inside mobile menu or hamburger button
+  if (!target.closest('.mobile-menu') && !target.closest('.hamburger-button')) {
+    this.isMenuOpen = false;
+  }
+}
+
 
 
 

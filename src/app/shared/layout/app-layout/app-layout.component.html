@@ -51,8 +51,8 @@
 
     <!-- MOBILE HAMBURGER -->
     <button *ngIf="!(isAdmin$ | async)"
-            (click)="isMenuOpen = !isMenuOpen"
-            class="md:hidden text-indigo-600 dark:text-indigo-300 text-3xl">
+        (click)="isMenuOpen = !isMenuOpen"
+        class="hamburger-button md:hidden text-indigo-600 dark:text-indigo-300 text-3xl">
       ☰
     </button>
   </div>
@@ -89,7 +89,7 @@
 
 <!-- 🔹 MOBILE MENU -->
 <div *ngIf="isMenuOpen"
-     class="fixed top-24 left-0 right-0 z-40
+     class="mobile-menu fixed top-24 left-0 right-0 z-40
             md:hidden
             max-h-[calc(100vh-6rem)] overflow-y-auto
             px-6 py-4 space-y-3
