@@ -116,7 +116,18 @@ export class VideosAdminComponent implements OnInit {
   // Submit new video
   saveNewVideo(): void {
     if (!this.newVideoData.eventName || !this.newVideoData.youtubeLink) {
-      this.toast.showError('Event Name and YouTube Link are required');
+      this.toast.showError('Event Name and Video Link are required');
+      return;
+    }
+
+    // Regex to allow major video providers
+    const videoRegex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|vimeo\.com\/|dailymotion\.com\/video\/|drive\.google\.com\/file\/d\/|onedrive\.live\.com\/).*$/i;
+
+    if (!videoRegex.test(this.newVideoData.youtubeLink)) {
+      this.toast.showError(
+        'Only video links are allowed (YouTube, Vimeo, Dailymotion, Google Drive, OneDrive)'
+      );
       return;
     }
 

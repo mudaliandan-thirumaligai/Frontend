@@ -13,4 +13,6 @@ import { AdminSidebarComponent } from '../Sidebar/admin-sidebar.component';
   ],
   templateUrl: './admin-layout.component.html'
 })
-export class AdminLayoutComponent {}
+export class AdminLayoutComponent {
+  sidebarOpen = false;
+}

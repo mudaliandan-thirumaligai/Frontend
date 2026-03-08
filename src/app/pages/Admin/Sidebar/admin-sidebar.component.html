@@ -1,8 +1,23 @@
-<!-- admin-sidebar.component.html -->
+<!-- Overlay (mobile) -->
 <div
-  class="h-screen w-64 sticky top-0
+  *ngIf="isOpen"
+  class="fixed inset-0 bg-black/40 z-40 lg:hidden"
+  (click)="closeSidebar.emit()"
+></div>
+
+<!-- Sidebar -->
+<div
+  class="fixed lg:static z-50
+         h-screen w-64
          bg-indigo-50 dark:bg-neutral-900
-         shadow-md p-4"
+         shadow-md p-4
+         transform transition-transform duration-300"
+
+  [ngClass]="{
+    '-translate-x-full': !isOpen,
+    'translate-x-0': isOpen,
+    'lg:translate-x-0': true
+  }"
 >
   <div class="text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-6">
     Admin Actions

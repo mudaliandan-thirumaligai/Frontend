@@ -105,6 +105,14 @@ export class DocumentsComponentAdmin implements OnInit {
       return;
     }
 
+    // Regex to allow only document links
+    const documentRegex = /^https?:\/\/.+\.(pdf|doc|docx|ppt|pptx|xls|xlsx)(\?.*)?$/i;
+
+    if (!documentRegex.test(this.newDocumentData.url)) {
+      this.toast.showError('Only document links are allowed (PDF, DOC, DOCX, PPT, XLS)');
+      return;
+    }
+
     this.toast.showInfo('Adding document...');
 
     this.documentsService.create(this.newDocumentData).subscribe({
@@ -116,6 +124,7 @@ export class DocumentsComponentAdmin implements OnInit {
       error: () => this.toast.showError('Create failed')
     });
   }
+  
   openDocument(url: string) {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
