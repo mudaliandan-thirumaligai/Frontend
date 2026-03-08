@@ -50,7 +50,7 @@
       <!-- Image with elegant animation -->
       <div class="relative animate-scale-in">
         <div class="absolute -inset-3 bg-gradient-to-br from-[#3B5BA9]/30 to-[#B49CFF]/30 rounded-2xl blur-xl opacity-70 animate-pulse-glow"></div>
-        <div class="absolute -inset-1 bg-gradient-to-br from-[#D2B670]/40 to-[#B49CFF]/40 rounded-2xl animate-rotate-slow"></div>
+        <div class="absolute -inset-1 bg-gradient-to-br from-[#6379C8]/40 to-[#B49CFF]/40 rounded-2xl animate-rotate-slow"></div>
         <img
           src="images/mudaliandan/aachariyan.png"
           alt="Sri Mudaliandan"
@@ -85,7 +85,7 @@
          class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight
                 hover:text-indigo-900 transition text-lg
                 underline decoration-2 underline-offset-4
-                animate-fade-in-delay-3 hover:decoration-[#D2B670]">
+                animate-fade-in-delay-3 hover:decoration-[#6379C8]">
          Support Our Mission
       </a>
     </div>
@@ -101,7 +101,7 @@
       <h2 class="text-4xl md:text-5xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-4">
         Explore Our Heritage
       </h2>
-      <div class="w-16 h-1.5 bg-gradient-to-r from-[#3B5BA9] via-[#B49CFF] to-[#D2B670] mx-auto rounded-full animate-width-expand"></div>
+      <div class="w-16 h-1.5 bg-gradient-to-r from-[#3B5BA9] via-[#B49CFF] to-[#6379C8] mx-auto rounded-full animate-width-expand"></div>
     </div>
 
     <!-- Main Navigation Cards -->
@@ -114,7 +114,7 @@
           <div class="absolute inset-0 bg-gradient-to-t from-[#3B5BA9]/50 to-transparent"></div>
         </div>
         <div class="p-6 relative">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">About Us</h3>
           <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Learn about us and the sacred lineage of Sri Mudaliandan Swamy Vamsam.
@@ -140,22 +140,40 @@
 
       <!-- Events Card -->
       <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.2s">
-        <div class="h-48 bg-gradient-to-br from-[#D2B670] to-[#B49CFF] relative overflow-hidden">
+        <div class="h-48 bg-gradient-to-br from-[#6379C8] to-[#B49CFF] relative overflow-hidden">
           <img src="images/Permual_Photos/perumal_02.jpeg" alt="Events & Festivals" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#D2B670]/50 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#6379C8]/50 to-transparent"></div>
         </div>
         <div class="p-6 relative">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D2B670] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6379C8] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Events & Festivals</h3>
           <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Join our sacred celebrations, rituals, and spiritual gatherings throughout the year.
           </p>
           
           <!-- Next Event Preview -->
-          <div *ngIf="nextEvent" class="bg-[#F4F6FB] rounded-lg p-4 mb-6 border-l-4 border-[#3B5BA9] hover:border-[#D2B670] transition-colors duration-300">
-            <p class="text-sm text-indigo-600 dark:text-indigo-300 font-medium tracking-wide mb-1">UPCOMING</p>
-            <p class="font-semibold tracking-wide text-indigo-900 dark:text-indigo-300 mb-1">{{ nextEvent.name }}</p>
-            <p class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide">{{ nextEvent.startDate | date:'MMM d, y' }}</p>
+          <!-- Loading State -->
+          <div *ngIf="loadingEvent" class="bg-[#F4F6FB] dark:bg-indigo-900/30 rounded-lg p-4 mb-6 border-l-4 border-[#B49CFF] animate-pulse">
+            <div class="h-4 bg-indigo-300 dark:bg-indigo-600 rounded mb-3 w-20"></div>
+            <div class="h-5 bg-indigo-300 dark:bg-indigo-600 rounded mb-2 w-3/4"></div>
+            <div class="h-4 bg-indigo-300 dark:bg-indigo-600 rounded w-1/2"></div>
+          </div>
+
+          <!-- Event Found -->
+          <div *ngIf="!loadingEvent && nextEvent" class="bg-gradient-to-br from-[#F4F6FB] to-[#E8ECFF] dark:from-indigo-900/40 dark:to-indigo-800/40 rounded-lg p-4 mb-6 border-l-4 border-[#3B5BA9] hover:border-[#6379C8] hover:shadow-md transition-all duration-300 cursor-pointer" (click)="navigateToEventInCalendar()">
+            <p class="text-xs uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-2">📅 Upcoming Event</p>
+            <p class="font-bold tracking-wide text-indigo-900 dark:text-indigo-100 mb-1 text-lg">{{ nextEvent.name }}</p>
+            <p class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide mb-2">
+              <span class="inline-block mr-4">📆 {{ nextEvent.startDate | date:'MMM d, y' }}</span>
+              <span *ngIf="nextEvent.location" class="inline-block">📍 {{ nextEvent.location }}</span>
+            </p>
+            <p *ngIf="nextEvent.description" class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide line-clamp-2 mb-3">{{ nextEvent.description }}</p>
+            <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Click to view in calendar →</p>
+          </div>
+
+          <!-- No Upcoming Event -->
+          <div *ngIf="!loadingEvent && noUpcomingEvent" class="bg-[#FFF4E6] dark:bg-amber-900/20 rounded-lg p-4 mb-6 border-l-4 border-[#6379C8]">
+            <p class="text-sm text-amber-800 dark:text-amber-300 font-medium tracking-wide">ℹ️ No upcoming events scheduled at the moment.</p>
           </div>
 
           <div class="flex gap-3">
@@ -221,7 +239,7 @@
           <div class="absolute inset-0 bg-gradient-to-t from-[#B49CFF]/50 to-transparent"></div>
         </div>
         <div class="p-6 relative">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Media Archive</h3>
           <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Browse our collection of photos, videos, and documents from festivals and events.
@@ -253,12 +271,12 @@
 
       <!-- Swamy Schedule Card -->
       <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.5s">
-        <div class="h-48 bg-gradient-to-br from-[#3B5BA9] to-[#D2B670] relative overflow-hidden">
+        <div class="h-48 bg-gradient-to-br from-[#3B5BA9] to-[#6379C8] relative overflow-hidden">
           <img src="images/Permual_Photos/perumal_05.jpeg" alt="Swamy Schedule" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-[#3B5BA9]/50 to-transparent"></div>
         </div>
         <div class="p-6 relative">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#D2B670] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Swamy Schedule</h3>
           <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             View our Swamy’s Sancharam schedule.
@@ -278,12 +296,12 @@
 
       <!-- Contact & Support Card -->
       <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.6s">
-        <div class="h-48 bg-gradient-to-br from-[#D2B670] to-[#3B5BA9] relative overflow-hidden">
+        <div class="h-48 bg-gradient-to-br from-[#6379C8] to-[#3B5BA9] relative overflow-hidden">
           <img src="images/Permual_Photos/perumal_06.jpeg" alt="Connect With Us" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#D2B670]/50 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#6379C8]/50 to-transparent"></div>
         </div>
         <div class="p-6 relative">
-          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#D2B670] to-[#B49CFF] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6379C8] to-[#B49CFF] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
           <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Connect With Us</h3>
           <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
             Register for updates, contribute to our mission, and stay connected with our thirumaligai.

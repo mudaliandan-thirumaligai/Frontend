@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { EventService } from '../../../service/event.service';
@@ -27,7 +27,11 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   // 🔹 Scroll observer reference (kept for cleanup)
   private scrollObserver: IntersectionObserver | null = null;
 
-  constructor(private eventService: EventService, private visitorService: VisitorService) {}
+  constructor(
+    private eventService: EventService, 
+    private visitorService: VisitorService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchNextUpcomingEvent();
@@ -52,16 +56,40 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   fetchNextUpcomingEvent(): void {
     this.eventService.getNextUpcomingEvent().subscribe({
       next: (events: CalendarEvent[]) => {
-        this.nextEvent = events.length ? events[0] : null;
-        this.noUpcomingEvent = !this.nextEvent;
+        if (events && events.length > 0) {
+          this.nextEvent = events[0];
+          this.noUpcomingEvent = false;
+          console.log('📅 Next event loaded:', this.nextEvent.name);
+        } else {
+          this.nextEvent = null;
+          this.noUpcomingEvent = true;
+          console.log('ℹ️ No upcoming events found');
+        }
         this.loadingEvent = false;
         // Re-run after event data renders into the DOM
-        setTimeout(() => this.initScrollAnimations());
+        setTimeout(() => this.initScrollAnimations(), 100);
       },
       error: (err: HttpErrorResponse) => {
-        console.warn('No upcoming events:', err.error?.message);
+        console.warn('⚠️ Error fetching upcoming events:', err.error?.message || err.message);
+        this.nextEvent = null;
         this.noUpcomingEvent = true;
         this.loadingEvent = false;
+      }
+    });
+  }
+
+  // ─── Navigate to event in calendar ─────────────────────────────
+
+  navigateToEventInCalendar(): void {
+    if (!this.nextEvent) return;
+    
+    // Navigate to calendar with event date as query parameter
+    // This tells the calendar component to navigate to that date and show a prompt
+    this.router.navigate(['/calendar'], {
+      queryParams: {
+        date: this.nextEvent.startDate,
+        highlightEvent: this.nextEvent.id,
+        showPrompt: true
       }
     });
   }

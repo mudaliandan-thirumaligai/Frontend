@@ -24,11 +24,12 @@ interface CalendarEvent extends EventInput {
     eventNumber?: number;
   };
 }
-type EventColor = 'danger' | 'success' | 'primary' | 'warning';
 
+type EventColor = 'danger' | 'success' | 'primary' | 'warning';
 
 @Component({
   selector: 'app-calender',
+  standalone: true,
   imports: [
     FormsModule,
     CommonModule,
@@ -44,7 +45,7 @@ export class UserCalenderComponent {
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
@@ -70,13 +71,16 @@ export class UserCalenderComponent {
   eventGoogleDriveLink = '';
   eventPathirikaiLink = '';
   isOpen = false;
+  displayPromptBanner = false;
 
   calendarOptions!: CalendarOptions;
 
   private targetDateFromRoute: string | null = null;
+  private highlightEventId: string | null = null;
+  private showEventPrompt = false;
 
   ngOnInit() {
-    // 🔹 Calendar configuration
+
     this.calendarOptions = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       initialView: 'dayGridMonth',
@@ -95,19 +99,28 @@ export class UserCalenderComponent {
       eventContent: (arg) => this.renderEventContent(arg)
     };
 
-    // 🔹 Read date from landing page
+    // Read params from landing page
     this.route.queryParams.subscribe(params => {
       if (params['date']) {
         this.targetDateFromRoute = params['date'];
       }
+
+      if (params['highlightEvent']) {
+        this.highlightEventId = params['highlightEvent'];
+      }
+
+      if (params['showPrompt'] === 'true') {
+        this.showEventPrompt = true;
+      }
     });
 
-    // 🔹 Load events
     this.loadEventsFromAPI();
   }
 
   loadEventsFromAPI() {
+
     this.eventService.getAllEvents().subscribe((data: any[]) => {
+
       const formattedEvents: EventInput[] = data.map(event => ({
         id: event.eventNumber.toString(),
         title: event.name,
@@ -121,32 +134,74 @@ export class UserCalenderComponent {
           tamilYear: event.tamilYear,
           tamilMonth: event.tamilMonth,
           googleDriveLink: event.googleDriveLink,
-          pathirikai: event.pathirikai
+          pathirikai: event.pathirikai,
+          eventNumber: event.eventNumber
         }
       }));
 
       this.calendarOptions.events = formattedEvents;
 
-      // 🔹 Jump to event month if coming from landing page
-      if (this.targetDateFromRoute) {
-        setTimeout(() => {
-          this.goToEventMonth(this.targetDateFromRoute!);
-        });
-      }
+      setTimeout(() => {
+
+        const calendarApi = this.calendarComponent.getApi();
+
+        if (this.targetDateFromRoute) {
+          calendarApi.gotoDate(this.targetDateFromRoute);
+        }
+
+        // Highlight event if ID provided
+        if (this.highlightEventId) {
+
+          const event = calendarApi.getEventById(this.highlightEventId);
+
+          if (event) {
+
+            const el = document.querySelector(
+              `[data-event-id="${this.highlightEventId}"]`
+            );
+
+            if (el) {
+              el.classList.add('highlight-event');
+            }
+
+            // Optional: automatically open modal
+            this.handleEventClick({ event } as any);
+          }
+        }
+
+        if (this.showEventPrompt) {
+          this.showEventClickPrompt();
+        }
+
+      }, 200);
+
     },
-      (error) => {
-        console.error('Error fetching events:', error);
-      }
-    );
+    (error) => {
+      console.error('Error fetching events:', error);
+    });
+
   }
 
-  // 🔹 Navigate calendar to event month
   goToEventMonth(date: string) {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.gotoDate(date);
   }
 
+  showEventClickPrompt(): void {
+    // Show a dismissible banner instead of alert
+    this.displayPromptBanner = true;
+    // Auto-hide after 10 seconds if not dismissed
+    setTimeout(() => {
+      this.displayPromptBanner = false;
+    }, 10000);
+  }
+
+  dismissPrompt(): void {
+    this.displayPromptBanner = false;
+  }
+
   handleEventClick(clickInfo: EventClickArg) {
+
     const event = clickInfo.event;
 
     this.eventNumber = event.extendedProps['eventNumber'];
@@ -172,6 +227,7 @@ export class UserCalenderComponent {
     this.isOpen = false;
     this.resetModalFields();
   }
+
   openGoogleDrive() {
     if (!this.eventGoogleDriveLink) return;
     window.open(this.eventGoogleDriveLink, '_blank', 'noopener');
@@ -181,7 +237,6 @@ export class UserCalenderComponent {
     if (!this.eventPathirikaiLink) return;
     window.open(this.eventPathirikaiLink, '_blank', 'noopener');
   }
-
 
   resetModalFields() {
     this.eventTitle = '';
@@ -198,6 +253,7 @@ export class UserCalenderComponent {
   }
 
   renderEventContent(eventInfo: any) {
+
     const level = eventInfo.event.extendedProps.calendar || 'others';
     const mappedColor = this.calendarsEvents[level] || 'warning';
 
