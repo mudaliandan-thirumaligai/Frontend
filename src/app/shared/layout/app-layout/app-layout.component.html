@@ -11,8 +11,7 @@
   <!-- 🔵 LEFT: USER MENU -->
   <div class="flex items-center space-x-6">
     <!-- DESKTOP MENU -->
-    <div *ngIf="!(isAdmin$ | async)" 
-        class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
+    <div class="hidden md:flex space-x-8 text-indigo-600 dark:text-indigo-300 font-medium">
 
       <ng-container *ngFor="let item of menu">
 
@@ -50,8 +49,7 @@
 
 
     <!-- MOBILE HAMBURGER -->
-    <button *ngIf="!(isAdmin$ | async)"
-        (click)="isMenuOpen = !isMenuOpen"
+    <button (click)="isMenuOpen = !isMenuOpen"
         class="hamburger-button md:hidden text-indigo-600 dark:text-indigo-300 text-3xl">
       ☰
     </button>
