@@ -33,6 +33,7 @@ vaadhoolaanvaya poornendhum raamaanuja gurum bhaje ||`
 
   {
     id: '22(A)',
+    title: 'Kumara Ventakaachariya Swami',
     nakshatram: 'Karthikaiyil Karthikai',
     content: `dhaasharathyaarya thanayam shreeshailaarya padhaashrayam |
 shreevengkata gurum vandhe sheelaadhi guna saagaram ||`

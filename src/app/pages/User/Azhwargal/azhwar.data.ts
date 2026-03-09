@@ -41,7 +41,7 @@ Nootrantaadhi Paadi Vilanga seidhan Parindu`
   },
   {
     id: 'boodhath-azhwar',
-    name: 'Boodhath Azhwar',
+    name: 'Bhootathazhwar',
     tamilName: 'பூதாத் ஆழ்வார்',
     photo: 'images/Azhwars/bootham.jpg',
     image: 'images/Azhwars/bootham.jpg',
@@ -60,15 +60,10 @@ Budathaar Ponnan Kazhal`
     thiruNatchathiram: 'Avittam',
     amsam: 'Kaumodakee,Gadhai (Mace)',
 
-    otherNames: ['KANdan mallai', 'ponan kazhal', 'mallai'],
+    // otherNames: ['KANdan mallai', 'ponan kazhal', 'mallai'],
 
     biography: [
-      'alwar is born in mahabalipuram, in a golden mountain,',
-      'in a madavi flower as the amsam of Kaumodakee gada.',
-       'He is called as budathar because of his dark complexion.',
-        'He is also called as kadan mallai because of his love for Lord\'s lotus feet. ',
-        'He is also called as ponan kazhal because of his love for Lord\'s golden anklets.',
-      'Irandam Thiruanthathi. He expressed the Para Gnanam through his devotional songs.'
+      'He expressed the Para Gnanam through his devotional songs in Irandam Thiruanthathi..'
     ],
 
     additionalInfo: ''
@@ -137,7 +132,7 @@ mazhisaip piraan adiyE vaazhtthu.`
   },
   {
     id: 'namm-azhwar',
-    name: 'Namm Azhwar',
+    name: 'NammAzhwar',
     tamilName: 'நம் ஆழ்வார்',
     photo: 'images/Azhwars/nammazhwar.jpg',
     image: 'images/Azhwars/nammazhwar.jpg',
@@ -151,13 +146,13 @@ sreemath thathanGgari-yugalam praNa-maami moortha-naa.`
     },
 
     year: 'Pramaadhi',
-    birthPlace: 'Thiru Kurugoor (Azhwar thirunagari)',
+    birthPlace: 'Thiru Kurugur (Alwarthirunagiri)',
     month: 'Vaikaasi',
     thiruNatchathiram: 'Visakham',
     amsam: 'Senai Mudhaliyaar (Viswaksenar)',
 
     otherNames: [
-      'Sadagopan', 'Sadaari', 'Paraankusun', 'Maaran', 'Vakulaa Baranan', 'Kurugaiyar-kone'
+      'Sadagopan', 'Sadaari', 'Paraankusan', 'Maaran', 'Vakulaa Baranan', 'Kurugaiyarkone'
     ],
 
     biography: [
@@ -188,7 +183,7 @@ ALvAr avarE araN`
     },
 
     year: 'Eeswara',
-    birthPlace: 'Thirukoloor (Azhwar thirunagari)',
+    birthPlace: 'Tirukovilur (Azhwar thirunagari)',
     month: 'Chithirai',
     thiruNatchathiram: 'Chithirai',
     amsam: 'Vainatheya (Garuda)',
@@ -294,8 +289,8 @@ sUdik koduththALaich sollu`
     additionalInfo: ''
   },
   {
-    id: 'thondarapodi-azhwar',
-    name: 'Thondarapodi Azhwar',
+    id: 'thondaradipodi-azhwar',
+    name: 'Thondaradipodi Azhwar',
     tamilName: 'தொண்டாரபோடி ஆழ்வார்',
     photo: 'images/Azhwars/thondaradipodi.jpg',
     image: 'images/Azhwars/thondaradipodi.jpg',
@@ -305,7 +300,7 @@ sUdik koduththALaich sollu`
       text: `Mattrondrum Venda Maname Madhilarangar
 Kattrinum meitha kazhalinai keezh- uttra
 Thirumaalai paadum seer Thondaradipodi
-Emperumaanai Eppozhudum peesu"`
+Emperumaanai Eppozhuthum pesu"`
     },
 
     year: 'Prabhavaa',
@@ -314,10 +309,10 @@ Emperumaanai Eppozhudum peesu"`
     thiruNatchathiram: 'Kettai',
     amsam: 'Vanamaalai (Garland)',
 
-    otherNames: ['Vibranaaraayanar', 'Thirumandangudiyaar', 'Bhakthangirirenu', 'Palliunartthiya-piraan'],
+    otherNames: ['Vipranaaraayanar', 'Thirumandangudiyaar', 'Bhakthangirirenu', 'Palliunartthiya-piraan'],
 
     biography: [
-      'Thirumaalai text shows the barathvam of the supreme and Thirupalliezuchi songs are prayed daily at the Vishwaroopam time.',
+      'Thirumaalai text shows the parathvam of the supreme and Thirupalliezuchi songs are prayed daily at the Vishwaroopam time.',
       'Stressed the path of worshipping God’s devotees and taught the lesson of humility.'
     ],
 
@@ -326,7 +321,7 @@ Emperumaanai Eppozhudum peesu"`
   {
     id: 'thiruppan-azhwar',
     name: 'Thiruppan Azhwar',
-    tamilName: 'திருப்பான் ஆழ்வார்',
+    tamilName: 'திருப்பான்  ஆழ்வார்',
     photo: 'images/Azhwars/thirupaan.jpg',
     image: 'images/Azhwars/thirupaan.jpg',
 

@@ -16,7 +16,7 @@ export interface Azhwar {
   thiruNatchathiram: string;
   amsam: string;
 
-  otherNames: string[];
-  biography: string[];        // ONLY 1–2 paragraphs
+  otherNames?: string[];
+  biography?: string[];        // ONLY 1–2 paragraphs
   additionalInfo: string;     // single paragraph at bottom
 }

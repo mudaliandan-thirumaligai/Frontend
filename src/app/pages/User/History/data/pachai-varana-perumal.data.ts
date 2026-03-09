@@ -3,7 +3,7 @@ import { Aacharya } from '../aacharya.interface';
 export const PACHAI_VARANA_PERUMAL: Aacharya = {
     id: "pachai-varana-perumal",
     name: "Pachai Varana Perumal - Nazarethpettai",
-    tamilName: "பச்சை வரண பெருமாள்",
+    tamilName: "பச்சை வாரணா பெருமாள்",
     period: "Ancient Temple - Birthplace of Sri Mudaliandan",
 
     birthDetails: {

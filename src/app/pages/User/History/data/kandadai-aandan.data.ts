@@ -3,7 +3,7 @@ import { Aacharya } from '../aacharya.interface';
 export const SRI_KANDADAI_AANDAN: Aacharya = {
     id: "sri-kandadai-aandan",
     name: "Sri Kandadai Aandan",
-    tamilName: "கண்டாடை ஆண்டான்",
+    tamilName: "கந்தாடை ஆண்டான்",
     period: "1104 (Svabhānu Year) - 1209",
 
     birthDetails: {

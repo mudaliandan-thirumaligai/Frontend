@@ -86,7 +86,7 @@ raamaanujasya charaNau sharaNam prapaDHye ||`,
     {
       type: "paragraph",
       text:
-        "After renouncing the life of a house-holder, Ramanuja travelled to Srirangam to meet an aging Yamunacharya, a philosopher of the remergent Vishishtadvaita school of thought. Yamunacharya had died prior to Ramanuja's arrival. Followers of Ramanuja relate the legend that three fingers of Yamunacharya's corpse were curled. Ramanuja saw this and understood that Yamunacharya was concerned about three tasks. Ramanuja vowed to complete these",
+        "After renouncing the life of a house-holder, Ramanuja travelled to Srirangam to meet an aging Yamunacharya, a philosopher of the remergent Vishishtadvaita school of thought. Yamunacharya had died prior to Ramanuja's arrival. Followers of Ramanuja relate the legend that three fingers of Yamunacharya's corpse were curled. Ramanuja saw this and understood that Yamunacharya was concerned about three tasks.",
     },
     {
       type: "paragraph",

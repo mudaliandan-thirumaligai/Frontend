@@ -3,7 +3,7 @@ import { Aacharya } from '../aacharya.interface';
 export const SRI_KANDADAI_THOZHAPPAR: Aacharya = {
     id: "sri-kandadai-thozhappar",
     name: "Sri Kandadai Thozhappar",
-    tamilName: "கண்டாடை தொழப்பர்",
+    tamilName: "கந்தாடை தொழப்பர்",
     period: "11th Century",
 
     birthDetails: {
@@ -35,7 +35,7 @@ Lokaacharya Krupaapathram vandhe gunaganaarv navam ||`,
         },
         {
             type: 'paragraph',
-            text: '"Ugandha thozhan nee enakku". Likewise, happiness of Bhaktha paraadeena standing on the Athimalai Perarular was incomplete even though Piratti was there with him, he was not feeling their company when Varanaadeesa (Thozhappar) was not in his company, when he was with him, felt the presence of others too. (Thozhappar was so dear to Perarulalan) So he called him "Thozhappar" (Friend). He was therefore known as "Mitra Dhatar".',
+            text: '""Ugandha thozhan nee enakku". Likewise, happiness of Bhaktha paraadeena standing on the Athimalai Perarular was incomplete even though Piratti was there with him, he was not feeling their company when Varanaadeesa (Thozhappar) was not in his company, when he was with him, felt the presence of others too. (Thozhappar was so dear to Perarulalan) So he called him "Thozhappar" (Friend). He was therefore known as "Mitra Dhatar".',
         },
         {
             type: 'heading',
@@ -60,7 +60,7 @@ Lokaacharya Krupaapathram vandhe gunaganaarv navam ||`,
         },
         {
             type: 'paragraph',
-            text: 'Perarulalar appeared in Thozhappar\'s dream and through a six-verse sloka apprised him that he (Perarulalar) will be born to him (Thozhappar) for the furtherance of his lineage and its reputation. In the early morning, he came as an old-man and gifted Pranatharthiharar with Ubhaya Nachimar, one of the six bearers (sets of Archa moorthies) and bade Thozhappar to worship those Archa moorthies. That set of Archa moorthies is also known as "Azhaithu vazhvithavar". Perarulalar also gave him a residential house and asked him to reside there for ever.',
+            text: 'Perarulalar apapeared in Thozhappar\'s dream and through a six-verse sloka apprised him that he (Perarulalar) will be born to him (Thozhappar) for the furtherance of his lineage and its reputation. In the early morning, he came as an old-man and gifted Pranatharthiharar with Ubhaya Nachimar, one of the six bearers (sets of Archa moorthies) and bade Thozhappar to worship those Archa moorthies. That set of Archa moorthies is also known as "Azhaithu vazhvithavar". Perarulalar also gave him a residential house and asked him to reside there for ever.',
         },
         {
             type: 'paragraph',

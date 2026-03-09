@@ -24,12 +24,12 @@ vasthuthaamupayaatho aham yaamuneeyam namaami tham ||`,
     {
       type: "paragraph",
       text:
-        "Swami Alavandar ஆளவந்தார் is amongst the most important acharyas of Sri Vaishnava tradition. He was the foremost to identify that Swami Ramanuja was the future of Sri Vaishnava Sampradayam and ordered all his disciples to give due respect to Swami Ramanuja.",
+        "Swami Alavandar is amongst the most important acharyas of Sri Vaishnava tradition. He was the foremost to identify that Swami Ramanuja was the future of Sri Vaishnava Sampradayam and ordered all his disciples to give due respect to Swami Ramanuja.",
     },
     {
       type: "paragraph",
       text:
-        "Year: 916 AD to 1042 AD\nBirth Place: Kaattumannargudi\nOther Names: Yamunacharyar, Yamunamuni\nMonth: Aadi\nThiru Natchathiram: Utthiradam",
+        "Year: 916 AD to 1042 AD\nBirth Place: Kattumannarkoil\nOther Names: Yamunacharyar, Yamunamuni\nMonth: Aadi\nThiru Natchathiram: Utthiradam",
     },
     {
       type: "paragraph",
