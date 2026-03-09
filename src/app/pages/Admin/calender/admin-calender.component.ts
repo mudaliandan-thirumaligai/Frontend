@@ -99,26 +99,39 @@ export class AdminCalenderComponent {
     this.eventService.getAllEvents().subscribe(
       (data: any[]) => {
         console.log('Fetched Events from API:', data);
-        const formattedEvents = data.map(event => ({
-          id: event.eventNumber.toString(),
-          title: event.name,
-          start: event.startDate,
-          end: event.endDate,
-          extendedProps: {
-            calendar: event.eventLevel || 'others', // keep original name for API
-            description: event.description,
-            location: event.location,
-            tamilYear: event.tamilYear,
-            tamilMonth: event.tamilMonth,
-            eventNumber: event.eventNumber,
-            pathirikai: event.pathirikai,
-            googleDriveLink: event.googleDriveLink
+         data.forEach(e => {
+        console.log("API Event Date:", e.eventNumber, e.startDate, e.endDate);
+      });
+        const formattedEvents = data.map(event => {
+          // Strip to YYYY-MM-DD so FullCalendar doesn't apply timezone shifts
+          const startStr = event.startDate ? String(event.startDate).split('T')[0] : undefined;
+
+          // Backend stores INCLUSIVE end date, but FullCalendar needs EXCLUSIVE.
+          // Add 1 day so the calendar displays the event through the correct end date.
+          let endStr: string | undefined = undefined;
+          if (event.endDate) {
+            const d = new Date(String(event.endDate).split('T')[0]);
+            d.setDate(d.getDate() + 1);
+            endStr = d.toISOString().split('T')[0];
           }
-        }));
-        this.calendarOptions.events = formattedEvents;
 
-
-        // Update only the events array - updating this should refresh the calendar
+          return {
+            id: event.eventNumber.toString(),
+            title: event.name,
+            start: startStr,
+            end: endStr,
+            extendedProps: {
+              calendar: event.eventLevel || 'others',
+              description: event.description,
+              location: event.location,
+              tamilYear: event.tamilYear,
+              tamilMonth: event.tamilMonth,
+              eventNumber: event.eventNumber,
+              pathirikai: event.pathirikai,
+              googleDriveLink: event.googleDriveLink
+            }
+          };
+        });
         this.calendarOptions.events = formattedEvents;
       },
       (error) => {
@@ -166,7 +179,14 @@ export class AdminCalenderComponent {
     this.eventNumber = event.extendedProps['eventNumber'];
     this.eventTitle = event.title;
     this.eventStartDate = event.startStr.split('T')[0];
-    this.eventEndDate = event.endStr ? event.endStr.split('T')[0] : '';
+    // FullCalendar end is EXCLUSIVE — subtract 1 day to get the real end date
+    if (event.endStr) {
+      const exclusiveEnd = new Date(event.endStr.split('T')[0]);
+      exclusiveEnd.setDate(exclusiveEnd.getDate() - 1);
+      this.eventEndDate = exclusiveEnd.toISOString().split('T')[0];
+    } else {
+      this.eventEndDate = this.eventStartDate;
+    }
     this.eventLevel = event.extendedProps['calendar'];
     this.eventDescription = event.extendedProps['description'] || '';
     this.eventLocation = event.extendedProps['location'] || '';
@@ -181,12 +201,17 @@ export class AdminCalenderComponent {
 
   // Update or Create Event
   handleAddOrUpdateEvent() {
+     console.log("Selected Event:", this.selectedEvent);
+    console.log("Raw Start Date from UI:", this.eventStartDate);
+    console.log("Raw End Date from UI:", this.eventEndDate);
+
     const apiPayload: any = {
       eventNumber: this.eventNumber || this.selectedEvent?.extendedProps.eventNumber,
       name: this.eventTitle,
       description: this.eventDescription,
-      startDate: this.eventStartDate ? new Date(this.eventStartDate + 'T00:00:00Z').toISOString() : null,
-      endDate: this.eventEndDate ? new Date(this.eventEndDate + 'T00:00:00Z').toISOString() : null,
+      // Send plain YYYY-MM-DD strings — avoids UTC offset causing date to flip
+      startDate: this.eventStartDate || null,
+      endDate: this.eventEndDate || null,
       location: this.eventLocation,
       tamilYear: this.eventTamilYear,
       tamilMonth: this.eventTamilMonth,
@@ -195,21 +220,32 @@ export class AdminCalenderComponent {
       pathirikai: this.eventPathirikaiLink
     };
 
+
+  console.log("Final API Payload:", apiPayload);
+
     if (this.selectedEvent) {
       // UPDATE
       console.log('Updating event:', apiPayload.eventNumber);
-      this.eventService.updateEvent(apiPayload.eventNumber, apiPayload).subscribe({
+      console.log("StartDate being sent:", apiPayload.startDate);
+    console.log("EndDate being sent:", apiPayload.endDate);
+      this.eventService.updateEvent(String(apiPayload.eventNumber), apiPayload).subscribe({
         next: (updatedEvent) => {
           console.log('API update response:', updatedEvent);
           this.toast.showSuccess(`Event "${updatedEvent.name}" updated successfully!`);
 
           const calendarApi = this.calendarComponent.getApi();
-          const existingEvent = calendarApi.getEventById(updatedEvent.eventNumber.toString());
+          const existingEvent = calendarApi.getEventById(String(updatedEvent.eventNumber));
+          console.log("Looking for ID:", updatedEvent.eventNumber.toString());
+          console.log("Found event:", existingEvent);
+
+          // Strip dates to YYYY-MM-DD to avoid timezone shifts
+          const startStr = updatedEvent.startDate ? String(updatedEvent.startDate).split('T')[0] : apiPayload.startDate;
+          const endStr = updatedEvent.endDate ? String(updatedEvent.endDate).split('T')[0] : apiPayload.endDate;
 
           if (existingEvent) {
             existingEvent.setProp('title', updatedEvent.name);
-            existingEvent.setStart(new Date(updatedEvent.startDate));
-            existingEvent.setEnd(new Date(updatedEvent.endDate));
+            existingEvent.setStart(startStr);
+            existingEvent.setEnd(endStr);
             existingEvent.setAllDay(true);
             existingEvent.setExtendedProp('calendar', this.eventLevel);
             existingEvent.setExtendedProp('description', updatedEvent.description);
@@ -222,6 +258,7 @@ export class AdminCalenderComponent {
           }
 
           // Update local events array
+          console.log("Updating local events array");
           const index = this.events.findIndex(
             ev => ev.extendedProps.eventNumber === Number(updatedEvent.eventNumber)
           );
@@ -229,8 +266,8 @@ export class AdminCalenderComponent {
             this.events[index] = {
               ...this.events[index],
               title: updatedEvent.name,
-              start: new Date(updatedEvent.startDate),
-              end: new Date(updatedEvent.endDate),
+              start: startStr,
+              end: endStr,
               extendedProps: {
                 ...this.events[index].extendedProps,
                 calendar: this.eventLevel,
@@ -244,6 +281,9 @@ export class AdminCalenderComponent {
               }
             };
           }
+
+          // Reload from API to ensure consistency on next page load
+          this.loadEventsFromAPI();
 
 
           this.closeModal();
@@ -266,14 +306,18 @@ export class AdminCalenderComponent {
           // Add toast message
           this.toast.showSuccess(`Event "${createdEvent.name}" created successfully!`);
 
+          // Strip dates to YYYY-MM-DD to avoid timezone shifts
+          const createdStart = createdEvent.startDate ? String(createdEvent.startDate).split('T')[0] : apiPayload.startDate;
+          const createdEnd = createdEvent.endDate ? String(createdEvent.endDate).split('T')[0] : apiPayload.endDate;
+
           const newCalendarEvent: CalendarEvent = {
             id: createdEvent.eventNumber.toString(),
             title: createdEvent.name,
-            start: new Date(createdEvent.startDate),
-            end: new Date(createdEvent.endDate),
+            start: createdStart,
+            end: createdEnd,
             allDay: true,
             extendedProps: {
-              calendar: this.eventLevel, // send this to backend
+              calendar: this.eventLevel,
               description: createdEvent.description,
               location: createdEvent.location,
               tamilYear: createdEvent.tamilYear,
