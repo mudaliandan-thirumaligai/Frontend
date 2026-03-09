@@ -28,4 +28,6 @@ export class AboutThirumaligaiComponent {
 
   sadabhishekaPdf = 'https://drive.google.com/file/d/1Au45MErn2zPC2cZrPOEVWo41p_BF6N3s/view?usp=drive_link';
 
+  mudaliandanVaibhavamPdf = 'https://drive.google.com/file/d/1NYYb7KXbtzqUyJrLT4YbVRu0bii9amEW/view?usp=drive_link';
+
 }
