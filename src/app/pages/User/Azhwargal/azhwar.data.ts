@@ -50,7 +50,7 @@ Nootrantaadhi Paadi Vilanga seidhan Parindu`
       author: 'Thiruk Kurugai Piran',
       text: `En Piravi Theera Irainjinen Innamudhaa
 Anbe Thagali Alithaanai Nun PugazhSer
-Seedathaar Muthukkal Serum Kadan Mallai
+Seedathaar Muthukkal Serum Kadal Mallai
 Budathaar Ponnan Kazhal`
     },
 

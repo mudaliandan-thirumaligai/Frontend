@@ -60,7 +60,7 @@ Lokaacharya Krupaapathram vandhe gunaganaarv navam ||`,
         },
         {
             type: 'paragraph',
-            text: 'Perarulalar apapeared in Thozhappar\'s dream and through a six-verse sloka apprised him that he (Perarulalar) will be born to him (Thozhappar) for the furtherance of his lineage and its reputation. In the early morning, he came as an old-man and gifted Pranatharthiharar with Ubhaya Nachimar, one of the six bearers (sets of Archa moorthies) and bade Thozhappar to worship those Archa moorthies. That set of Archa moorthies is also known as "Azhaithu vazhvithavar". Perarulalar also gave him a residential house and asked him to reside there for ever.',
+            text: 'Perarulalar apapeared in Thozhappar\'s dream and through a six-verse sloka apprised him that he (Perarulalar) will be born to him (Thozhappar) for the furtherance of his lineage and its reputation. In the early morning, he came as an old-man and gifted Pranatharthiharar with Ubhaya Nachimar, one of the six bearers (sets of Archa moorthies) and instructued Thozhappar to worship those Archa moorthies. That set of Archa moorthies is also known as "Azhaithu vazhvithavar". Perarulalar also gave him a residential house and asked him to reside there for ever.',
         },
         {
             type: 'paragraph',
