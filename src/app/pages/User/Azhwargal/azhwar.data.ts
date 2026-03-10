@@ -71,7 +71,7 @@ Budathaar Ponnan Kazhal`
   {
     id: 'pey-azhwar',
     name: 'Pey Azhwar',
-    tamilName: 'பேய் ஆழ்வார்',
+    tamilName: 'பேயாழ்வார்',
     photo: 'images/Azhwars/pei.jpg',
     image: 'images/Azhwars/pei.jpg',
 
@@ -133,7 +133,7 @@ mazhisaip piraan adiyE vaazhtthu.`
   {
     id: 'namm-azhwar',
     name: 'NammAzhwar',
-    tamilName: 'நம் ஆழ்வார்',
+    tamilName: 'நம்மாழ்வார்',
     photo: 'images/Azhwars/nammazhwar.jpg',
     image: 'images/Azhwars/nammazhwar.jpg',
 
@@ -230,7 +230,7 @@ kulasEkaran enRE kURu`
   {
     id: 'peri-azhwar',
     name: 'Peri Azhwar',
-    tamilName: 'பெரி ஆழ்வார்',
+    tamilName: 'பெரியாழ்வார்',
     photo: 'images/Azhwars/periazhwar.jpg',
     image: 'images/Azhwars/periazhwar.jpg',
 
@@ -291,7 +291,7 @@ sUdik koduththALaich sollu`
   {
     id: 'thondaradipodi-azhwar',
     name: 'Thondaradipodi Azhwar',
-    tamilName: 'தொண்டாரபோடி ஆழ்வார்',
+    tamilName: 'தொண்டரடிப்பொடி ஆழ்வார்',
     photo: 'images/Azhwars/thondaradipodi.jpg',
     image: 'images/Azhwars/thondaradipodi.jpg',
 
@@ -321,7 +321,7 @@ Emperumaanai Eppozhuthum pesu"`
   {
     id: 'thiruppan-azhwar',
     name: 'Thiruppan Azhwar',
-    tamilName: 'திருப்பான்  ஆழ்வார்',
+    tamilName: 'திருப்பாண் ஆழ்வார்',
     photo: 'images/Azhwars/thirupaan.jpg',
     image: 'images/Azhwars/thirupaan.jpg',
 

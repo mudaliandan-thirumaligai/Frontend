@@ -3,7 +3,7 @@ import { Aacharya } from '../aacharya.interface';
 export const SRI_ANNAVILLAPPAN: Aacharya = {
     id: "sri-annavillappan",
     name: "Sri Annavillappan",
-    tamilName: "அன்னவில்லப்பன்",
+    tamilName: "அண்ணாவிலப்பன்",
     period: "14th Century",
 
     birthDetails: {
