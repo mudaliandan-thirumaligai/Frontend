@@ -75,21 +75,27 @@ export class SwamyScheduleComponent implements OnInit {
   loadSchedules(): void {
     this.scheduleService.getAll().subscribe({
       next: data => {
+        console.log('API DATA:', data);
+
         const now = new Date();
 
-        const upcoming = data
-          .filter(s => new Date(s.startDate) >= now)
-          .sort(
-            (a, b) =>
-              new Date(a.startDate).getTime() -
-              new Date(b.startDate).getTime()
-          );
+        // sort all schedules
+        const sorted = data.sort(
+          (a, b) =>
+            new Date(a.startDate).getTime() -
+            new Date(b.startDate).getTime()
+        );
 
-        this.nextSchedule = upcoming.length ? upcoming[0] : null;
-        this.allSchedules = upcoming.slice(1);
+        // find next upcoming (if any)
+        this.nextSchedule =
+          sorted.find(s => new Date(s.startDate) >= now) || null;
+
+        // show ALL schedules
+        this.allSchedules = sorted;
+
         this.generateAvailableMonths();
 
-        const years = upcoming.map(s =>
+        const years = sorted.map(s =>
           new Date(s.startDate).getFullYear()
         );
 
