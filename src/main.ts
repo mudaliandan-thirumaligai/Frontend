@@ -1,6 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
+import { inject } from '@vercel/analytics';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
@@ -10,6 +11,7 @@ import {
 import { RequestLogger } from './app/interceptor/network.interceptor';
 import { AuthInterceptor } from './app/interceptor/auth.interceptor';
 
+inject();
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
