@@ -175,12 +175,35 @@
         <!-- Submit -->
         <div>
           <button type="submit"
-            class="inline-flex items-center text-indigo-700 font-medium
-                   hover:text-indigo-900 transition
-                   px-6 py-3 rounded-lg
-                   border border-indigo-300 dark:border-indigo-700
-                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
-            Submit →
+            [disabled]="loading"
+            class="inline-flex items-center justify-center
+                  text-indigo-700 font-medium
+                  hover:text-indigo-900 transition
+                  px-6 py-3 rounded-lg
+                  border border-indigo-300 dark:border-indigo-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                  disabled:opacity-50 disabled:cursor-not-allowed">
+
+            <!-- Spinner -->
+            <span *ngIf="loading" class="flex items-center gap-2">
+              <svg class="animate-spin h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"
+                        stroke="currentColor" stroke-width="4"
+                        class="opacity-25"></circle>
+                <path fill="currentColor"
+                      class="opacity-75"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              Submitting...
+            </span>
+
+            <!-- Normal text -->
+            <span *ngIf="!loading">
+              Submit →
+            </span>
           </button>
         </div>
 

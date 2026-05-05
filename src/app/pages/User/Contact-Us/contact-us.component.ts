@@ -72,6 +72,7 @@ export class ContactUsComponent {
     if (!this.showValidationError()) {
       return; 
     }
+    console.log("Submitting...");
 
     this.loading = true;
     this.toast.showInfo('Submitting your details...');
