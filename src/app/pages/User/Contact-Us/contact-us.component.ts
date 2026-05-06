@@ -4,8 +4,9 @@ import { PageBreadcrumbComponent } from '../../../shared/components/common/page-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../../service/contact-us.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ToastService } from '../../../shared/services/toast.service'; // <-- import ToastService
+import { ToastService } from '../../../shared/services/toast.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-contact-us',
   standalone: true,
@@ -24,75 +25,90 @@ export class ContactUsComponent {
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService,
-    private toast: ToastService, 
+    private toast: ToastService,
     private router: Router
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      mobile: ['', Validators.required],   
-      email: ['', Validators.email],        
-      whatsappNumber: [''],
+      mobile: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      email: ['', Validators.email],
+      whatsappNumber: ['', Validators.pattern(/^[6-9]\d{9}$/)],
       postalAddress: [''],
       query: ['']
     });
   }
+
   private showValidationError(): boolean {
     const controls = this.contactForm.controls;
 
-    if (controls['name'].invalid) {
+    // Required: name
+    if (!controls['name'].value?.trim()) {
       this.toast.showError('Please enter your name');
       return false;
     }
 
-    if (controls['type'].invalid) {
+    // Required: type
+    if (!controls['type'].value) {
       this.toast.showError('Please select a type');
       return false;
     }
 
-    if (controls['mobile'].invalid) {
+    // Required: mobile — check empty first, then format
+    if (!controls['mobile'].value?.trim()) {
       this.toast.showError('Please enter your mobile number');
       return false;
     }
+    if (controls['mobile'].invalid) {
+      this.toast.showError('Please enter a valid 10-digit mobile number (starts with 6–9)');
+      return false;
+    }
 
-    // Optional: validate email format only if entered
-    if (
-      controls['email'].value &&
-      controls['email'].invalid
-    ) {
+    // Optional: email — only validate format if filled
+    if (controls['email'].value?.trim() && controls['email'].invalid) {
       this.toast.showError('Please enter a valid email address');
       return false;
     }
 
-    return true; // ✅ all good
-  }
+    // Optional: whatsapp — only validate format if filled
+    if (controls['whatsappNumber'].value?.trim() && controls['whatsappNumber'].invalid) {
+      this.toast.showError('Please enter a valid 10-digit WhatsApp number (starts with 6–9)');
+      return false;
+    }
 
+    return true;
+  }
 
   submitForm() {
     if (!this.showValidationError()) {
-      return; 
+      return;
     }
-    console.log("Submitting...");
 
     this.loading = true;
     this.toast.showInfo('Submitting your details...');
 
-    this.contactService.submitContact(this.contactForm.value).subscribe({
+    // ✅ Clean the payload — remove empty optional fields
+    const rawValue = this.contactForm.value;
+    const payload = {
+      ...rawValue,
+      email: rawValue.email?.trim() || undefined,
+      whatsappNumber: rawValue.whatsappNumber?.trim() || undefined,
+      postalAddress: rawValue.postalAddress?.trim() || undefined,
+      query: rawValue.query?.trim() || undefined,
+    };
+    console.log('Payload being sent:', payload);
+    this.contactService.submitContact(payload).subscribe({
       next: () => {
-        this.toast.showSuccess(
-          'Thank you! Your details have been submitted successfully.'
-        );
+        this.toast.showSuccess('Thank you! Your details have been submitted successfully.');
         this.contactForm.reset();
         this.loading = false;
         this.router.navigate(['/']);
       },
       error: err => {
-        const apiMessage =
-          err?.error?.message || 'Failed to submit. Please try again.';
+        const apiMessage = err?.error?.message || 'Failed to submit. Please try again.';
         this.toast.showError(apiMessage);
         this.loading = false;
       }
     });
   }
-
 }

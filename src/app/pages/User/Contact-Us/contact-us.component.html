@@ -116,6 +116,13 @@
               font-medium tracking-wide leading-tight
               focus:ring-2 focus:ring-indigo-700" />
         </div>
+        <!-- inline -->
+        <div *ngIf="contactForm.get('email')?.value && 
+                    contactForm.get('email')?.invalid && 
+                    contactForm.get('email')?.dirty"
+          class="text-red-500 text-sm mt-1">
+          Please enter a valid email address
+        </div>
 
         <!-- WhatsApp -->
         <div>
@@ -130,6 +137,13 @@
               placeholder-indigo-700/50 dark:placeholder-indigo-300/50
               font-medium tracking-wide leading-tight
               focus:ring-2 focus:ring-indigo-700" />
+        </div>
+        <!-- inline -->
+         <div *ngIf="contactForm.get('whatsappNumber')?.value && 
+                    contactForm.get('whatsappNumber')?.invalid && 
+                    contactForm.get('whatsappNumber')?.dirty"
+          class="text-red-500 text-sm mt-1">
+          Please enter a valid 10-digit WhatsApp number
         </div>
 
         <!-- Address -->
