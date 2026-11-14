@@ -16,6 +16,9 @@
     "@angular/forms": "^20.0.6",
     "@angular/platform-browser": "^20.0.6",
     "@angular/router": "^20.0.6",
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
     "@fullcalendar/angular": "^6.1.19",
     "@fullcalendar/daygrid": "^6.1.19",
     "@fullcalendar/interaction": "^6.1.19",
@@ -42,5 +45,3 @@
     "tailwindcss": "^4.1.18"
   }
 }
-
-
