@@ -1,0 +1,127 @@
+<!-- 🔙 Back Navigation -->
+<div class="w-full max-w-md mx-auto mb-6 sm:pt-10">
+  <a
+    routerLink="/"
+    class="inline-flex items-center gap-1
+           text-sm font-medium text-indigo-600
+           hover:text-indigo-700
+           dark:text-indigo-300 dark:hover:text-indigo-200
+           transition"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="size-5"
+      fill="none"
+      viewBox="0 0 20 20"
+      stroke="currentColor"
+      stroke-width="1.5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12.75 5l-5 5 5 5"
+      />
+    </svg>
+    Back to Home
+  </a>
+</div>
+
+<!-- 🧘 Change Password Card -->
+<div class="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
+  <div>
+    <div class="mb-6 text-center">
+    <h1
+      class="font-semibold text-2xl tracking-wide
+             text-indigo-700 dark:text-indigo-300"
+    >
+      Change Password
+    </h1>
+    <p
+      class="mt-2 text-sm
+             text-indigo-600/80 dark:text-indigo-400/80"
+    >
+      Enter your old and new password to update your credentials
+    </p>
+  </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onChangePassword()" class="space-y-6">
+
+      <!-- Old Password -->
+      <div>
+        <label class="block mb-1 text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight">
+          Old Password <span class="text-rose-500">*</span>
+        </label>
+        <div class="relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="oldPassword"
+            name="oldPassword"
+            placeholder="Enter old password"
+            required
+            class="w-full px-4 py-2 rounded-lg
+                   bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   text-indigo-700 dark:text-indigo-300
+                   placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                   font-medium tracking-wide leading-tight
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700
+                   transition"
+          />
+          <!-- Toggle icon -->
+          <span
+            (click)="togglePasswordVisibility()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-indigo-500 hover:text-indigo-700 dark:text-indigo-300 dark:hover:text-indigo-200 transition"
+          >
+            @if (showPassword) { 👁️ } @else { 🙈 }
+          </span>
+        </div>
+      </div>
+
+      <!-- New Password -->
+      <div>
+        <label class="block mb-1 text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight">
+          New Password <span class="text-rose-500">*</span>
+        </label>
+        <div class="relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="newPassword"
+            name="newPassword"
+            placeholder="Enter new password"
+            required
+            class="w-full px-4 py-2 rounded-lg
+                   bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   text-indigo-700 dark:text-indigo-300
+                   placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                   font-medium tracking-wide leading-tight
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700
+                   transition"
+          />
+          <span
+            (click)="togglePasswordVisibility()"
+            class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-indigo-500 hover:text-indigo-700 dark:text-indigo-300 dark:hover:text-indigo-200 transition"
+          >
+            @if (showPassword) { 👁️ } @else { 🙈 }
+          </span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="inline-flex items-center text-indigo-700 font-medium
+                   hover:text-indigo-900 transition
+                   px-6 py-3 rounded-lg
+                   border border-indigo-300 dark:border-indigo-700
+                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+        >
+          Change Password
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

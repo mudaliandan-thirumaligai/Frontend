@@ -1,0 +1,533 @@
+<main class="flex flex-col overflow-x-hidden text-indigo-900 dark:text-indigo-300">
+
+<!-- ================= HERO SECTION ================= -->
+<section class="relative min-h-[90vh] flex items-center justify-center px-4 overflow-hidden">
+  
+  <!-- Background -->
+  <!-- <div class="absolute inset-0 z-0">
+    <img
+      src="images/temple-wide-angle.jpg"
+      alt="Temple Background"
+      class="w-full h-full object-cover opacity-15">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#FFFFFF] via-[#F4F6FB] to-[#FFFFFF]"></div>
+  </div> -->
+
+  <!-- Animated decorative elements -->
+  <div class="absolute inset-0 pointer-events-none z-0">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#3B5BA9]/10 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#B49CFF]/10 rounded-full blur-3xl animate-float"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto w-full">
+    
+    <!-- Top Section -->
+    <div class="text-center mb-10 animate-fade-in-down"><br><br>
+
+      <!-- Typewriter Effect -->
+      <div class="relative inline-block min-h-[80px] md:min-h-[100px] mb-6">
+        <h2 class="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-wide leading-tight text-indigo-700 dark:text-indigo-300">
+          <span class="typewriter">{{ typedText }}</span><span class="cursor animate-blink">|</span>
+        </h2>
+      </div>
+
+      <p class="italic text-lg text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6 animate-fade-in-delay-1">
+        "ஆசாரியன் திருவடிகளே சரணம்"
+      </p>
+
+      <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight text-lg md:text-xl max-w-3xl mx-auto animate-fade-in-delay-2">
+        The sacred lineage of Acharya Bhakti, Kainkaryam, and Sri Vaishnava Sampradayam
+      </p>
+    </div>
+
+    <!-- Center: Main Image & CTAs -->
+    <div class="flex flex-col items-center gap-8 mb-10">
+      
+      <!-- Image with elegant animation -->
+      <div class="relative animate-scale-in">
+        <div class="absolute -inset-3 bg-gradient-to-br from-[#3B5BA9]/30 to-[#B49CFF]/30 rounded-2xl blur-xl opacity-70 animate-pulse-glow"></div>
+        <div class="absolute -inset-1 bg-gradient-to-br from-[#6379C8]/40 to-[#B49CFF]/40 rounded-2xl animate-rotate-slow"></div>
+        <img
+          src="images/mudaliandan/aachariyan.png"
+          alt="Sri Mudaliandan"
+          class="relative rounded-2xl shadow-2xl w-80 md:w-96 border-4 border-white transform hover:scale-105 transition-transform duration-500">
+      </div>
+
+      <!-- Primary CTAs -->
+      <div class="flex flex-col sm:flex-row gap-4 w-full max-w-2xl animate-fade-in-up-delay">
+        <a routerLink="/about-swamy"
+           class="flex-1 inline-flex items-center justify-center px-8 py-3 rounded-lg
+                  font-medium tracking-wide leading-tight text-lg
+                  text-indigo-700 dark:text-indigo-300
+                  border border-indigo-300 dark:border-indigo-700
+                  hover:text-indigo-900 dark:hover:text-indigo-100
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                  transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          Our Lineage →
+        </a>
+        <a routerLink="/calendar"
+           class="flex-1 inline-flex items-center justify-center px-8 py-3 rounded-lg
+                  font-medium tracking-wide leading-tight text-lg
+                  text-indigo-700 dark:text-indigo-300
+                  border border-indigo-300 dark:border-indigo-700
+                  hover:text-indigo-900 dark:hover:text-indigo-100
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                  transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          Upcoming Events →
+        </a>
+      </div>
+
+      <a routerLink="/bank-info"
+         class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight
+                hover:text-indigo-900 transition text-lg
+                underline decoration-2 underline-offset-4
+                animate-fade-in-delay-3 hover:decoration-[#6379C8]">
+         Support Our Mission
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= EXPLORE SECTIONS (CARD GRID) ================= -->
+<section class="py-16 px-4 bg-gradient-to-b from-[#FFFFFF] to-[#F4F6FB]">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-12 animate-fade-in-up">
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-4">
+        Explore Our Heritage
+      </h2>
+      <div class="w-16 h-1.5 bg-gradient-to-r from-[#3B5BA9] via-[#B49CFF] to-[#6379C8] mx-auto rounded-full animate-width-expand"></div>
+    </div>
+
+    <!-- Main Navigation Cards -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      
+      <!-- About Us Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.1s">
+        <div class="h-48 bg-gradient-to-br from-[#3B5BA9] to-[#6379C8] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_01.jpeg" alt="About Us" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#3B5BA9]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">About Us</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            Learn about us and the sacred lineage of Sri Mudaliandan Swamy Vamsam.
+          </p>
+          <div class="space-y-2 mb-6">
+            <a routerLink="/about-thirumaaligai" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ About Thirumaligai</a>
+            <a routerLink="/about-swamy" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Varthamaana Swami</a>
+            <a routerLink="/aachariyargal" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Our History</a>
+            <a routerLink="/thirumaligais" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Our Thirumaligais</a>
+          </div>
+          <a routerLink="/about-thirumaaligai"
+             class="inline-flex items-center px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Learn More →
+          </a>
+        </div>
+      </div>
+
+      <!-- Events Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.2s">
+        <div class="h-48 bg-gradient-to-br from-[#6379C8] to-[#B49CFF] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_02.jpeg" alt="Events & Festivals" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#6379C8]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6379C8] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Events & Festivals</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            Join our sacred celebrations, rituals, and spiritual gatherings throughout the year.
+          </p>
+          
+          <!-- Next Event Preview -->
+          <!-- Loading State -->
+          <div *ngIf="loadingEvent" class="bg-[#F4F6FB] dark:bg-indigo-900/30 rounded-lg p-4 mb-6 border-l-4 border-[#B49CFF] animate-pulse">
+            <div class="h-4 bg-indigo-300 dark:bg-indigo-600 rounded mb-3 w-20"></div>
+            <div class="h-5 bg-indigo-300 dark:bg-indigo-600 rounded mb-2 w-3/4"></div>
+            <div class="h-4 bg-indigo-300 dark:bg-indigo-600 rounded w-1/2"></div>
+          </div>
+
+          <!-- Event Found -->
+          <div *ngIf="!loadingEvent && nextEvent" class="bg-gradient-to-br from-[#F4F6FB] to-[#E8ECFF] dark:from-indigo-900/40 dark:to-indigo-800/40 rounded-lg p-4 mb-6 border-l-4 border-[#3B5BA9] hover:border-[#6379C8] hover:shadow-md transition-all duration-300 cursor-pointer" (click)="navigateToEventInCalendar()">
+            <p class="text-xs uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-2">📅 Upcoming Event</p>
+            <p class="font-bold tracking-wide text-indigo-900 dark:text-indigo-100 mb-1 text-lg">{{ nextEvent.name }}</p>
+            <p class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide mb-2">
+              <span class="inline-block mr-4">📆 {{ nextEvent.startDate | date:'MMM d, y' }}</span>
+              <span *ngIf="nextEvent.location" class="inline-block">📍 {{ nextEvent.location }}</span>
+            </p>
+            <p *ngIf="nextEvent.description" class="text-sm text-indigo-700 dark:text-indigo-300 font-medium tracking-wide line-clamp-2 mb-3">{{ nextEvent.description }}</p>
+            <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">Click to view in calendar →</p>
+          </div>
+
+          <!-- No Upcoming Event -->
+          <div *ngIf="!loadingEvent && noUpcomingEvent" class="bg-[#FFF4E6] dark:bg-amber-900/20 rounded-lg p-4 mb-6 border-l-4 border-[#6379C8]">
+            <p class="text-sm text-amber-800 dark:text-amber-300 font-medium tracking-wide">ℹ️ No upcoming events scheduled at the moment.</p>
+          </div>
+
+          <div class="flex gap-3">
+            <a routerLink="/calendar"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Event Calendar→
+            </a>
+            <a routerLink="/past-events"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Past Events →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spiritual Knowledge Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.3s">
+        <div class="h-48 bg-gradient-to-br from-[#6379C8] to-[#B49CFF] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_20.jpeg" alt="Spiritual Knowledge" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#6379C8]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#3B5BA9] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Spiritual Knowledge</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            Access sacred texts, Thaniyans, teachings, and the path of Samashrayanam.
+          </p>
+          <div class="space-y-2 mb-6">
+            <a routerLink="/pothu-thaniyans" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Pothu Thaniyans</a>
+            <a routerLink="/thaniyans" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Thaniyans</a>
+            <a routerLink="/samashrayanam" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Samashrayanam</a>
+            <a routerLink="/vaazhi-thirunaamam" class="block text-indigo-700 dark:text-indigo-300 font-medium tracking-wide hover:text-[#6379C8] hover:translate-x-2 transition-all duration-300 text-base">→ Vaazhi Thirunaamam</a>
+          </div>
+          <a routerLink="/documents"
+             class="inline-flex items-center px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            View Documents →
+          </a>
+        </div>
+      </div>
+
+      <!-- Media Archive Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.4s">
+        <div class="h-48 bg-gradient-to-br from-[#B49CFF] to-[#3B5BA9] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_04.jpeg" alt="Media Archive" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#B49CFF]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#B49CFF] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Media Archive</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            Browse our collection of photos, videos, and documents from festivals and events.
+          </p>
+          <div class="flex gap-3">
+            <a routerLink="/gallery"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Photos →
+            </a>
+            <a routerLink="/videos"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Videos →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Swamy Schedule Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.5s">
+        <div class="h-48 bg-gradient-to-br from-[#3B5BA9] to-[#6379C8] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_05.jpeg" alt="Swamy Schedule" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#3B5BA9]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B5BA9] to-[#6379C8] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Swamy Schedule</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            View our Swamy’s Sancharam schedule.
+          </p>
+          <a routerLink="/swamy-schedule"
+             class="inline-flex items-center justify-center w-full px-5 py-2.5 rounded-lg
+                    font-medium tracking-wide text-base
+                    text-indigo-700 dark:text-indigo-300
+                    border border-indigo-300 dark:border-indigo-700
+                    hover:text-indigo-900 dark:hover:text-indigo-100
+                    hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                    transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            View Schedule →
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact & Support Card -->
+      <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group border border-[#3B5BA9]/10 animate-fade-in-card" style="animation-delay: 0.6s">
+        <div class="h-48 bg-gradient-to-br from-[#6379C8] to-[#3B5BA9] relative overflow-hidden">
+          <img src="images/Permual_Photos/perumal_06.jpeg" alt="Connect With Us" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#6379C8]/50 to-transparent"></div>
+        </div>
+        <div class="p-6 relative">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6379C8] to-[#B49CFF] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <h3 class="text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-3 group-hover:text-indigo-700 transition-colors">Connect With Us</h3>
+          <p class="text-indigo-700 dark:text-indigo-300 font-medium tracking-wide leading-tight mb-6">
+            Register for updates, contribute to our mission, and stay connected with our thirumaligai.
+          </p>
+          <div class="flex gap-3">
+            <a routerLink="/registration"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Register →
+            </a>
+            <a routerLink="/bank-info"
+               class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Donate →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Azhwargal Special Section -->
+    <div class="bg-gradient-to-br from-[#3B5BA9] to-[#6379C8] rounded-2xl shadow-2xl p-8 md:p-12 text-white text-center relative overflow-hidden animate-fade-in-up-delay group">
+      <!-- Background image -->
+      <div class="absolute inset-0 opacity-20">
+        <img src="images/Permual_Photos/perumal_07.jpeg" alt="Azhwargal" class="w-full h-full object-cover">
+      </div>
+      <!-- Animated background pattern -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-32 h-32 border-2 border-white rounded-full animate-spin-slow"></div>
+        <div class="absolute bottom-0 right-0 w-40 h-40 border-2 border-white rounded-full animate-spin-reverse"></div>
+      </div>
+      
+      <section class="relative py-12 px-4">
+
+        <div class="relative z-10 text-center max-w-5xl mx-auto">
+
+          <!-- Heading -->
+          <h3 class="text-2xl md:text-3xl font-semibold tracking-wide leading-tight mb-4 text-white">
+            Azhwargal & Aachariyargal
+          </h3>
+
+          <!-- Description -->
+          <p class="text-base md:text-lg text-white/90 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
+            Discover the divine Azhwargal and the revered Aachariyargal who preserved
+            and spread the philosophy of Sri Vaishnavism across generations,
+            guiding our spiritual journey.
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+
+            <!-- Azhwargal Button -->
+            <a routerLink="/alwargal"
+              class="inline-flex items-center justify-center
+                      px-6 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700
+                      bg-white border border-indigo-200
+                      hover:text-indigo-900 hover:bg-indigo-50
+                      transition shadow-md
+                      focus:outline-none focus:ring-2 focus:ring-white/40">
+              12 Azhwargal →
+            </a>
+
+            <!-- Aachariyargal Button -->
+            <a routerLink="/history"
+              class="inline-flex items-center justify-center
+                      px-6 py-2.5 rounded-lg
+                      font-medium tracking-wide text-base
+                      text-indigo-700
+                      bg-white border border-indigo-200
+                      hover:text-indigo-900 hover:bg-indigo-50
+                      transition shadow-md
+                      focus:outline-none focus:ring-2 focus:ring-white/40">
+              Aachariyargal →
+            </a>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PERUMAL PHOTOS GALLERY ================= -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-12 animate-fade-in-up">
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-300 mb-4">
+        Gallery
+      </h2>
+      <!-- <p class="text-lg text-indigo-700 dark:text-indigo-300 font-medium tracking-wide max-w-2xl mx-auto">
+        Glimpses of the sacred presence and spiritual moments capturing the essence of our lineage
+      </p> -->
+      <div class="w-12 h-1 bg-indigo-300 mx-auto mt-2 rounded-full"></div>
+    </div>
+
+    <!-- Photo Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Image 08 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.1s">
+        <img src="images/Permual_Photos/perumal_08.jpeg" alt="Sacred Moment 8" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Sacred Essence</span>
+        </div>
+      </div>
+
+      <!-- Image 09 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.15s">
+        <img src="images/Permual_Photos/perumal_09.jpeg" alt="Sacred Moment 9" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Divine Blessings</span>
+        </div>
+      </div>
+
+      <!-- Image 10 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.2s">
+        <img src="images/Permual_Photos/perumal_10.jpeg" alt="Sacred Moment 10" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Spiritual Grace</span>
+        </div>
+      </div>
+
+      <!-- Image 11 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.25s">
+        <img src="images/Permual_Photos/perumal_11.jpeg" alt="Sacred Moment 11" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Holy Presence</span>
+        </div>
+      </div>
+
+      <!-- Image 12 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.3s">
+        <img src="images/Permual_Photos/perumal_12.jpeg" alt="Sacred Moment 12" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Eternal Light</span>
+        </div>
+      </div>
+
+      <!-- Image 13 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.35s">
+        <img src="images/Permual_Photos/perumal_13.jpeg" alt="Sacred Moment 13" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Divine Presence</span>
+        </div>
+      </div>
+
+      <!-- Image 14 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.4s">
+        <img src="images/Permual_Photos/perumal_14.jpeg" alt="Sacred Moment 14" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Blessed Moments</span>
+        </div>
+      </div>
+
+      <!-- Image 15 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.45s">
+        <img src="images/Permual_Photos/perumal_15.jpeg" alt="Sacred Moment 15" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Sacred Journey</span>
+        </div>
+      </div>
+
+      <!-- Image 16 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.5s">
+        <img src="images/Permual_Photos/perumal_16.jpeg" alt="Sacred Moment 16" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Spiritual Wisdom</span>
+        </div>
+      </div>
+
+      <!-- Image 17 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.55s">
+        <img src="images/Permual_Photos/perumal_17.jpeg" alt="Sacred Moment 17" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Divine Blessings</span>
+        </div>
+      </div>
+
+      <!-- Image 18 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.6s">
+        <img src="images/Permual_Photos/perumal_18.jpeg" alt="Sacred Moment 18" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Holy Moments</span>
+        </div>
+      </div>
+
+      <!-- Image 19 -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in-card" style="animation-delay: 0.65s">
+        <img src="images/Permual_Photos/perumal_19.jpeg" alt="Sacred Moment 19" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+          <span class="text-white font-medium text-sm">Sacred Path</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- View More CTA -->
+    <div class="text-center mt-12 animate-fade-in-up-delay">
+      <a routerLink="/gallery"
+         class="inline-flex items-center justify-center px-8 py-3 rounded-lg
+                font-medium tracking-wide leading-tight text-lg
+                text-indigo-700 dark:text-indigo-300
+                border border-indigo-300 dark:border-indigo-700
+                hover:text-indigo-900 dark:hover:text-indigo-100
+                hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        View Complete Gallery →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+</main>

@@ -1,0 +1,20 @@
+@if (visible && message) {
+  <div
+    class="toast"
+    [ngClass]="[
+      message.type,
+      showing ? 'toast-show' : '',
+      hiding ? 'toast-hide' : ''
+    ]"
+  >
+    <div class="toast-icon">
+      <span *ngIf="message.type === 'success'">✔</span>
+      <span *ngIf="message.type === 'error'">✖</span>
+      <span *ngIf="message.type === 'info'">ℹ</span>
+    </div>
+
+    <div class="toast-content">
+      <p class="toast-text">{{ message.text }}</p>
+    </div>
+  </div>
+}

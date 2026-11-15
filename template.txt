@@ -1,0 +1,306 @@
+1. Theme & Style Guide (Calm + Spiritual + Modern)
+Color Palette (Blue / Indigo / Gray / White)
+
+Spiritual yet modern.
+
+Purpose	Light Theme	Dark Theme
+Primary	#3B5BA9 (Indigo Blue)	#8FA8FF
+Secondary	#6379C8	#5362A8
+Background	#FFFFFF	#0C0F16
+Surface	#F4F6FB	#1A1F2B
+Text Primary	#1A1A1A	#EAEAEA
+Accent	#B49CFF (soft violet)	#C6B8FF
+Gold highlight (optional)	#D2B670	#DCC991
+Fonts
+
+Headings: "Poppins" or "Inter"
+
+Body: "Source Sans Pro" or "Lato"
+
+Clean and respectful.
+
+Mood
+
+Calm gradients:
+
+background: linear-gradient(to bottom right, #3B5BA9, #6E87D6);
+
+🧭 2. Navbar (Fixed, Modern, Clean)
+Top Fixed Navbar
+
+Transparent on top of hero section
+
+Changes to solid background on scroll
+
+Light/Dark mode toggle
+
+Dropdown + nested expansions where needed
+
+Suggested Navbar Items
+Home
+About
+ ├── Sri Mudhaliandan Swamy
+ ├── History
+ ├── Philosophy
+ └── The Organization
+
+Events
+ ├── Calendar
+ ├── Upcoming Events
+ └── Past Events
+
+Media
+ ├── Photos
+ ├── Videos
+ ├── Audio Discourses
+ └── Books / PDFs
+
+Gallery
+ ├── Festivals
+ ├── Temple Activities
+ ├── Annadhanam
+ └── Acharya Visits
+
+Leadership
+ ├── About the Acharya
+ ├── Previous Acharyas
+ └── Message
+
+Contact / Contribution
+Location
+
+🏠 3. Landing Page Layout (Modern + Spiritual)
+
+Here’s the final recommended design:
+
+🔷 Section 1 — Hero Banner
+
+Calm blue–indigo gradient
+
+Image of Sri Mudhaliandan Swamy (blurred or softly faded behind text)
+
+Title (White, glowing):
+"Sri Mudhaliandan Swamy Thirumadapalli"
+
+Subtitle:
+A sacred lineage dedicated to dharma, kainkaryam, and spiritual guidance.
+
+Buttons
+
+“Learn More”
+
+“Upcoming Events”
+
+“Contribute / Donate”
+
+Animations
+
+Soft fade-in title
+
+Slow parallax background
+
+Button hover glow
+
+🔷 Section 2 — About Organization
+
+Two-column:
+
+Left: image of temple/swamiji
+
+Right: clean text
+
+Fade-in on scroll.
+
+🔷 Section 3 — Upcoming Events
+
+Grid of event cards with:
+
+Date
+
+Title
+
+Location
+
+“View More”
+
+Cards have hover zoom animation.
+
+🔷 Section 4 — Media Highlights
+
+Show small previews:
+
+3 images
+
+1 video preview
+
+1 audio clip
+
+1 book cover
+
+Each card can link to full respective page.
+
+🔷 Section 5 — Gallery Preview
+
+A horizontal carousel slider with:
+
+Festival photos
+
+Swami visits
+
+Annadhanam images
+
+Use subtle motion + snap scrolling.
+
+🔷 Section 6 — Leadership
+
+Picture + Name + Small description of Acharya.
+
+Soft fade-in.
+
+🔷 Section 7 — Location & Contact
+
+Show a clear location map (Google Maps Embed).
+Contact form with:
+
+Name
+
+Email
+
+Message
+
+🔷 Section 8 — Footer
+
+Organization name
+
+Quick links
+
+Social media icons
+
+Copyright
+
+Modern, minimal, blue-gray background.
+
+🖼 4. Media Pages Design
+Photos
+
+Each category gets a separate page layout style.
+
+Use:
+
+Page 1: Masonry Grid
+
+Page 2: Classic 3-column gallery
+
+Page 3: Carousel
+
+Page 4: Polaroid style (slightly rotated cards)
+
+Each page → different theme, but same branding.
+
+Videos
+
+YouTube embed cards
+Each card:
+
+Title
+
+Description
+
+Play overlay button
+
+Audio
+
+Playlist player with:
+
+Play/Pause
+
+Next
+
+Seekbar
+
+Books
+
+PDF viewer (ngx-extended-pdf-viewer)
+
+or
+Flipbook style viewer.
+
+⭐ 5. Angular Component Architecture
+
+Here is a clean and scalable component structure:
+
+/src/app/
+    components/
+        navbar/
+        footer/
+        hero/
+        about/
+        events/
+        galleries/
+            photo-gallery/
+            video-gallery/
+            audio-gallery/
+        leadership/
+        location/
+    pages/
+        home/
+        about/
+        events/
+        galleries/
+            photos/
+            videos/
+            audio/
+            books/
+        contact/
+    shared/
+        ui/
+            card/
+            button/
+            carousel/
+            lightbox/
+            dropdown/
+    services/
+        media.service.ts
+        events.service.ts
+
+🌗 6. Light & Dark Mode Design
+Light Mode
+
+White backgrounds
+
+Indigo-blue accents
+
+Subtle shadows
+
+Dark Mode
+
+Deep navy backgrounds
+
+Indigo highlights
+
+Soft gold text-accent for spiritual feel
+
+Use CSS variables:
+
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --primary: #3B5BA9;
+}
+
+.dark-mode {
+  --bg: #0C0F16;
+  --text: #EAEAEA;
+  --primary: #8FA8FF;
+}
+
+
+Toggle with a button in navbar.
+
+🤖 7. AI Prompt for UI Mockups
+
+You can give this to any AI image generator:
+
+UI Mockup Prompt
+
+“Create a modern, calm, spiritual website landing page design for a religious organization dedicated to Sri Mudhaliandan Swamy. Use a blue–indigo color palette with white and gray accents. Include a hero banner with a soft gradient background, clean typography, and spiritual elegance. Add sections for About, Upcoming Events, Gallery, Media Library, Leadership, and Contact. Use a fixed top navbar with dropdowns. Include subtle animations like fade-in, parallax, and card hover effects. Provide both light and dark mode variations. The design should be fully responsive, minimal, and user-friendly with a clean layout.”

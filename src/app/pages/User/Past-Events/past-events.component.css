@@ -1,0 +1,56 @@
+/* Arrow rotation */
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.rotate {
+  transform: rotate(180deg);
+}
+
+/* Accordion expand/collapse using max-height */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.5s ease;
+  padding: 0;
+}
+.accordion-content.open {
+  max-height: 2000px;
+  padding: 5px 0;
+}
+
+/* Year card */
+.year-card {
+  transition: all 0.3s ease;
+}
+.year-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+/* Month card */
+.month-card {
+  transition: all 0.3s ease;
+}
+.month-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* Event cards */
+.event-card:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+/* Events inside month */
+.events {
+  display: block;
+  margin-left: 1rem;
+}
+
+/* Spacing and rounding */
+.year-header, .month-header {
+  user-select: none;
+}

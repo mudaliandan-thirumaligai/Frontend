@@ -32,4 +32,7 @@ export class SidebarService {
   setHovered(val: boolean) {
     this.isHoveredSubject.next(val);
   }
+  get mobileState() {
+    return this.isMobileOpenSubject.value;
+  }
 }

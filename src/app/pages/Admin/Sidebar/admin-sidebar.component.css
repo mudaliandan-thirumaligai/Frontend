@@ -1,0 +1,26 @@
+.sidebar-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem; 
+  border-radius: 0.75rem;
+  transition: 
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background-color: rgba(79, 70, 229, 0.08); 
+    color: rgb(67, 56, 202);
+    transform: translateX(4px); 
+  }
+
+  &:active {
+    transform: translateX(2px);
+  }
+}
+
+/* Dark mode */
+:host-context(.dark) .sidebar-item:hover {
+  background-color: rgba(129, 140, 248, 0.15);
+  color: rgb(199, 210, 254);
+}

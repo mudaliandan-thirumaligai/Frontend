@@ -1,0 +1,174 @@
+<br>
+<app-page-breadcrumb pageTitle="About Thirumaligai" />
+
+<!-- ================= ABOUT SWAMY INTRO ================= -->
+<section class="py-2 px-2">
+  <div class="max-w-5xl mx-auto text-center">
+
+    <!-- Title -->
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Sri Mudaliandan Swamy
+    </h1>
+
+    <!-- Divider -->
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-2 rounded-full"></div>
+
+    <!-- Full Width Banner -->
+    <div class="w-full mt-16">
+      <div class="relative w-full">
+
+        <!-- Soft background frame -->
+        <div class="absolute inset-0 bg-indigo-100"></div>
+
+        <!-- Clickable Image -->
+        <img
+          src="images/Landing/New_Banner.jpg"
+          alt="Sri Mudaliandan Swamy"
+          (click)="openModal()"
+          class="relative w-full h-auto object-cover cursor-pointer"
+        />
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Image Popup Modal -->
+<div
+  *ngIf="showImageModal"
+  class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+  (click)="closeModal()"
+>
+
+  <!-- Close button -->
+  <span
+    class="absolute top-5 right-6 text-white text-4xl cursor-pointer"
+    (click)="closeModal()"
+  >
+    &times;
+  </span>
+
+  <!-- Popup Image -->
+  <img
+    src="images/Landing/New_Banner.jpg"
+    class="max-w-[95%] max-h-[90%] rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"
+  />
+
+</div>
+<!-- ================= ABOUT CONTENT ================= -->
+<section class="px-4 py-10">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="space-y-8
+                text-blue-700 dark:text-blue-300
+                text-lg sm:text-xl md:text-2xl
+                leading-relaxed font-medium">
+
+      <p>
+        Kumara Ramanujachariya Swamy is known for his simplicity and approachability. In his younger days, he resided in Kooram and Kancheepuram. He finally settled in SingaPerumal Koil.
+      </p>
+
+      <p>
+        He has travelled to and reached out to a lot of shishyas across South India, blessed them, and made the swamy-shishya relationship very strong. He is very much attached to "Shri Prahaladha Varadhan" of SP Koil and Namperumal of Srirangam. He has great respect and love towards his aachariyan and surrendered himself to his aachariyan's lotus feet. Close associates know that Swamy used to say, "Aachariya anugraham."
+      </p>
+
+      <p>
+        During his period, he reconstructed the Singaperumal Koil Thirumaligai and built a new gopuram for Sri Padaladri Narasimha Swamy. This is a great milestone achieved during his period.
+      </p>
+
+      <p>
+        Our Varthamaana Swamy is "Sri Bhakthisaracharya Swamy". He spent his early days in Singa Perumal Koil and Srirangam, where he learnt the Divya Prabandam. He is very attached to Namperumal of Srirangam, attending lots of utsavams during his childhood days, and even now he goes to Srirangam whenever time permits. Currently, he is residing in Singa Perumal Koil.
+      </p>
+
+      <p>
+        He presides over all the utsavams held for Shri Prahaladha Varadhan of Padaladri Narasimha Swamy Temple. There is a saying that if the parent jumps eight steps, then the child jumps sixteen. This is very apt for our Varthamaana Swamy.
+      </p>
+
+      <p>
+        He is proficient in all Thirumaligai affairs and has great love and respect for his aachariyan. Also, he is a very loving son and brother. With the blessings of his mother, Padmini Ammangar, he redesigned the Singaperumal Koil Thirumaligai and rebuilt the Kancheepuram Thirumaligai.
+      </p>
+
+      <p>
+        He has presided over the Samprokshanam of Shri Padaladri Narasimha Swamy and Sri Pachaivaarana Perumal (Nazrathpet). He is conducting many utsavams in Thirumaligai such as Thirumaasi Kettai, Ponnadikkal Jeeyar Utsavam (in SingaPerumal Koil), Chithiraiyil Chithirai, Avani Hastham, Karthikaiyil Karthikai (Kumara Venkatachariya Swamy), and Kartikai Pooram (Kumara Ramanujachariyar Swamy).
+      </p>
+
+      <p>
+        Our Varthamaana Swamy's Thirunakshatram is Margazhi Magam and Thaniyan is.
+      </p>
+
+    </div>
+    <!-- Thaniyan -->
+      <div class="pt-10 text-center
+                  text-blue-900 dark:text-blue-400
+                  text-xl sm:text-2xl md:text-3xl
+                  leading-loose font-semibold">
+
+        <p>
+          shreemadh vadhoola kulavenkata soori pouthram |<br>
+          vaadhoola ramanuja desika gorooththama puthra rathnam |<br>
+          tat paada yugma sharanam thathupaasithaaram |<br>
+          shree bhakthisara guruvaryamaham prapadhye ||
+        </p>
+      </div>
+  </div>
+</section>
+
+<div class="mt-10 px-4">
+  <div class="max-w-5xl mx-auto
+              grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+              gap-4">
+
+    <!-- PDF 1 -->
+    <a [href]="oldPhotosPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      CLICK HERE to see old photos of our Thirumaligai Aacharyas
+    </a>
+
+    <!-- PDF 2 -->
+    <a [href]="yatirajaPadukaPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      Click here to take a look at Yatiraja Paduka
+    </a>
+
+    <!-- PDF 3 -->
+    <a [href]="sadabhishekaPdf"
+       target="_blank"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      Click here to view Sadabhisheka Vaibhava Patrikai
+    </a>
+
+    <!-- PDF 4 -->
+    <!-- <a [href]="mudaliandanVaibhavamPdf"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="inline-flex justify-center items-center text-indigo-700 font-medium
+              hover:text-indigo-900 transition
+              px-6 py-3 rounded-lg
+              border border-indigo-300 dark:border-indigo-700
+              focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+
+      Click here to read about Mudaliandan Vaibhavam
+    </a> -->
+
+  </div>
+</div>

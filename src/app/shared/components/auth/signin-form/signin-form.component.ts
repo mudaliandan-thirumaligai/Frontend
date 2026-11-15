@@ -1,9 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { LabelComponent } from '../../form/label/label.component';
-//import { CheckboxComponent } from '../../form/input/checkbox.component';
-import { ButtonComponent } from '../../ui/button/button.component';
-import { InputFieldComponent } from '../../form/input/input-field.component';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -11,10 +7,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-signin-form',
   imports: [
     CommonModule,
-    LabelComponent,
-   // CheckboxComponent,
-    ButtonComponent,
-    InputFieldComponent,
     RouterModule,
     FormsModule,
   ],
@@ -23,20 +15,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class SigninFormComponent {
 
-  showPassword = false;
-  // isChecked = false;
+  @Output() formSubmit = new EventEmitter<{ username: string; password: string }>();
 
+  showPassword = false;
   username = '';
   password = '';
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-  // TODO need to add api calling here 
 
   onSignIn() {
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-    // console.log('Remember Me:', this.isChecked);
+    this.formSubmit.emit({
+      username: this.username,
+      password: this.password,
+    });
   }
 }

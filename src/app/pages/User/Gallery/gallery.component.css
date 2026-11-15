@@ -1,0 +1,247 @@
+/* ====================== Layout ====================== */
+.gallery-container {
+  display: flex;
+  width: 100%;
+  padding-right: 200px; /* space for sidebar */
+  position: relative;
+}
+
+.gallery-content {
+  width: 100%;
+  padding: 20px;
+}
+
+/* ====================== Sidebar ====================== */
+.sidebar {
+  width: 180px;
+  position: fixed;
+  right: 0;
+  top: 120px;
+  padding: 15px;
+  background: #ffffffd9;
+  border-left: 1px solid #ddd;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* Scrollbar for Chrome / Edge */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+  border-radius: 6px;
+}
+
+/* Sidebar heading & spacing */
+.sidebar h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.sidebar .mb-4 {
+  margin-bottom: 16px;
+}
+
+/* Year select */
+.year-select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #c7d2fe;
+  background: white;
+  color: #3730a3;
+  font-size: 14px;
+}
+
+.year-select:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+/* Sidebar list items */
+.sidebar ul li {
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.sidebar ul li:hover {
+  background: #f3f4f6;
+}
+
+.sidebar ul li.active-folder {
+  background: #e0e7ff;
+}
+
+/* Scrollable list */
+.sidebar ul {
+  max-height: calc(100vh - 160px); /* leave space for filter and heading */
+  overflow-y: auto;
+}
+
+/* ====================== Folder Titles ====================== */
+.folder-title {
+  font-size: 22px;
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* ====================== Grid ====================== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+  padding-bottom: 18px;
+}
+
+/* NEW: grid item acts as image frame */
+.grid-item {
+  width: 100%;
+  aspect-ratio: 4 / 3;   /* 🔥 change to 1 / 1 if you want square */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Image fills the frame */
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* 🔥 THIS fixes size mismatch */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+}
+
+/* Hover effect stays perfect */
+.grid-item img:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+
+/* ====================== Animations ====================== */
+.fade {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-enter {
+  animation: fadeScaleIn 0.25s ease-out forwards;
+}
+
+.modal-exit {
+  animation: fadeScaleOut 0.25s ease-in forwards;
+}
+
+@keyframes fadeScaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeScaleOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+/* ====================== Modal ====================== */
+.modal-enter,
+.modal-exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-enter img,
+.modal-exit img {
+  max-height: 90vh;
+  max-width: 90vw;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+
+.modal-enter button,
+.modal-exit button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 9999;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-enter button:hover,
+.modal-exit button:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* ====================== Responsive ====================== */
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .gallery-container {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .modal-enter img,
+  .modal-exit img {
+    max-width: 90vw;
+    max-height: 80vh;
+  }
+
+  .modal-enter button,
+  .modal-exit button {
+    top: 6px;
+    right: 6px;
+    padding: 4px 8px;
+    font-size: 16px;
+  }
+}

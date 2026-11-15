@@ -4,9 +4,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  ElementRef,
-  OnInit,
-  OnDestroy,
   HostListener
 } from '@angular/core';
 
@@ -26,7 +23,7 @@ export class ModalComponent {
   @Input() showCloseButton = true;
   @Input() isFullscreen = false;
 
-  constructor(private el: ElementRef) {}
+  constructor() {}
 
   ngOnInit() {
     if (this.isOpen) {
@@ -42,7 +39,7 @@ export class ModalComponent {
     document.body.style.overflow = this.isOpen ? 'hidden' : 'unset';
   }
 
-  onBackdropClick(event: MouseEvent) {
+  onBackdropClick() {
     if (!this.isFullscreen) {
       this.close.emit();
     }
@@ -53,7 +50,7 @@ export class ModalComponent {
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent) {
+  onEscape() {
     if (this.isOpen) {
       this.close.emit();
     }
