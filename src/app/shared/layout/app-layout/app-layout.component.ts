@@ -36,15 +36,15 @@ export class AppLayoutComponent {
       route: '/about-thirumaaligai'
     },
     {
-      label: 'Events',
+      label: 'Calendar',
       route: '/calendar'
     },
+    // {
+    //   label: 'Archive',
+    //   route: '/gallery'
+    // },
     {
-      label: 'Archive',
-      route: '/gallery'
-    },
-    {
-      label: 'Contact',
+      label: 'Sambhavanai',
       route: '/bank-info'
     }
   ];
@@ -64,7 +64,7 @@ export class AppLayoutComponent {
     { label: 'Our Thirumaligais', route: '/thirumaligais' },
 
     // Events
-    { label: 'Event Calendar', route: '/calendar' },
+    // { label: 'Event Calendar', route: '/calendar' },
     { label: 'Past Events', route: '/past-events' },
 
     // Archive
@@ -72,8 +72,6 @@ export class AppLayoutComponent {
     { label: 'Videos', route: '/videos' },
     { label: 'Documents', route: '/documents' },
 
-    // Contact
-    { label: 'Sambhavanai', route: '/bank-info' },
 
     // Additional links
     { label: 'Queries', route: '/registration' },
