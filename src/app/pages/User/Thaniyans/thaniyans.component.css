@@ -1,4 +1,49 @@
-/* ---------------- GRID LAYOUT ---------------- */
+/* =====================================================
+   NEW: single-card reader (mobile + laptop)
+   ===================================================== */
+
+/* hide scrollbar on the number strip */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* card content slides in from the direction you navigated */
+@keyframes slide-in-next {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes slide-in-prev {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+.anim-next { animation: slide-in-next 0.28s ease-out both; }
+.anim-prev { animation: slide-in-prev 0.28s ease-out both; }
+
+/* bottom sheet */
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.sheet-up { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fade-in  { animation: fade-in 0.2s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-next, .anim-prev, .sheet-up, .fade-in { animation: none; }
+}
+
+/* =====================================================
+   LEGACY: old grid + scroll-reveal
+   Not used by the new template. Safe to delete; kept here
+   in case you want to go back to the all-cards grid view.
+   ===================================================== */
 
 .card-grid {
   display: grid;
@@ -13,41 +58,34 @@
   }
 }
 
-/* Equal height cards */
 .card {
   display: flex;
   flex-direction: column;
 }
 
-/* ---------------- SCROLL REVEAL ANIMATION ---------------- */
-
-/* default state = visible (safe) */
 .reveal-card {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* animation starting state added by JS */
 .reveal-card.pre-reveal {
   opacity: 0;
   transform: translateY(28px) scale(0.97);
 }
 
-/* reveal animation */
 .reveal-card.revealed {
   opacity: 1;
   transform: translateY(0) scale(1);
   transition: all 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* stagger effect */
-.reveal-card:nth-child(1) { transition-delay: 0.05s; }
-.reveal-card:nth-child(2) { transition-delay: 0.1s; }
-.reveal-card:nth-child(3) { transition-delay: 0.15s; }
-.reveal-card:nth-child(4) { transition-delay: 0.2s; }
-.reveal-card:nth-child(5) { transition-delay: 0.25s; }
-.reveal-card:nth-child(6) { transition-delay: 0.3s; }
-.reveal-card:nth-child(7) { transition-delay: 0.35s; }
-.reveal-card:nth-child(8) { transition-delay: 0.4s; }
-.reveal-card:nth-child(9) { transition-delay: 0.45s; }
+.reveal-card:nth-child(1)  { transition-delay: 0.05s; }
+.reveal-card:nth-child(2)  { transition-delay: 0.1s; }
+.reveal-card:nth-child(3)  { transition-delay: 0.15s; }
+.reveal-card:nth-child(4)  { transition-delay: 0.2s; }
+.reveal-card:nth-child(5)  { transition-delay: 0.25s; }
+.reveal-card:nth-child(6)  { transition-delay: 0.3s; }
+.reveal-card:nth-child(7)  { transition-delay: 0.35s; }
+.reveal-card:nth-child(8)  { transition-delay: 0.4s; }
+.reveal-card:nth-child(9)  { transition-delay: 0.45s; }
 .reveal-card:nth-child(10) { transition-delay: 0.5s; }

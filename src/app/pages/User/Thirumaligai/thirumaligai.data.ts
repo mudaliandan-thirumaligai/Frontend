@@ -62,15 +62,15 @@ export const THIRUMALIGAIS: Thirumaligai[] = [
         image: 'images/Thirumaaligais/srirangam.jpg',
         mapLink: 'https://maps.app.goo.gl/oBWBTygiRQ57YK548',
         address: 'Next to Theerthavaari Mandapam,\nVaazhai Kulam Street,\nSrivilliputhur,\nTamil Nadu, India. PIN 626 125'
+    },
+    {
+    name: 'Velachery',
+    slug: 'velachery',
+    shortDescription: 'Velachery Thirumaaligai stands as a sacred center of Sri Vaishnava sampradaya in Chennai, preserving the spiritual lineage and teachings of our revered Aacharyas.',
+    description: 'Velachery Thirumaaligai is located in Tansi Nagar, Velachery, Chennai.',
+    image: 'images/Thirumaaligais/srirangam.jpg',
+    mapLink: 'https://maps.app.goo.gl/VesaKVPtqfpFbvLJ7',
+    address: 'Sannadhi Street, Kanchipuram, Tamil Nadu, India'
     }
-    // {
-    // name: 'Velachery',
-    // slug: 'velachery',
-    // shortDescription: 'Velachery Thirumaaligai stands as a sacred center of Sri Vaishnava sampradaya in Chennai, preserving the spiritual lineage and teachings of our revered Aacharyas.',
-    // description: 'Velachery Thirumaaligai is located in Tansi Nagar, Velachery, Chennai.',
-    // image: 'images/Thirumaaligais/srirangam.jpg',
-    // mapLink: 'https://maps.app.goo.gl/VesaKVPtqfpFbvLJ7',
-    // address: 'Sannadhi Street, Kanchipuram, Tamil Nadu, India'
-    // }
 
 ];

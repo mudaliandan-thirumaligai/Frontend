@@ -1,67 +1,316 @@
 <app-page-breadcrumb pageTitle="Thirumaaligai Thaniyans" />
 
 <!-- ================= INTRO ================= -->
-<section class="py-8 px-2">
-  <div class="max-w-5xl mx-auto text-center">
-
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+<section class="px-4 pt-4 pb-2 lg:py-8">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-xl md:text-3xl font-semibold text-indigo-900 dark:text-indigo-200">
       Thirumaaligai Thaniyans
     </h1>
-
-    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
-
+    <div class="w-12 h-1 bg-indigo-300 mx-auto mt-3 rounded-full"></div>
   </div>
 </section>
 
-<!-- ================= CONTENT ================= -->
-<section class="py-8 px-4">
-  <div class="max-w-6xl mx-auto grid gap-8 card-grid">
-
-    <div
-      *ngFor="let item of thaniyans"
-      class="bg-white dark:bg-white/[0.03] rounded-3xl shadow-lg
-             border border-gray-100 dark:border-white/5
-             overflow-hidden transition-all hover:shadow-2xl
-             animate-card"
+<!-- ================= MOBILE: NUMBER STRIP (jump to any thaniyan) ================= -->
+<div
+  class="lg:hidden sticky top-0 z-20 bg-white/90 dark:bg-neutral-950/90 backdrop-blur
+         border-b border-indigo-100 dark:border-indigo-900"
+>
+  <div class="flex items-center gap-2 px-3 py-2">
+    <button
+      type="button"
+      (click)="openSheet()"
+      aria-label="Open list of all thaniyans"
+      class="shrink-0 h-10 w-10 rounded-lg flex items-center justify-center
+             text-indigo-700 dark:text-indigo-300
+             border border-indigo-300 dark:border-indigo-700
+             hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+             transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
     >
-      <div class="relative">
-        <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-indigo-500 to-indigo-500"></div>
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+      </svg>
+    </button>
 
-        <div class="p-6 md:p-8">
+    <div #chipStrip class="flex gap-2 overflow-x-auto no-scrollbar py-1 pr-2">
+      <button
+        *ngFor="let t of thaniyans; let i = index"
+        type="button"
+        [attr.data-idx]="i"
+        (click)="select(i)"
+        class="shrink-0 h-10 min-w-[2.5rem] px-3 rounded-lg text-sm font-semibold border transition"
+        [ngClass]="i === selectedIndex
+          ? 'bg-indigo-200 dark:bg-indigo-800 text-indigo-900 dark:text-indigo-100 border-indigo-300 dark:border-indigo-600'
+          : 'text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'"
+      >
+        {{ t.id }}
+      </button>
+    </div>
+  </div>
+</div>
 
+<!-- ================= CONTENT ================= -->
+<section class="px-4 pt-4 pb-32 lg:pb-12">
+  <div class="max-w-6xl mx-auto lg:grid lg:grid-cols-[320px_1fr] lg:gap-8 items-start">
+
+    <!-- ===== DESKTOP SIDEBAR ===== -->
+    <aside
+      class="hidden lg:flex flex-col sticky top-4 max-h-[calc(100vh-2rem)]
+             bg-indigo-50 dark:bg-indigo-950/40 rounded-xl
+             border border-indigo-100 dark:border-indigo-900 overflow-hidden"
+    >
+      <ng-container *ngTemplateOutlet="listTpl"></ng-container>
+    </aside>
+
+    <!-- ===== THANIYAN CARD ===== -->
+    <main class="min-w-0">
+      <article
+        #card
+        class="scroll-mt-16 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl shadow-sm
+               border border-indigo-100 dark:border-indigo-900 overflow-hidden"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+      >
+        <div
+          *ngFor="let item of visible; trackBy: trackById"
+          [ngClass]="direction === 'next' ? 'anim-next' : 'anim-prev'"
+          class="p-5 md:p-8"
+        >
           <!-- Header -->
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-
-            <div>
-              <h3 class="text-xl md:text-2xl font-bold text-indigo-900 dark:text-white">
-                {{ item.id }} -  {{ item.title }}
-              </h3>
+          <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                Thaniyan {{ item.id }} of {{ thaniyans.length }}
+              </p>
+              <h2 class="mt-1 text-xl md:text-2xl font-bold text-indigo-900 dark:text-indigo-200 leading-snug">
+                {{ item.title }}
+              </h2>
             </div>
 
             <span
               *ngIf="item.nakshatram"
-              class="inline-flex items-center rounded-full
-                     bg-indigo-100 dark:bg-brand-500/10
+              class="self-start inline-flex items-center rounded-full
+                     bg-white dark:bg-indigo-900
+                     border border-indigo-100 dark:border-indigo-800
                      px-4 py-2 text-xs font-semibold uppercase tracking-wider
-                     text-indigo-700 dark:text-brand-400">
+                     text-indigo-700 dark:text-indigo-300 whitespace-nowrap"
+            >
               {{ item.nakshatram }}
             </span>
 
+          <!-- Toolbar -->
+            <div class="mt-5 flex items-center justify-between gap-3
+                        border-y border-indigo-100 dark:border-indigo-800 py-3">
+              <button
+                type="button" (click)="copy()"
+                class="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm font-medium
+                      text-indigo-700 dark:text-indigo-300
+                      border border-indigo-300 dark:border-indigo-700
+                      hover:text-indigo-900 dark:hover:text-indigo-100
+                      hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                      transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                {{ copied ? 'Copied' : 'Copy' }}
+              </button>
+            </div>
           </div>
 
-          <!-- Divider -->
-          <div class="w-16 h-0.5 bg-indigo-200 dark:bg-white/10 mb-6"></div>
-
-          <!-- Content -->
-          <p class="font-serif italic leading-loose
-                    text-gray-700 dark:text-gray-300
-                    whitespace-pre-line text-base md:text-lg">
-            {{ item.content }}
-          </p>
-
+          <!-- Verses -->
+          <div class="mt-5 space-y-4">
+            <div
+              *ngFor="let stanza of stanzas; let si = index"
+              class="rounded-lg bg-white dark:bg-indigo-900
+                     border border-indigo-100 dark:border-indigo-800
+                     px-4 py-4 md:px-6 md:py-5"
+            >
+              <p *ngIf="stanzas.length > 1"
+                 class="mb-2 text-[11px] font-semibold uppercase tracking-widest
+                        text-indigo-500 dark:text-indigo-400">
+                Verse {{ si + 1 }}
+              </p>
+              <p
+                class="font-serif italic leading-loose whitespace-pre-line
+                       text-indigo-800 dark:text-indigo-200"
+                [ngClass]="fontSizes[fontIdx]"
+              >{{ stanza }}</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
+        <!-- Desktop footer: prev / next with names -->
+        <div class="hidden lg:flex items-stretch justify-between gap-4 px-8 pb-8">
+          <button
+            type="button" (click)="prev()" [disabled]="selectedIndex === 0"
+            class="flex-1 min-w-0 text-left rounded-lg px-5 py-3
+                   text-indigo-700 dark:text-indigo-300
+                   border border-indigo-300 dark:border-indigo-700
+                   hover:text-indigo-900 dark:hover:text-indigo-100
+                   hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                   transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                   disabled:opacity-40 disabled:pointer-events-none"
+          >
+            <span class="block text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">← Previous</span>
+            <span class="block mt-0.5 text-sm font-semibold truncate">
+              {{ selectedIndex > 0 ? thaniyans[selectedIndex - 1].title : '' }}
+            </span>
+          </button>
+
+          <button
+            type="button" (click)="next()" [disabled]="selectedIndex === thaniyans.length - 1"
+            class="flex-1 min-w-0 text-right rounded-lg px-5 py-3
+                   text-indigo-700 dark:text-indigo-300
+                   border border-indigo-300 dark:border-indigo-700
+                   hover:text-indigo-900 dark:hover:text-indigo-100
+                   hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                   transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                   disabled:opacity-40 disabled:pointer-events-none"
+          >
+            <span class="block text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Next →</span>
+            <span class="block mt-0.5 text-sm font-semibold truncate">
+              {{ selectedIndex < thaniyans.length - 1 ? thaniyans[selectedIndex + 1].title : '' }}
+            </span>
+          </button>
+        </div>
+      </article>
+
+      <p class="lg:hidden mt-3 text-center text-xs text-indigo-500 dark:text-indigo-400">Swipe left or right to change thaniyan</p>
+      <p class="hidden lg:block mt-3 text-center text-xs text-indigo-500 dark:text-indigo-400">Tip: use ← → arrow keys to navigate</p>
+    </main>
   </div>
 </section>
+
+<!-- ================= MOBILE: FIXED BOTTOM NAV ================= -->
+<nav
+  class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-neutral-950/95 backdrop-blur
+         border-t border-indigo-100 dark:border-indigo-900 pb-[env(safe-area-inset-bottom)]"
+>
+  <div class="flex items-center gap-3 px-4 py-3">
+    <button
+      type="button" (click)="prev()" [disabled]="selectedIndex === 0"
+      aria-label="Previous thaniyan"
+      class="h-12 w-14 rounded-lg flex items-center justify-center
+             text-indigo-700 dark:text-indigo-300
+             border border-indigo-300 dark:border-indigo-700
+             hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+             transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+             disabled:opacity-40 disabled:pointer-events-none"
+    >
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+    </button>
+
+    <button
+      type="button" (click)="openSheet()"
+      class="flex-1 h-12 rounded-lg px-3 text-center
+             border border-indigo-100 dark:border-indigo-800
+             bg-indigo-50 dark:bg-indigo-950/40
+             hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
+    >
+      <span class="block text-sm font-semibold text-indigo-900 dark:text-indigo-200">
+        {{ selectedIndex + 1 }} / {{ thaniyans.length }}
+      </span>
+      <span class="block text-[11px] text-indigo-600 dark:text-indigo-400 -mt-0.5">Tap to see all</span>
+    </button>
+
+    <button
+      type="button" (click)="next()" [disabled]="selectedIndex === thaniyans.length - 1"
+      aria-label="Next thaniyan"
+      class="h-12 w-14 rounded-lg flex items-center justify-center
+             text-indigo-700 dark:text-indigo-300
+             border border-indigo-300 dark:border-indigo-700
+             hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+             transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+             disabled:opacity-40 disabled:pointer-events-none"
+    >
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ================= MOBILE: BOTTOM SHEET (all thaniyans + search) ================= -->
+<div *ngIf="sheetOpen" class="lg:hidden fixed inset-0 z-50">
+  <div class="absolute inset-0 bg-black/50 fade-in" (click)="closeSheet()"></div>
+
+  <div
+    class="sheet-up absolute bottom-0 inset-x-0 max-h-[85vh] flex flex-col rounded-t-2xl
+           bg-white dark:bg-neutral-900
+           border-t border-indigo-100 dark:border-indigo-900
+           pb-[env(safe-area-inset-bottom)]"
+    role="dialog" aria-modal="true" aria-label="All thaniyans"
+  >
+    <div class="pt-3 pb-1 flex justify-center">
+      <span class="h-1.5 w-10 rounded-full bg-indigo-200 dark:bg-indigo-800"></span>
+    </div>
+    <div class="flex items-center justify-between px-5 pb-2">
+      <h3 class="text-base font-semibold text-indigo-700 dark:text-indigo-300">All Thaniyans</h3>
+      <button type="button" (click)="closeSheet()" aria-label="Close"
+              class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg
+                     text-indigo-700 dark:text-indigo-300
+                     border border-indigo-300 dark:border-indigo-700
+                     hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                     transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">✕</button>
+    </div>
+    <ng-container *ngTemplateOutlet="listTpl"></ng-container>
+  </div>
+</div>
+
+<!-- ================= SHARED LIST (search + items) ================= -->
+<ng-template #listTpl>
+  <div class="px-4 pb-3 lg:pt-4">
+    <div class="relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-400" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.3-4.3" />
+      </svg>
+      <input
+        type="search"
+        [value]="query"
+        (input)="onSearch($any($event.target).value)"
+        placeholder="Search name or nakshatram"
+        class="w-full h-11 pl-9 pr-3 rounded-lg text-sm
+               bg-white dark:bg-indigo-900
+               border border-indigo-200 dark:border-indigo-800
+               text-indigo-900 dark:text-indigo-100
+               placeholder:text-indigo-400
+               focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+      />
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-3 pb-4 space-y-1.5">
+    <button
+      *ngFor="let row of filtered"
+      type="button"
+      (click)="select(row.i)"
+      class="w-full flex items-center gap-3 text-left rounded-md px-3 py-2.5 transition
+             text-indigo-700 dark:text-indigo-300"
+      [ngClass]="row.i === selectedIndex
+        ? 'bg-indigo-200 dark:bg-indigo-800'
+        : 'hover:bg-indigo-100 dark:hover:bg-indigo-900'"
+    >
+      <span
+        class="shrink-0 h-8 w-8 rounded-full text-xs font-bold flex items-center justify-center border"
+        [ngClass]="row.i === selectedIndex
+          ? 'bg-indigo-300 dark:bg-indigo-600 text-indigo-900 dark:text-indigo-50 border-indigo-400 dark:border-indigo-400'
+          : 'bg-white dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700'"
+      >{{ row.t.id }}</span>
+      <span class="min-w-0">
+        <span class="block text-sm font-semibold truncate">{{ row.t.title }}</span>
+        <span *ngIf="row.t.nakshatram" class="block text-xs truncate text-indigo-600 dark:text-indigo-400">
+          {{ row.t.nakshatram }}
+        </span>
+      </span>
+    </button>
+
+    <p *ngIf="filtered.length === 0" class="py-8 text-center text-sm text-indigo-500 dark:text-indigo-400">
+      No thaniyans match “{{ query }}”
+    </p>
+  </div>
+</ng-template>

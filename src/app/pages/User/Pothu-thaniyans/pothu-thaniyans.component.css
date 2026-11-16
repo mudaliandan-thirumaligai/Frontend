@@ -1,3 +1,49 @@
+/* =====================================================
+   NEW: single-card reader (mobile + laptop)
+   ===================================================== */
+
+/* hide scrollbar on the number strip */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* card content slides in from the direction you navigated */
+@keyframes slide-in-next {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes slide-in-prev {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+.anim-next { animation: slide-in-next 0.28s ease-out both; }
+.anim-prev { animation: slide-in-prev 0.28s ease-out both; }
+
+/* bottom sheet */
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.sheet-up { animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fade-in  { animation: fade-in 0.2s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-next, .anim-prev, .sheet-up, .fade-in { animation: none; }
+}
+
+/* =====================================================
+   LEGACY: old grid + scroll animation
+   Not used by the new template. Safe to delete.
+   ===================================================== */
+
 .card-grid {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -8,7 +54,6 @@
   }
 }
 
-/* Scroll animation base state */
 .animate-card {
   opacity: 0;
   transform: translateY(30px) scale(0.97);
@@ -22,6 +67,7 @@
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+
 .animate-card:hover {
   transform: translateY(-4px) scale(1.01);
 }

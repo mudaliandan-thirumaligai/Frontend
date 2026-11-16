@@ -14,7 +14,7 @@ export const POTHU_THANIYANS: PothuThanian[] = [
 chinthAmaNi mivOthvAntham uthsangE ananthabhOgina: ||`
   },
   {
-    name: 'Periya Piratti',
+    name: 'Periya Pirattiyaar',
     subtitle: 'Sri Ranganayaki Thayar',
     nakshatram: 'Panguni Uthiram',
     thanian: `nama: sriranga nAyakyai yath brO vibhrama bhEthatha: |

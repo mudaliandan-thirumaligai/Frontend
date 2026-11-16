@@ -95,7 +95,7 @@ export class PastEventsComponent implements OnInit {
 
     // Initialize expanded states
     this.years.forEach(year => {
-      this.expandedYears[year] = false;
+      this.expandedYears[year] = true;
       this.expandedMonths[year] = {};
       Object.keys(this.groupedEvents[year]).forEach(month => {
         this.expandedMonths[year][month] = false;

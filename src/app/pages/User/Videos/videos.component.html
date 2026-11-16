@@ -1,78 +1,113 @@
-<br>
 <app-page-breadcrumb pageTitle="Videos" />
 
 <!-- ================= VIDEOS INTRO ================= -->
-<section class="py-8 px-2">
+<section class="py-6 md:py-8 px-4">
   <div class="max-w-6xl mx-auto text-center">
 
-    <!-- Title -->
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900 dark:text-indigo-200">
       Videos
     </h1>
 
-    <!-- Subtitle -->
-    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+    <p class="mt-3 text-indigo-600 dark:text-indigo-400 max-w-2xl mx-auto">
       Watch spiritual discourses, past events, and devotional programs from Sri Mudaliandan Swami Thirumaligai. Explore these videos to relive moments of devotion and learning.
     </p>
 
-    <!-- Divider -->
     <div class="w-12 h-1 bg-indigo-300 mx-auto mt-4 rounded-full"></div>
 
   </div>
 </section>
 
 <!-- 🎥 VIDEO GRID -->
-<section class="max-w-6xl mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
   <div *ngFor="let video of videos"
+       role="button"
+       tabindex="0"
+       [attr.aria-label]="'Play video: ' + video.title"
        (click)="openVideo(video)"
-       class="group cursor-pointer rounded-xl
+       (keydown.enter)="openVideo(video)"
+       (keydown.space)="openVideo(video); $event.preventDefault()"
+       class="group cursor-pointer rounded-xl overflow-hidden flex flex-col
               bg-indigo-50 dark:bg-indigo-950/20
               border border-indigo-100 dark:border-indigo-900
               shadow-sm hover:shadow-md
-              transition-all duration-300">
+              transition-all duration-300
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300/60">
 
     <!-- Thumbnail -->
-    <div class="relative h-44 rounded-t-xl
-                bg-gradient-to-br from-sky-200 to-blue-100
-                dark:from-indigo-900 dark:to-neutral-800
+    <div class="relative aspect-video
+                bg-gradient-to-br from-indigo-100 to-indigo-50
+                dark:from-indigo-900 dark:to-neutral-900
                 flex items-center justify-center">
 
-      <div class="w-14 h-14 rounded-full
-                  bg-blue-900 dark:bg-blue-400
+      <div class="w-14 h-14 rounded-full pl-1
+                  bg-indigo-700 dark:bg-indigo-300
+                  ring-4 ring-white/60 dark:ring-white/10
                   flex items-center justify-center
-                  text-white text-xl font-bold
+                  text-white dark:text-indigo-900 text-xl
                   group-hover:scale-110 transition">
         ▶
       </div>
     </div>
 
-
     <!-- Info -->
-    <div class="p-4">
-      <h3 class="text-base md:text-lg font-bold text-blue-900 dark:text-blue-400">
+    <div class="p-4 flex flex-col flex-1">
+      <h3 class="text-base md:text-lg font-bold text-indigo-900 dark:text-indigo-200 leading-snug">
         {{ video.title }}
       </h3>
 
-      <p class="mt-2 text-sm md:text-base text-indigo-700 dark:text-indigo-300 leading-relaxed">
+      <p class="mt-2 text-sm md:text-base text-indigo-700 dark:text-indigo-300 leading-relaxed line-clamp-3">
         {{ video.description }}
+      </p>
+
+      <p class="mt-auto pt-4 text-sm font-medium text-indigo-700 dark:text-indigo-300
+                group-hover:text-indigo-900 dark:group-hover:text-indigo-100 transition">
+        ▶ Watch video
       </p>
     </div>
 
   </div>
 
+  <p *ngIf="!videos?.length"
+     class="col-span-full py-10 text-center text-indigo-500 dark:text-indigo-400">
+    No videos available yet.
+  </p>
+
 </section>
 
 <!-- 🌑 POPUP MODAL -->
-<div class="video-modal" *ngIf="selectedVideo">
-  <div class="overlay" (click)="closeVideo()"></div>
+<div *ngIf="selectedVideo"
+     class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80"
+     role="dialog"
+     aria-modal="true"
+     aria-label="Video player"
+     (click)="closeVideo()">
 
-  <div class="modal-content rounded-xl shadow-lg">
-    <button class="close-btn" (click)="closeVideo()">✕</button>
+  <div class="relative w-full max-w-4xl"
+       (click)="$event.stopPropagation()">
 
-    <iframe [src]="selectedVideo"
-            allowfullscreen
-            class="w-full h-96 md:h-[500px] rounded-lg">
-    </iframe>
+    <!-- Close -->
+    <div class="flex justify-end mb-2">
+      <button type="button"
+              (click)="closeVideo()"
+              aria-label="Close video"
+              class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 rounded-lg
+                     text-xl text-white border border-white/40
+                     hover:bg-white/10 transition
+                     focus:outline-none focus:ring-2 focus:ring-white/40">
+        ✕
+      </button>
+    </div>
+
+    <!-- Player (16:9 on every screen) -->
+    <div class="aspect-video w-full rounded-xl overflow-hidden shadow-lg bg-black">
+      <iframe [src]="selectedVideo"
+              title="Video player"
+              allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              class="w-full h-full border-0">
+      </iframe>
+    </div>
+
   </div>
 </div>

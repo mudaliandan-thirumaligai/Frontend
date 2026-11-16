@@ -1,14 +1,14 @@
 <app-page-breadcrumb pageTitle="History" />
 
 <!-- ================= AACHARYAS INTRO ================= -->
-<section class="py-8 px-2">
+<section class="py-6 md:py-8 px-4">
   <div class="max-w-6xl mx-auto text-center">
 
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900 dark:text-indigo-200">
       Our Revered Aacharyas
     </h1>
 
-    <p class="mt-3 text-indigo-600 max-w-2xl mx-auto">
+    <p class="mt-3 text-indigo-600 dark:text-indigo-400 max-w-2xl mx-auto">
       Discover the lives, teachings, and spiritual contributions of the Aacharyas
       of Sri Vaishnava Sampradhayam.
     </p>
@@ -17,323 +17,461 @@
 
   </div>
 </section>
-<!-- 🔹 MOBILE ACCORDION -->
-<div class="lg:hidden px-4 mb-6">
 
-  <div class="bg-white dark:bg-neutral-900
-              border border-indigo-200/40 dark:border-indigo-800/40
-              rounded-xl p-4">
+<!-- ================= MOBILE SELECTOR ================= -->
+<div *ngIf="selected" class="lg:hidden px-4 mb-5">
+  <div class="bg-indigo-50 dark:bg-indigo-950/40
+              border border-indigo-100 dark:border-indigo-900
+              rounded-xl p-3">
 
-    <!-- Accordion Header -->
-    <button
-      (click)="mobileSidebarOpen = !mobileSidebarOpen"
-      class="w-full flex justify-between items-center
-             px-4 py-3 rounded-lg font-medium
-             text-indigo-900 dark:text-indigo-200
-             bg-indigo-100 dark:bg-indigo-800/40">
+    <div class="flex items-center gap-2">
 
-      {{ selected.name }}
-
-      <span
-        class="transition-transform"
-        [class.rotate-180]="mobileSidebarOpen">
-        ▼
-      </span>
-
-    </button>
-
-    <!-- Accordion Content -->
-    <div *ngIf="mobileSidebarOpen" class="mt-3 space-y-2">
-
+      <!-- Prev -->
       <button
-        *ngFor="let a of aacharyas"
-        (click)="selectAacharya(a); mobileSidebarOpen = false"
-        class="w-full px-4 py-3 rounded-lg text-left
-               transition font-medium"
-        [ngClass]="{
-          'bg-indigo-100 dark:bg-indigo-800/40 text-indigo-900 dark:text-indigo-200':
-            selected.id === a.id,
-          'text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-800/30':
-            selected.id !== a.id
-        }">
-
-        {{ a.name }}
-
+        type="button"
+        (click)="prev()"
+        [disabled]="currentIndex === 0"
+        aria-label="Previous Aacharya"
+        class="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-lg
+               text-indigo-700 dark:text-indigo-300
+               border border-indigo-300 dark:border-indigo-700
+               hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+               transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+               disabled:opacity-40 disabled:pointer-events-none">
+        ←
       </button>
 
+      <!-- Current (opens list) -->
+      <button
+        type="button"
+        (click)="openSheet()"
+        aria-haspopup="dialog"
+        class="flex-1 min-w-0 flex items-center gap-3 px-2 py-1.5 rounded-lg text-left
+               hover:bg-indigo-100 dark:hover:bg-indigo-900 transition">
+
+        <span class="shrink-0 w-10 h-10 rounded-full flex items-center justify-center
+                     text-sm font-semibold tabular-nums
+                     bg-indigo-200 dark:bg-indigo-800
+                     text-indigo-900 dark:text-indigo-100
+                     border border-indigo-300 dark:border-indigo-600">
+          {{ currentIndex + 1 }}
+        </span>
+
+        <span class="min-w-0 flex-1">
+          <span class="block text-sm font-semibold truncate text-indigo-900 dark:text-indigo-200">
+            {{ selected.name }}
+          </span>
+          <span class="block text-xs text-indigo-600 dark:text-indigo-400">
+            {{ currentIndex + 1 }} of {{ aacharyas.length }} · tap to browse all
+          </span>
+        </span>
+
+        <span class="shrink-0 text-indigo-600 dark:text-indigo-400 text-xs">▼</span>
+      </button>
+
+      <!-- Next -->
+      <button
+        type="button"
+        (click)="next()"
+        [disabled]="currentIndex === aacharyas.length - 1"
+        aria-label="Next Aacharya"
+        class="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-lg
+               text-indigo-700 dark:text-indigo-300
+               border border-indigo-300 dark:border-indigo-700
+               hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+               transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+               disabled:opacity-40 disabled:pointer-events-none">
+        →
+      </button>
     </div>
 
+    <!-- Progress through the lineage -->
+    <div class="mt-3 h-1 rounded-full bg-indigo-100 dark:bg-indigo-900 overflow-hidden">
+      <div class="h-full rounded-full bg-indigo-300 dark:bg-indigo-600 transition-all duration-300"
+           [style.width.%]="((currentIndex + 1) / aacharyas.length) * 100"></div>
+    </div>
   </div>
-
 </div>
 
-<!-- 🌟 MAIN LAYOUT -->
-<div class="gallery-container">
+<!-- ================= MAIN LAYOUT ================= -->
+<div *ngIf="selected" class="px-4 pb-16">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-6 lg:gap-10 items-start">
 
-  <!-- LEFT CONTENT -->
-  <div class="gallery-content">
+    <!-- ============ CONTENT ============ -->
+    <main
+      id="aacharya-top"
+      class="min-w-0 scroll-mt-4"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
 
-    <div
-      class="bg-indigo-50 dark:bg-indigo-950/40
-             border border-indigo-100 dark:border-indigo-900
-             rounded-lg p-6">
+      <article class="bg-indigo-50 dark:bg-indigo-950/40
+                      border border-indigo-100 dark:border-indigo-900
+                      rounded-lg p-5 md:p-6">
 
-      <!-- TITLE -->
-      <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900 mb-2">
-        {{ selected.name }}
-        <span class="text-lg text-indigo-800 mb-4">
-          ({{ selected.tamilName }})
-        </span>
-      </h1>
+        <!-- TITLE -->
+        <div class="flex items-start gap-4 mb-5">
 
-      <!-- META -->
-      <p class="text-base text-indigo-600 dark:text-indigo-400 mb-5">
+          <!-- Medallion (desktop only; mobile shows it in the selector) -->
+          <span class="hidden md:flex shrink-0 w-12 h-12 rounded-full items-center justify-center
+                       text-lg font-semibold tabular-nums
+                       bg-indigo-200 dark:bg-indigo-800
+                       text-indigo-900 dark:text-indigo-100
+                       border border-indigo-300 dark:border-indigo-600">
+            {{ currentIndex + 1 }}
+          </span>
 
-        {{ selected.period }}
-      </p>
+          <div class="min-w-0">
+            <h2 class="text-2xl md:text-3xl font-semibold leading-snug
+                       text-indigo-900 dark:text-indigo-200">
+              {{ selected.name }}
+              <span class="block sm:inline text-lg font-normal text-indigo-800 dark:text-indigo-300">
+                ({{ selected.tamilName }})
+              </span>
+            </h2>
 
-      <!-- OTHER NAMES (OPTIONAL) -->
-      <p *ngIf="selected.otherNames?.length"
-        class="text-base text-indigo-600 dark:text-indigo-400 mb-5">
-        <span class="font-semibold">Also known as:</span>
-        {{ selected.otherNames?.join(', ') }}
-      </p>
-
-
-      <!-- THANIAN (OPTIONAL) -->
-      <div *ngIf="selected.thanian"
-           class="bg-white dark:bg-indigo-900
-                  border border-indigo-100 dark:border-indigo-800
-                  rounded-md p-4 mb-6
-                  text-indigo-700 dark:text-indigo-300
-                  text-base md:text-lg leading-8
-                  whitespace-pre-line">
-        {{ selected.thanian }}
-      </div>
-
-      <!-- ================= CONTENT FLOW ================= -->
-      <div class="space-y-6 text-base leading-7
-                  text-indigo-700 dark:text-indigo-300">
-
-        <ng-container *ngFor="let block of selected.content">
-
-          <!-- PARAGRAPH -->
-          <p *ngIf="block.type === 'paragraph'"
-              class="text-base md:text-lg leading-7">  
-            {{ block.text }}
-          </p>
-          
-          <!-- LIST BLOCK -->
-          <div *ngIf="block.type === 'list'" class="mt-4">
-            <!-- Optional title for the list -->
-            <h4 *ngIf="block.title"
-                class="text-lg md:text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-2">
-              {{ block.title }}
-            </h4>
-
-            <ul class="list-disc list-inside text-base md:text-lg text-indigo-700 dark:text-indigo-300 space-y-2">
-              <li *ngFor="let item of block.items">
-                {{ item }}
-              </li>
-            </ul>
+            <!-- META -->
+            <p class="mt-1 text-base text-indigo-600 dark:text-indigo-400">
+              {{ selected.period }}
+            </p>
           </div>
+        </div>
 
+        <!-- OTHER NAMES (OPTIONAL) -->
+        <p *ngIf="selected.otherNames?.length"
+           class="text-base text-indigo-600 dark:text-indigo-400 mb-5">
+          <span class="font-semibold">Also known as:</span>
+          {{ selected.otherNames?.join(', ') }}
+        </p>
 
-          <!-- HEADING -->
-          <h3 *ngIf="block.type === 'heading'"
-            class="text-xl md:text-2xl font-semibold
-                  text-indigo-800 dark:text-indigo-300
-                  mt-10 mb-2">
+        <!-- THANIAN (OPTIONAL) -->
+        <div *ngIf="selected.thanian"
+             class="bg-white dark:bg-indigo-900
+                    border border-indigo-100 dark:border-indigo-800
+                    rounded-md p-4 mb-6
+                    text-indigo-700 dark:text-indigo-300
+                    text-base md:text-lg leading-8
+                    whitespace-pre-line">
+          {{ selected.thanian }}
+        </div>
 
-            {{ block.text }}
+        <!-- ================= CONTENT FLOW ================= -->
+        <div class="space-y-6 text-base leading-7
+                    text-indigo-700 dark:text-indigo-300">
+
+          <ng-container *ngFor="let block of selected.content">
+
+            <!-- PARAGRAPH -->
+            <p *ngIf="block.type === 'paragraph'"
+               class="text-base md:text-lg leading-7">
+              {{ block.text }}
+            </p>
+
+            <!-- LIST BLOCK -->
+            <div *ngIf="block.type === 'list'" class="mt-4">
+              <h4 *ngIf="block.title"
+                  class="text-lg md:text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-2">
+                {{ block.title }}
+              </h4>
+
+              <ul class="list-disc list-inside text-base md:text-lg
+                         text-indigo-700 dark:text-indigo-300 space-y-2">
+                <li *ngFor="let item of block.items">
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- HEADING -->
+            <h3 *ngIf="block.type === 'heading'"
+                class="text-xl md:text-2xl font-semibold
+                       text-indigo-800 dark:text-indigo-300
+                       mt-10 mb-2">
+              {{ block.text }}
+            </h3>
+
+            <!-- IMAGE GROUP -->
+            <div *ngIf="block.type === 'imageGroup'"
+                 class="my-8 grid gap-4"
+                 [ngClass]="{
+                   'grid-cols-1': block.layout === 'single' || block.layout === 'full',
+                   'grid-cols-1 sm:grid-cols-2': block.layout === 'two',
+                   'grid-cols-1 sm:grid-cols-3': block.layout === 'three'
+                 }">
+
+              <figure *ngFor="let img of block.images"
+                      class="flex flex-col items-center">
+
+                <img
+                  [src]="img.src"
+                  [alt]="img.alt || ''"
+                  loading="lazy"
+                  (click)="openImage(img.src)"
+                  class="rounded-lg w-full object-contain max-h-[28rem]
+                         cursor-zoom-in transition hover:scale-[1.02]"
+                  [class.max-w-4xl]="block.layout === 'full'" />
+
+                <figcaption *ngIf="img.caption"
+                            class="mt-2 text-sm text-center
+                                   text-indigo-600 dark:text-indigo-400">
+                  {{ img.caption }}
+                </figcaption>
+
+              </figure>
+            </div>
+
+          </ng-container>
+        </div>
+
+        <!-- ================= WRITINGS (OPTIONAL) ================= -->
+        <div *ngIf="selected.writings?.length" class="mt-8">
+
+          <h3 class="text-lg font-semibold
+                     text-indigo-800 dark:text-indigo-300 mb-3">
+            Literary Works
           </h3>
 
-          <!-- IMAGE GROUP -->
-          <div *ngIf="block.type === 'imageGroup'"
-              class="my-8 grid gap-4"
-              [ngClass]="{
-                'grid-cols-1': block.layout === 'single' || block.layout === 'full',
-                'grid-cols-2': block.layout === 'two',
-                'grid-cols-3': block.layout === 'three'
-              }">
+          <ul class="space-y-3 text-base leading-7
+                     text-indigo-700 dark:text-indigo-300">
 
-            <figure *ngFor="let img of block.images"
-                    class="flex flex-col items-center">
+            <li *ngFor="let work of selected.writings" class="leading-relaxed">
 
-              <img
-                [src]="img.src"
-                [alt]="img.alt || ''"
-                (click)="openImage(img.src)"
-                class="rounded-lg
-                      w-full
-                      object-contain
-                      max-h-[28rem]
-                      cursor-zoom-in
-                      transition hover:scale-[1.02]"
-                [class.max-w-4xl]="block.layout === 'full'" />
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">
+                {{ work.title }}
+              </span>
 
-              <figcaption *ngIf="img.caption"
-                          class="mt-2 text-sm text-center
-                                text-indigo-600 dark:text-indigo-400">
-                {{ img.caption }}
-              </figcaption>
+              <span *ngIf="work.description"
+                    class="text-indigo-600 dark:text-indigo-400">
+                — {{ work.description }}
+              </span>
 
-            </figure>
+            </li>
+          </ul>
+        </div>
 
-          </div>
+        <!-- ================= BIRTH DETAILS (OPTIONAL) ================= -->
+        <div *ngIf="selected.birthDetails"
+             class="mt-8 bg-white dark:bg-indigo-900
+                    border border-indigo-100 dark:border-indigo-800
+                    rounded-md p-5">
 
+          <h3 class="text-lg font-semibold
+                     text-indigo-800 dark:text-indigo-300 mb-4">
+            Birth Details
+          </h3>
 
+          <ul class="text-base space-y-3 leading-7
+                     text-indigo-700 dark:text-indigo-300">
 
-        </ng-container>
+            <li>
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">Year:</span>
+              {{ selected.birthDetails.year }}
+            </li>
 
-      </div>
+            <li>
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">Place:</span>
+              {{ selected.birthDetails.place }}
+            </li>
 
-      <!-- ================= WRITINGS (OPTIONAL) ================= -->
-      <div *ngIf="selected.writings?.length" class="mt-8">
+            <li>
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">Month:</span>
+              {{ selected.birthDetails.month }}
+            </li>
 
-        <h3 class="text-lg font-semibold
-                  text-indigo-800 dark:text-indigo-300 mb-3">
-          Literary Works
-        </h3>
+            <li>
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">Star:</span>
+              {{ selected.birthDetails.star }}
+            </li>
 
-        <ul class="space-y-3 text-base leading-7
-                  text-indigo-700 dark:text-indigo-300">
+            <li *ngIf="selected.birthDetails.amsam">
+              <span class="font-medium text-indigo-800 dark:text-indigo-200">Amsam:</span>
+              {{ selected.birthDetails.amsam }}
+            </li>
 
-          <li *ngFor="let work of selected.writings"
-              class="leading-relaxed">
+          </ul>
+        </div>
 
-            <span class="font-medium
-                        text-indigo-800 dark:text-indigo-200">
-              {{ work.title }}
-            </span>
+      </article>
 
-            <span *ngIf="work.description"
-                  class="text-indigo-600 dark:text-indigo-400">
-              — {{ work.description }}
-            </span>
+      <!-- PREV / NEXT -->
+      <nav class="flex gap-3 mt-4" aria-label="Previous and next Aacharya">
+        <button
+          type="button"
+          (click)="prev()"
+          [disabled]="currentIndex === 0"
+          class="flex-1 min-w-0 inline-flex items-center justify-center px-4 md:px-8 py-3 rounded-lg
+                 font-medium tracking-wide leading-tight text-base md:text-lg
+                 text-indigo-700 dark:text-indigo-300
+                 border border-indigo-300 dark:border-indigo-700
+                 hover:text-indigo-900 dark:hover:text-indigo-100
+                 hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                 transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                 disabled:opacity-40 disabled:pointer-events-none">
+          <span class="truncate">← {{ aacharyas[currentIndex - 1]?.name || 'Previous' }}</span>
+        </button>
 
-          </li>
+        <button
+          type="button"
+          (click)="next()"
+          [disabled]="currentIndex === aacharyas.length - 1"
+          class="flex-1 min-w-0 inline-flex items-center justify-center px-4 md:px-8 py-3 rounded-lg
+                 font-medium tracking-wide leading-tight text-base md:text-lg
+                 text-indigo-700 dark:text-indigo-300
+                 border border-indigo-300 dark:border-indigo-700
+                 hover:text-indigo-900 dark:hover:text-indigo-100
+                 hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                 transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                 disabled:opacity-40 disabled:pointer-events-none">
+          <span class="truncate">{{ aacharyas[currentIndex + 1]?.name || 'Next' }} →</span>
+        </button>
+      </nav>
+    </main>
 
-        </ul>
+    <!-- ============ DESKTOP SIDEBAR: LINEAGE TIMELINE ============ -->
+    <aside class="hidden lg:block sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto">
 
-      </div>
-
-
-      <!-- ================= BIRTH DETAILS (OPTIONAL) ================= -->
-      <div *ngIf="selected.birthDetails"
-          class="mt-8
-                  bg-indigo-50 dark:bg-indigo-950/40
+      <div class="bg-indigo-50 dark:bg-indigo-950/40
                   border border-indigo-100 dark:border-indigo-900
-                  rounded-md p-5">
+                  rounded-lg p-4">
 
-        <h3 class="text-lg font-semibold
-                  text-indigo-800 dark:text-indigo-300 mb-4">
-          Birth Details
+        <h3 class="text-base font-semibold
+                   text-indigo-700 dark:text-indigo-300 mb-3">
+          Aacharyas
         </h3>
 
-        <ul class="text-base space-y-3 leading-7
-                  text-indigo-700 dark:text-indigo-300">
+        <ul class="relative space-y-1
+                   before:content-[''] before:absolute before:left-[1.75rem]
+                   before:top-4 before:bottom-4 before:w-px
+                   before:bg-indigo-200 dark:before:bg-indigo-800">
 
-          <li>
-            <span class="font-medium text-indigo-800 dark:text-indigo-200">
-              Year:
-            </span>
-            {{ selected.birthDetails.year }}
+          <li *ngFor="let a of aacharyas; let i = index">
+            <button
+              type="button"
+              (click)="selectAacharya(a)"
+              class="relative w-full flex items-center gap-3 text-left px-3 py-2 rounded-md
+                     text-sm text-indigo-700 dark:text-indigo-300
+                     hover:bg-indigo-100 dark:hover:bg-indigo-900
+                     transition"
+              [ngClass]="a.id === selected.id ? 'bg-indigo-200 dark:bg-indigo-800' : ''">
+
+              <span class="relative z-10 shrink-0 w-8 h-8 rounded-full flex items-center justify-center
+                           text-xs font-semibold tabular-nums border"
+                    [ngClass]="a.id === selected.id
+                      ? 'bg-indigo-300 dark:bg-indigo-600 text-indigo-900 dark:text-indigo-50 border-indigo-400 dark:border-indigo-400'
+                      : 'bg-white dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700'">
+                {{ i + 1 }}
+              </span>
+
+              <span class="min-w-0 flex-1">
+                <span class="block truncate">{{ a.name }}</span>
+                <span class="block text-xs truncate text-indigo-600 dark:text-indigo-400">
+                  {{ a.tamilName }}
+                </span>
+              </span>
+            </button>
           </li>
-
-          <li>
-            <span class="font-medium text-indigo-800 dark:text-indigo-200">
-              Place:
-            </span>
-            {{ selected.birthDetails.place }}
-          </li>
-
-          <li>
-            <span class="font-medium text-indigo-800 dark:text-indigo-200">
-              Month:
-            </span>
-            {{ selected.birthDetails.month }}
-          </li>
-
-          <li>
-            <span class="font-medium text-indigo-800 dark:text-indigo-200">
-              Star:
-            </span>
-            {{ selected.birthDetails.star }}
-          </li>
-
-          <li *ngIf="selected.birthDetails.amsam">
-            <span class="font-medium text-indigo-800 dark:text-indigo-200">
-              Amsam:
-            </span>
-            {{ selected.birthDetails.amsam }}
-          </li>
-
         </ul>
 
       </div>
-
-
-    </div>
-  </div>
-
-  <!-- RIGHT SIDEBAR -->
-  <div class="sidebar
-              hidden lg:block
-              sticky top-24
-              max-h-[calc(100vh-6rem)]
-              overflow-y-auto">
-
-
-    <div
-      class="bg-indigo-50 dark:bg-indigo-950/40
-             border border-indigo-100 dark:border-indigo-900
-             rounded-lg p-4">
-
-      <h3 class="text-base font-semibold
-                 text-indigo-700 dark:text-indigo-300 mb-3">
-        Aacharyas
-      </h3>
-
-      <ul class="space-y-1">
-        <li *ngFor="let a of aacharyas">
-          <button
-            (click)="selectAacharya(a)"
-            class="w-full text-left px-3 py-2 rounded-md
-                   text-sm
-                   text-indigo-700 dark:text-indigo-300
-                   hover:bg-indigo-100 dark:hover:bg-indigo-900
-                   transition"
-            [class.bg-indigo-200]="a.id === selected.id"
-            [class.dark:bg-indigo-800]="a.id === selected.id">
-            {{ a.name }}
-          </button>
-        </li>
-      </ul>
-
-    </div>
+    </aside>
 
   </div>
 </div>
-<!-- IMAGE POPUP -->
+
+<!-- ================= MOBILE BOTTOM SHEET ================= -->
+<div
+  *ngIf="sheetOpen"
+  class="lg:hidden fixed inset-0 z-50 flex items-end bg-black/60"
+  role="dialog"
+  aria-modal="true"
+  aria-label="All Aacharyas"
+  (click)="closeSheet()">
+
+  <div
+    class="w-full max-h-[80vh] flex flex-col rounded-t-2xl
+           bg-white dark:bg-neutral-900
+           border-t border-indigo-100 dark:border-indigo-900"
+    (click)="$event.stopPropagation()">
+
+    <!-- Handle + header -->
+    <div class="shrink-0 px-4 pt-3 pb-2">
+      <div class="w-10 h-1 rounded-full bg-indigo-200 dark:bg-indigo-800 mx-auto mb-3"></div>
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold text-indigo-700 dark:text-indigo-300">
+          Aacharyas
+          <span class="font-normal text-sm text-indigo-600 dark:text-indigo-400">
+            · {{ aacharyas.length }}
+          </span>
+        </h3>
+        <button
+          type="button"
+          (click)="closeSheet()"
+          aria-label="Close"
+          class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg
+                 text-indigo-700 dark:text-indigo-300
+                 border border-indigo-300 dark:border-indigo-700
+                 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- List -->
+    <ul class="overflow-y-auto px-3 pb-6 space-y-1">
+      <li *ngFor="let a of aacharyas; let i = index">
+        <button
+          type="button"
+          [id]="'sheet-row-' + a.id"
+          (click)="selectAacharya(a)"
+          class="w-full flex items-center gap-3 text-left px-3 py-3 rounded-lg
+                 text-indigo-700 dark:text-indigo-300
+                 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition"
+          [ngClass]="a.id === selected.id ? 'bg-indigo-200 dark:bg-indigo-800' : ''">
+
+          <span class="shrink-0 w-9 h-9 rounded-full flex items-center justify-center
+                       text-sm font-semibold tabular-nums border"
+                [ngClass]="a.id === selected.id
+                  ? 'bg-indigo-300 dark:bg-indigo-600 text-indigo-900 dark:text-indigo-50 border-indigo-400'
+                  : 'bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700'">
+            {{ i + 1 }}
+          </span>
+
+          <span class="min-w-0 flex-1">
+            <span class="block font-medium truncate">{{ a.name }}</span>
+            <span class="block text-xs truncate text-indigo-600 dark:text-indigo-400">
+              {{ a.tamilName }}
+            </span>
+          </span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= IMAGE POPUP ================= -->
 <div
   *ngIf="popupImage"
   class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  (click)="closeImage()"
->
+  role="dialog"
+  aria-modal="true"
+  (click)="closeImage()">
 
   <!-- Close Button -->
   <button
-    class="absolute top-4 right-5 text-white text-3xl"
-    (click)="closeImage()">
+    type="button"
+    aria-label="Close"
+    (click)="closeImage()"
+    class="absolute top-4 right-4 inline-flex items-center justify-center
+           min-h-[44px] min-w-[44px] px-4 rounded-lg text-xl font-medium
+           text-white border border-white/40
+           hover:bg-white/10 transition
+           focus:outline-none focus:ring-2 focus:ring-white/40">
     ✕
   </button>
 
   <!-- Image -->
   <img
     [src]="popupImage"
-    class="max-w-full max-h-full rounded-lg shadow-lg"
-    (click)="$event.stopPropagation()"
-  />
+    class="max-w-full max-h-full rounded-lg shadow-lg object-contain"
+    (click)="$event.stopPropagation()" />
 
 </div>

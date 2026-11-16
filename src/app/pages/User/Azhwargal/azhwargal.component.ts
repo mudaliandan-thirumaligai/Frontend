@@ -3,7 +3,6 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { Azhwar } from './azhwar.interface';
 import { AZHWARS_DATA } from './azhwar.data';
-import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
 interface Fact {
   label: string;
   value: string;
@@ -13,7 +12,7 @@ interface Fact {
 @Component({
   selector: 'app-azhwar-history',
   standalone: true,
-  imports: [CommonModule, PageBreadcrumbComponent,ButtonComponent],
+  imports: [CommonModule, PageBreadcrumbComponent],
   templateUrl: './azhwargal.component.html',
   styleUrls: ['./azhwargal.component.css'],
 })
