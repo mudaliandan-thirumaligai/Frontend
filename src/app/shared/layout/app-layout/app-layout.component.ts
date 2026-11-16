@@ -46,12 +46,9 @@ export class AppLayoutComponent {
   pageTitle = '';
   isMoreRoute = false;    // true when current page was opened from the "More" sheet
 
-  // Pages that have their own bottom tab (or are Home): no Back button here
+  // Only Home hides the Back button; every other page shows it
   private readonly rootRoutes = [
-    '/',
-    '/about-thirumaaligai',
-    '/calendar',
-    '/bank-info'
+    '/'
   ];
 
   // Page titles shown next to the Back button on mobile
@@ -136,7 +133,7 @@ export class AppLayoutComponent {
       ]
     },
     {
-      title: 'Thaniyans',
+      title: 'Prayers',
       items: [
         { label: 'Pothu Thaniyans', route: '/pothu-thaniyans' },
         { label: 'Thaniyans', route: '/thaniyans' },

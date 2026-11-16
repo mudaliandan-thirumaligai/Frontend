@@ -1,16 +1,14 @@
-
-<br>
-<div class="min-h-screen bg-white dark:bg-neutral-950">
+<div class="min-h-screen bg-white dark:bg-neutral-950 overflow-x-hidden">
 
   <app-page-breadcrumb pageTitle="Bank Details" />
 
   <!-- ================= PAGE INTRO ================= -->
-  <section class="px-6 pt-10 pb-16">
+  <section class="px-4 sm:px-6 pt-6 md:pt-10 pb-6 md:pb-14">
     <div class="max-w-6xl mx-auto text-center">
       <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900 dark:text-indigo-200">
-        Contributions & Bank Information
+        Contributions &amp; Bank Information
       </h1>
-      <p class="mt-3 text-indigo-600 dark:text-indigo-400 max-w-2xl mx-auto">
+      <p class="mt-3 text-sm md:text-base text-indigo-600 dark:text-indigo-400 max-w-2xl mx-auto">
         Details to support the preservation of dharmic traditions
         and sacred temple activities.
       </p>
@@ -18,135 +16,136 @@
     </div>
   </section>
 
-<!-- 🔹 MOBILE ACCORDION (Sidebar Style) -->
-<div class="lg:hidden px-6 mb-6">
-
-  <div class="bg-white dark:bg-neutral-900
-              border border-indigo-200/40 dark:border-indigo-800/40
-              rounded-2xl p-4">
-
-    <!-- Accordion Header -->
-    <button
-      (click)="mobileSidebarOpen = !mobileSidebarOpen"
-      class="w-full flex justify-between items-center
-             px-4 py-3 rounded-xl font-medium
-             text-indigo-900 dark:text-indigo-200
-             bg-indigo-100 dark:bg-indigo-800/40">
-
-      {{ selectedTab.title }}
-
-      <span
-        class="transition-transform"
-        [class.rotate-180]="mobileSidebarOpen">
-        ▼
-      </span>
-    </button>
-
-    <!-- Accordion Content -->
-    <div *ngIf="mobileSidebarOpen" class="mt-3 space-y-2">
-
+  <!-- ================= MOBILE TABS ================= -->
+  <div class="lg:hidden px-4 sm:px-6 mb-5">
+    <div
+      role="tablist"
+      aria-label="Bank accounts"
+      class="grid grid-cols-2 gap-2 p-2
+             bg-white dark:bg-neutral-900
+             border border-indigo-200/40 dark:border-indigo-800/40
+             rounded-2xl">
       <button
         *ngFor="let tab of tabs"
-        (click)="selectTab(tab); mobileSidebarOpen = false"
-        class="w-full px-4 py-3 rounded-xl text-left
-               transition font-medium"
+        role="tab"
+        [attr.aria-selected]="selectedTab === tab"
+        (click)="selectTab(tab)"
+        class="min-h-[44px] px-3 py-2 rounded-xl text-sm font-medium
+               text-center leading-snug transition"
         [ngClass]="{
           'bg-indigo-100 dark:bg-indigo-800/40 text-indigo-900 dark:text-indigo-200':
             selectedTab === tab,
-          'text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-800/30':
+          'text-indigo-700 dark:text-indigo-300 active:bg-indigo-50 dark:active:bg-indigo-800/30':
             selectedTab !== tab
         }">
         {{ tab.title }}
       </button>
-
     </div>
-
   </div>
 
-</div>
-
-
   <!-- ================= CONTENT ================= -->
-  <section class="px-6 pb-24">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-10">
+  <section class="px-4 sm:px-6 pb-16 md:pb-24">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-10">
 
       <!-- MAIN CONTENT -->
-      <div class="lg:col-span-3 space-y-10">
+      <div class="lg:col-span-3 min-w-0 space-y-6 md:space-y-10">
 
         <!-- Section Header Card -->
-        <div class="bg-indigo-50 dark:bg-indigo-900/40
-                    rounded-2xl p-6 md:p-8">
-          <h2 class="text-xl md:text-2xl font-semibold text-indigo-900 dark:text-indigo-200">
+        <div class="bg-indigo-50 dark:bg-indigo-900/40 rounded-2xl p-5 md:p-8">
+          <h2 class="text-lg md:text-2xl font-semibold text-indigo-900 dark:text-indigo-200">
             {{ selectedTab.title }}
           </h2>
-
-          <p class="mt-3 text-indigo-700 dark:text-indigo-300 leading-relaxed max-w-3xl">
+          <p class="mt-2 md:mt-3 text-sm md:text-base text-indigo-700 dark:text-indigo-300 leading-relaxed max-w-3xl">
             {{ selectedTab.description }}
           </p>
         </div>
 
-        <!-- BANK DETAILS CARD -->
+        <!-- BANK DETAILS -->
         <div *ngIf="selectedTab.bankDetails"
-            class="grid md:grid-cols-2 gap-10 items-center">
+             class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
 
           <!-- Details Card -->
-          <div class="bg-indigo-50 dark:bg-indigo-900/40
-                      rounded-2xl shadow-sm p-6 md:p-8">
-
-            <h3 class="text-lg font-semibold text-indigo-800 dark:text-indigo-300 mb-4">
+          <div class="min-w-0 bg-indigo-50 dark:bg-indigo-900/40 rounded-2xl shadow-sm p-5 md:p-8">
+            <h3 class="text-base md:text-lg font-semibold text-indigo-800 dark:text-indigo-300 mb-2">
               Bank Details
             </h3>
 
-            <div class="space-y-2 text-indigo-700 dark:text-indigo-300">
-              <p *ngFor="let item of [
-                {label:'Bank', value:selectedTab.bankDetails.bank},
-                {label:'Account Name', value:selectedTab.bankDetails.name},
-                {label:'Account No', value:selectedTab.bankDetails.account},
-                {label:'IFSC', value:selectedTab.bankDetails.ifsc},
-                {label:'Type', value:selectedTab.bankDetails.type},
-                {label:'MICR', value:selectedTab.bankDetails.micr},
-                {label:'Branch', value:selectedTab.bankDetails.branch},
-                {label:'Address', value:selectedTab.bankDetails.address}
-              ]">
-                <span *ngIf="item.value" class="font-medium">
-                  {{ item.label }}:
-                </span>
-                <span *ngIf="item.value"> {{ item.value }}</span>
-              </p>
-            </div>
+            <dl class="divide-y divide-indigo-200/60 dark:divide-indigo-800/60">
+              <div *ngFor="let row of rows; trackBy: trackByKey"
+                   class="flex items-center justify-between gap-3 py-3">
+
+                <div class="min-w-0 flex-1">
+                  <dt class="text-xs uppercase tracking-wide text-indigo-500 dark:text-indigo-400">
+                    {{ row.label }}
+                  </dt>
+                  <dd class="mt-0.5 text-base font-medium text-indigo-900 dark:text-indigo-100 break-words"
+                      [class.tabular-nums]="row.copyable"
+                      [class.tracking-wide]="row.copyable">
+                    {{ row.value }}
+                  </dd>
+                </div>
+
+                <button
+                  *ngIf="row.copyable"
+                  type="button"
+                  (click)="copy(row)"
+                  [attr.aria-label]="'Copy ' + row.label"
+                  class="shrink-0 inline-flex items-center justify-center gap-1
+                         min-h-[44px] min-w-[44px] px-3 rounded-xl text-sm font-medium
+                         text-indigo-700 dark:text-indigo-200
+                         bg-white/70 dark:bg-indigo-800/40
+                         active:bg-indigo-100 dark:active:bg-indigo-800/70 transition-colors">
+                  <ng-container *ngIf="copiedKey !== row.key; else copied">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="9" y="9" width="13" height="13" rx="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span class="hidden sm:inline">Copy</span>
+                  </ng-container>
+                  <ng-template #copied>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                         class="text-green-600 dark:text-green-400">
+                      <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                    <span class="hidden sm:inline text-green-700 dark:text-green-400" aria-live="polite">Copied</span>
+                  </ng-template>
+                </button>
+              </div>
+            </dl>
           </div>
 
-          <!-- Image Card -->
-          <div class="flex justify-center">
+          <!-- Image (full image, no cropping) -->
+          <div *ngIf="selectedTab.image" class="min-w-0 flex justify-center">
             <img
               [src]="selectedTab.image"
               alt="Bank Image"
-              class="rounded-2xl shadow-lg max-h-72 object-cover"
+              loading="lazy"
+              class="w-full h-auto max-w-full object-contain rounded-2xl shadow-lg"
             />
           </div>
         </div>
 
         <!-- INSTRUCTIONS CARD -->
-        <div class="bg-indigo-50 dark:bg-indigo-900/40
-                    rounded-2xl shadow-sm p-6 md:p-8">
-
-          <h3 class="text-lg font-semibold text-indigo-800 dark:text-indigo-300 mb-4">
-            Instructions & Contact
+        <div class="bg-indigo-50 dark:bg-indigo-900/40 rounded-2xl shadow-sm p-5 md:p-8">
+          <h3 class="text-base md:text-lg font-semibold text-indigo-800 dark:text-indigo-300 mb-3">
+            Instructions &amp; Contact
           </h3>
 
           <p *ngIf="selectedTab.notes"
-            class="text-indigo-700 dark:text-indigo-300 mb-6">
+             class="text-sm md:text-base text-indigo-700 dark:text-indigo-300 mb-5">
             {{ selectedTab.notes }}
           </p>
 
-          <div class="space-y-2 text-indigo-700 dark:text-indigo-300">
+          <div class="space-y-2 text-sm md:text-base text-indigo-700 dark:text-indigo-300">
             <p>Money Orders are also accepted.</p>
             <p>Cheque or DD in favour of:</p>
-
             <p class="font-semibold text-indigo-900 dark:text-indigo-200">
               “SRI DASARATHY TRUST”
             </p>
-
             <p>
               4/345, Sannadhi Street,<br />
               Singaperumal Koil,<br />
@@ -157,21 +156,27 @@
 
           <!-- Contact Card -->
           <div *ngIf="selectedTab.contact"
-              class="mt-8 bg-white dark:bg-neutral-900
+               class="mt-6 bg-white dark:bg-neutral-900
                       border border-indigo-200/40 dark:border-indigo-800/40
-                      rounded-xl p-6 space-y-2">
+                      rounded-xl p-5 space-y-3 text-indigo-700 dark:text-indigo-300">
 
             <p *ngIf="selectedTab.contact.name"
-              class="font-semibold text-indigo-900 dark:text-indigo-200">
+               class="font-semibold text-indigo-900 dark:text-indigo-200">
               {{ selectedTab.contact.name }}
             </p>
 
             <p *ngIf="selectedTab.contact.phone">
-              📞 {{ selectedTab.contact.phone }}
+              <a [href]="telHref(selectedTab.contact.phone)"
+                 class="inline-flex items-center min-h-[44px] hover:underline">
+                📞 {{ selectedTab.contact.phone }}
+              </a>
             </p>
 
-            <p *ngIf="selectedTab.contact.email">
-              📧 {{ selectedTab.contact.email }}
+            <p *ngIf="selectedTab.contact.email" class="break-all">
+              <a [href]="'mailto:' + selectedTab.contact.email"
+                 class="inline-flex items-center min-h-[44px] hover:underline">
+                📧 {{ selectedTab.contact.email }}
+              </a>
             </p>
 
             <p *ngIf="selectedTab.contact.message" class="italic">
@@ -182,33 +187,30 @@
 
       </div>
 
-      <!-- SIDEBAR (WHITE PANE like Gallery) -->
+      <!-- SIDEBAR (desktop only) -->
       <aside class="hidden lg:block lg:col-span-1">
-        <div class="sticky top-28
-                    bg-white dark:bg-neutral-900
+        <div role="tablist" aria-orientation="vertical"
+             class="sticky top-28 bg-white dark:bg-neutral-900
                     border border-indigo-200/40 dark:border-indigo-800/40
                     rounded-2xl p-4 space-y-2">
-
           <button
             *ngFor="let tab of tabs"
+            role="tab"
+            [attr.aria-selected]="selectedTab === tab"
             (click)="selectTab(tab)"
-            class="w-full px-4 py-3 rounded-xl text-left
-                  transition font-medium"
+            class="w-full px-4 py-3 rounded-xl text-left transition font-medium"
             [ngClass]="{
               'bg-indigo-100 dark:bg-indigo-800/40 text-indigo-900 dark:text-indigo-200':
                 selectedTab === tab,
               'text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-800/30':
                 selectedTab !== tab
-            }"
-          >
+            }">
             {{ tab.title }}
           </button>
-
         </div>
       </aside>
 
     </div>
   </section>
-
 
 </div>
