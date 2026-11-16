@@ -1,7 +1,7 @@
 <app-page-breadcrumb pageTitle="Azhwargal" />
 
 <!-- ================= AZHWARGAL INTRO ================= -->
-<section class="py-6 px-2">
+<section class="py-6 px-4">
   <div class="max-w-6xl mx-auto text-center">
 
     <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
@@ -16,202 +16,285 @@
 
   </div>
 </section>
-<!-- 🔹 MOBILE ACCORDION -->
-<div class="lg:hidden px-4 mb-6">
 
-  <div class="bg-white dark:bg-neutral-900
-              border border-indigo-200/40 dark:border-indigo-800/40
-              rounded-xl p-4">
+<!-- ================= MOBILE PHOTO STRIP ================= -->
+<div class="lg:hidden mb-4">
+  <p class="px-4 mb-2 text-xs text-indigo-600 dark:text-indigo-400">
+    {{ currentIndex + 1 }} of {{ azhwars.length }} · swipe the card or tap a photo
+  </p>
 
-    <!-- Accordion Header -->
+  <div
+    role="tablist"
+    aria-label="Azhwargal"
+    class="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 pb-2
+           [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
     <button
-      (click)="mobileSidebarOpen = !mobileSidebarOpen"
-      class="w-full flex justify-between items-center
-             px-4 py-3 rounded-lg font-medium
-             text-indigo-900 dark:text-indigo-200
-             bg-indigo-100 dark:bg-indigo-800/40">
+      *ngFor="let a of azhwars"
+      [id]="'chip-' + a.id"
+      type="button"
+      role="tab"
+      [attr.aria-selected]="a.id === selected.id"
+      (click)="selectAzhwar(a)"
+      class="snap-center shrink-0 w-20 flex flex-col items-center gap-1.5">
 
-      {{ selected.name }}
+      <img
+        [src]="a.photo"
+        [alt]="a.name"
+        loading="lazy"
+        class="w-16 h-16 rounded-full object-cover object-top border-2 transition"
+        [ngClass]="{
+          'border-indigo-300 dark:border-indigo-600 ring-2 ring-indigo-200 dark:ring-indigo-800':
+            a.id === selected.id,
+          'border-transparent opacity-70': a.id !== selected.id
+        }" />
 
       <span
-        class="transition-transform"
-        [class.rotate-180]="mobileSidebarOpen">
-        ▼
-      </span>
-
-    </button>
-
-    <!-- Accordion Content -->
-    <div *ngIf="mobileSidebarOpen" class="mt-3 space-y-2">
-
-      <button
-        *ngFor="let a of azhwars"
-        (click)="selectAzhwar(a); mobileSidebarOpen = false"
-        class="w-full px-4 py-3 rounded-lg text-left
-               transition font-medium"
+        class="text-xs text-center leading-tight line-clamp-2"
         [ngClass]="{
-          'bg-indigo-100 dark:bg-indigo-800/40 text-indigo-900 dark:text-indigo-200':
-            selected.id === a.id,
-          'text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-800/30':
-            selected.id !== a.id
+          'font-semibold text-indigo-900 dark:text-indigo-200': a.id === selected.id,
+          'text-indigo-700 dark:text-indigo-300': a.id !== selected.id
         }">
-
         {{ a.name }}
-
-      </button>
-
-    </div>
-
+      </span>
+    </button>
   </div>
-
 </div>
 
 <!-- ================= MAIN LAYOUT ================= -->
-<div class="gallery-container">
+<div class="px-4 pb-16">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-6 lg:gap-10 items-start">
 
-  <!-- LEFT CONTENT -->
-  <div class="gallery-content">
+    <!-- ============ CONTENT ============ -->
+    <main
+      id="azhwar-top"
+      class="min-w-0 scroll-mt-4"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
 
-    <div
-      class="bg-indigo-50 dark:bg-indigo-950/40
-             border border-indigo-100 dark:border-indigo-900
-             rounded-xl p-6">
+      <article class="bg-indigo-50 dark:bg-indigo-950/40
+                      border border-indigo-100 dark:border-indigo-900
+                      rounded-xl p-5 md:p-6 space-y-5">
 
-      <!-- HEADER SECTION (TIGHTENED) -->
-      <div class="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6 mb-4">
+        <!-- HEADER SECTION -->
+        <header class="grid grid-cols-1 md:grid-cols-[240px_minmax(0,1fr)] gap-5 md:gap-6">
 
-        <!-- IMAGE (LEFT) -->
-        <div *ngIf="selected.image" class="flex justify-center md:justify-start">
-          <img
-            [src]="selected.image"
-            [alt]="selected.name"
-            (click)="openImage(selected.image)"
-            class="w-56 h-72 object-contain cursor-zoom-in transition hover:scale-105"
-          />
-        </div>
-
-        <!-- TEXT (RIGHT) -->
-        <div>
-
-          <!-- NAME -->
-          <h1 class="text-2xl font-semibold text-indigo-700 dark:text-indigo-300 mb-1 leading-snug">
-            {{ selected.name }}
-            <span class="text-lg font-normal">
-              ({{ selected.tamilName }})
-            </span>
-          </h1>
-
-          <!-- DETAILS -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-0.5 gap-x-6
-                      text-sm text-indigo-700 dark:text-indigo-300 leading-snug">
-            <p><strong>Year:</strong> {{ selected.year }}</p>
-            <p><strong>Birth Place:</strong> {{ selected.birthPlace }}</p>
-            <p><strong>Month:</strong> {{ selected.month }}</p>
-            <p><strong>Thiru Natchathiram:</strong> {{ selected.thiruNatchathiram }}</p>
-            <p><strong>Amsam:</strong> {{ selected.amsam }}</p>
+          <!-- IMAGE (LEFT) -->
+          <div *ngIf="selected.image" class="flex justify-center md:justify-start">
+            <button
+              type="button"
+              (click)="openImage(selected.image)"
+              aria-label="View larger image"
+              class="relative rounded-xl p-3
+                     bg-white dark:bg-indigo-900
+                     border border-indigo-100 dark:border-indigo-800">
+              <img
+                [src]="selected.image"
+                [alt]="selected.name"
+                class="w-40 h-52 md:w-48 md:h-64 object-contain cursor-zoom-in" />
+              <span class="absolute bottom-2 right-2 text-[11px] px-2 py-0.5 rounded-full
+                           bg-indigo-50 dark:bg-indigo-950
+                           text-indigo-700 dark:text-indigo-300
+                           border border-indigo-100 dark:border-indigo-800">
+                Tap to enlarge
+              </span>
+            </button>
           </div>
 
-        </div>
+          <!-- TEXT (RIGHT) -->
+          <div class="min-w-0">
+
+            <!-- NAME -->
+            <h2 class="text-2xl font-semibold text-indigo-700 dark:text-indigo-300
+                       mb-3 leading-snug text-center md:text-left">
+              {{ selected.name }}
+              <span class="block md:inline text-lg font-normal">
+                ({{ selected.tamilName }})
+              </span>
+            </h2>
+
+            <!-- DETAILS -->
+            <dl class="grid grid-cols-2 gap-2">
+              <div *ngFor="let f of facts; trackBy: trackByLabel"
+                   class="rounded-lg px-3 py-2
+                          bg-white dark:bg-indigo-900
+                          border border-indigo-100 dark:border-indigo-800"
+                   [class.col-span-2]="f.wide">
+                <dt class="text-[11px] uppercase tracking-wide
+                           text-indigo-600 dark:text-indigo-400">
+                  {{ f.label }}
+                </dt>
+                <dd class="mt-0.5 text-sm font-medium break-words
+                           text-indigo-700 dark:text-indigo-300">
+                  {{ f.value }}
+                </dd>
+              </div>
+            </dl>
+
+          </div>
+        </header>
+
+        <!-- THANIAN -->
+        <section class="bg-white dark:bg-indigo-900
+                        border border-indigo-100 dark:border-indigo-800
+                        rounded-lg p-4
+                        text-indigo-700 dark:text-indigo-300
+                        text-base leading-relaxed
+                        whitespace-pre-line">
+          <p class="font-medium mb-2">
+            Thanian
+            <span *ngIf="selected.thanian.author" class="font-normal">
+              (By {{ selected.thanian.author }})
+            </span>
+          </p>
+          {{ selected.thanian.text }}
+        </section>
+
+        <!-- OTHER NAMES -->
+        <section *ngIf="selected.otherNames?.length"
+                 class="text-base text-indigo-700 dark:text-indigo-300">
+          <p class="font-medium mb-2">Other Names</p>
+          <div class="flex flex-wrap gap-2">
+            <span *ngFor="let n of selected.otherNames"
+                  class="px-3 py-1 rounded-full text-sm
+                         bg-white dark:bg-indigo-900
+                         border border-indigo-100 dark:border-indigo-800">
+              {{ n }}
+            </span>
+          </div>
+        </section>
+
+        <!-- BIOGRAPHY -->
+        <section *ngIf="selected.biography?.length"
+                 class="space-y-3 text-[15px] leading-relaxed
+                        text-indigo-700 dark:text-indigo-300">
+          <p *ngFor="let para of selected.biography">
+            {{ para }}
+          </p>
+        </section>
+
+        <!-- ADDITIONAL INFO -->
+        <footer *ngIf="selected.additionalInfo"
+                class="text-base italic
+                       text-indigo-600 dark:text-indigo-400
+                       border-t border-indigo-200 dark:border-indigo-800
+                       pt-3">
+          {{ selected.additionalInfo }}
+        </footer>
+
+      </article>
+
+      <!-- PREV / NEXT -->
+      <nav class="flex gap-3 mt-4" aria-label="Previous and next Azhwar">
+        <button
+          type="button"
+          (click)="prev()"
+          [disabled]="currentIndex === 0"
+          class="flex-1 min-w-0 inline-flex items-center justify-center px-4 md:px-8 py-3 rounded-lg
+                 font-medium tracking-wide leading-tight text-base md:text-lg
+                 text-indigo-700 dark:text-indigo-300
+                 border border-indigo-300 dark:border-indigo-700
+                 hover:text-indigo-900 dark:hover:text-indigo-100
+                 hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                 transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                 disabled:opacity-40 disabled:pointer-events-none">
+          <span class="truncate">← {{ azhwars[currentIndex - 1]?.name || 'Previous' }}</span>
+        </button>
+
+        <button
+          type="button"
+          (click)="next()"
+          [disabled]="currentIndex === azhwars.length - 1"
+          class="flex-1 min-w-0 inline-flex items-center justify-center px-4 md:px-8 py-3 rounded-lg
+                 font-medium tracking-wide leading-tight text-base md:text-lg
+                 text-indigo-700 dark:text-indigo-300
+                 border border-indigo-300 dark:border-indigo-700
+                 hover:text-indigo-900 dark:hover:text-indigo-100
+                 hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                 transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40
+                 disabled:opacity-40 disabled:pointer-events-none">
+          <span class="truncate">{{ azhwars[currentIndex + 1]?.name || 'Next' }} →</span>
+        </button>
+      </nav>
+    </main>
+
+    <!-- ============ DESKTOP SIDEBAR ============ -->
+    <aside class="hidden lg:block sticky top-24
+                  max-h-[calc(100vh-6rem)] overflow-y-auto">
+
+      <div class="bg-indigo-50 dark:bg-indigo-950/40
+                  border border-indigo-100 dark:border-indigo-900
+                  rounded-xl p-4">
+
+        <h3 class="text-sm font-semibold
+                   text-indigo-700 dark:text-indigo-300 mb-3">
+          Azhwargal
+        </h3>
+
+        <ul class="space-y-1">
+          <li *ngFor="let a of azhwars; let i = index">
+            <button
+              type="button"
+              (click)="selectAzhwar(a)"
+              class="w-full flex items-center gap-3 text-left px-3 py-2 rounded-md
+                     text-sm
+                     text-indigo-700 dark:text-indigo-300
+                     hover:bg-indigo-100 dark:hover:bg-indigo-900
+                     transition"
+              [class.bg-indigo-200]="a.id === selected.id"
+              [class.dark:bg-indigo-800]="a.id === selected.id">
+
+              <img
+                [src]="a.photo"
+                [alt]="a.name"
+                loading="lazy"
+                class="w-9 h-9 rounded-full object-cover object-top shrink-0" />
+
+              <span class="min-w-0 flex-1">
+                <span class="block truncate">{{ a.name }}</span>
+                <span class="block text-xs truncate text-indigo-600 dark:text-indigo-400">
+                  {{ a.tamilName }}
+                </span>
+              </span>
+
+              <span class="text-xs tabular-nums text-indigo-500 dark:text-indigo-400">
+                {{ i + 1 }}
+              </span>
+            </button>
+          </li>
+        </ul>
+
       </div>
-
-      <!-- THANIAN -->
-      <div class="bg-white dark:bg-indigo-900
-                  border border-indigo-100 dark:border-indigo-800
-                  rounded-lg p-4 mb-4
-                  text-indigo-700 dark:text-indigo-300
-                  text-base leading-relaxed
-                  whitespace-pre-line">
-        <p class="font-medium mb-2">
-          Thanian
-          <span *ngIf="selected.thanian.author" class="font-normal">
-            (By {{ selected.thanian.author }})
-          </span>
-        </p>
-        {{ selected.thanian.text }}
-      </div>
-
-      <!-- OTHER NAMES -->
-      <div class="mb-4 text-base text-indigo-700 dark:text-indigo-300">
-        <p class="font-medium mb-1">Other Names</p>
-        <p>{{ selected.otherNames?.join(', ') }}</p>
-      </div>
-
-      <!-- BIOGRAPHY -->
-      <div class="space-y-3
-                  text-[15px] leading-relaxed
-                  text-indigo-700 dark:text-indigo-300 mb-4">
-        <p *ngFor="let para of selected.biography">
-          {{ para }}
-        </p>
-      </div>
-
-      <!-- ADDITIONAL INFO -->
-      <div class="text-base italic
-                  text-indigo-600 dark:text-indigo-400
-                  border-t border-indigo-200 dark:border-indigo-800
-                  pt-3">
-        {{ selected.additionalInfo }}
-      </div>
-
-    </div>
-  </div>
-
-  <!-- RIGHT SIDEBAR -->
-  <div class="sidebar hidden lg:block
-            sticky top-24
-            max-h-[calc(100vh-6rem)]
-            overflow-y-auto">
-
-    <div
-      class="bg-indigo-50 dark:bg-indigo-950/40
-             border border-indigo-100 dark:border-indigo-900
-             rounded-xl p-4">
-
-      <h3 class="text-sm font-semibold
-                 text-indigo-700 dark:text-indigo-300 mb-3">
-        Azhwargal
-      </h3>
-
-      <ul class="space-y-1">
-        <li *ngFor="let a of azhwars">
-          <button
-            (click)="selectAzhwar(a)"
-            class="w-full text-left px-3 py-2 rounded-md
-                   text-sm
-                   text-indigo-700 dark:text-indigo-300
-                   hover:bg-indigo-100 dark:hover:bg-indigo-900
-                   transition"
-            [class.bg-indigo-200]="a.id === selected.id"
-            [class.dark:bg-indigo-800]="a.id === selected.id">
-            {{ a.name }}
-          </button>
-        </li>
-      </ul>
-
-    </div>
+    </aside>
 
   </div>
 </div>
 
-<!-- IMAGE POPUP -->
+<!-- ================= IMAGE POPUP ================= -->
 <div
   *ngIf="popupImage"
   class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  (click)="closeImage()"
->
+  role="dialog"
+  aria-modal="true"
+  (click)="closeImage()">
 
   <!-- Close Button -->
   <button
-    class="absolute top-4 right-4 text-white text-3xl font-light"
-    (click)="closeImage()">
+    type="button"
+    aria-label="Close"
+    (click)="closeImage()"
+    class="absolute top-4 right-4 inline-flex items-center justify-center
+           min-h-[44px] min-w-[44px] px-4 rounded-lg text-xl font-medium
+           text-white border border-white/40
+           hover:bg-white/10 transition
+           focus:outline-none focus:ring-2 focus:ring-white/40">
     ✕
   </button>
 
   <!-- Image -->
   <img
     [src]="popupImage"
-    class="max-w-full max-h-full rounded-lg shadow-lg"
-    (click)="$event.stopPropagation()"
-  />
+    class="max-w-full max-h-full rounded-lg shadow-lg object-contain"
+    (click)="$event.stopPropagation()" />
 
 </div>
