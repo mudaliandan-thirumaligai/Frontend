@@ -38,6 +38,7 @@
   "devDependencies": {
     "@angular/build": "^20.0.5",
     "@angular/cli": "^20.0.5",
+    "@capacitor/assets": "^4.0.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~5.1.0",

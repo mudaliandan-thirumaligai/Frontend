@@ -53,10 +53,41 @@ export class VideosComponent implements OnInit {
   }
 
   private extractYoutubeId(url: string): string {
-    const regex =
-      /(?:youtube\.com\/(?:.*v=|embed\/)|youtu\.be\/)([^&?/]+)/;
-    const match = url.match(regex);
-    return match ? match[1] : '';
+    try {
+      const parsedUrl = new URL(url);
+      const hostname = parsedUrl.hostname.replace(/^www\./, '');
+
+      // Short URL: youtu.be/VIDEO_ID
+      if (hostname === 'youtu.be') {
+        return parsedUrl.pathname.split('/').filter(Boolean)[0] || '';
+      }
+
+      // Standard YouTube URLs
+      if (
+        hostname === 'youtube.com' ||
+        hostname === 'm.youtube.com' ||
+        hostname === 'music.youtube.com'
+      ) {
+        // youtube.com/watch?v=VIDEO_ID
+        if (parsedUrl.pathname === '/watch') {
+          return parsedUrl.searchParams.get('v') || '';
+        }
+
+        // youtube.com/live/VIDEO_ID
+        // youtube.com/shorts/VIDEO_ID
+        // youtube.com/embed/VIDEO_ID
+        // youtube.com/v/VIDEO_ID
+        const match = parsedUrl.pathname.match(
+          /^\/(?:live|shorts|embed|v)\/([a-zA-Z0-9_-]{11})(?:\/|$)/
+        );
+
+        return match ? match[1] : '';
+      }
+
+      return '';
+    } catch {
+      return '';
+    }
   }
 
   openVideo(video: any) {
