@@ -78,7 +78,7 @@
           <span class="fc-event-title">{{ ev.title }}</span>
         </div>
         <p class="mt-2 text-sm text-indigo-600">
-          {{ ev.start | date:'mediumDate' }}<ng-container *ngIf="isMultiDay(ev)"> – {{ lastDayOf(ev) | date:'mediumDate' }}</ng-container>
+          {{ startOf(ev) | date:'mediumDate' }}<ng-container *ngIf="isMultiDay(ev)"> – {{ lastDayOf(ev) | date:'mediumDate' }}</ng-container>
         </p>
         <p *ngIf="ev.extendedProps.tamilMonth" class="mt-1 text-xs uppercase tracking-widest text-indigo-500 font-medium">
           {{ ev.extendedProps.tamilMonth }}

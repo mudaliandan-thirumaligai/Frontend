@@ -22,6 +22,7 @@ interface CalendarEvent extends EventInput {
     googleDriveLink?: string;
     pathirikai?: string;
     eventNumber?: number;
+    endDate?: string;   // real (inclusive) last day, as stored in your data
   };
 }
 
@@ -180,7 +181,9 @@ export class UserCalenderComponent implements OnInit {
         id: event.eventNumber.toString(),
         title: event.name,
         start: event.startDate,
-        end: event.endDate,
+        // FullCalendar treats `end` as exclusive, so add a day to make the
+        // last day of multi-day events actually render in the grid
+        end: event.endDate ? this.addDays(this.dayOf(event.endDate), 1) : undefined,
         allDay: true,
         extendedProps: {
           calendar: event.eventLevel || 'others',
@@ -190,7 +193,8 @@ export class UserCalenderComponent implements OnInit {
           tamilMonth: event.tamilMonth,
           googleDriveLink: event.googleDriveLink,
           pathirikai: event.pathirikai,
-          eventNumber: event.eventNumber
+          eventNumber: event.eventNumber,
+          endDate: event.endDate ? this.dayOf(event.endDate) : this.dayOf(event.startDate)
         }
       }));
 
@@ -264,7 +268,7 @@ export class UserCalenderComponent implements OnInit {
     this.eventNumber = event.extendedProps['eventNumber'];
     this.eventTitle = event.title;
     this.eventStartDate = event.startStr.split('T')[0];
-    this.eventEndDate = event.endStr ? event.endStr.split('T')[0] : '';
+    this.eventEndDate = event.extendedProps['endDate'] || '';
     this.eventLevel = event.extendedProps['calendar'];
     this.eventDescription = event.extendedProps['description'] || '';
     this.eventLocation = event.extendedProps['location'] || '';
@@ -372,16 +376,16 @@ export class UserCalenderComponent implements OnInit {
       const d = this.selectedDateStr;
       this.agendaEvents = sorted.filter(ev => {
         const s = this.dayOf(ev.start);
-        const e = ev.end ? this.dayOf(ev.end) : '';
-        return e ? (s <= d && d < e) : s === d;   // end date is exclusive
+        const e = ev.extendedProps.endDate || s;   // inclusive last day
+        return s <= d && d <= e;
       });
     } else if (this.visibleMonthStart) {
       const ms = this.visibleMonthStart;
       const me = this.visibleMonthEnd;
       this.agendaEvents = sorted.filter(ev => {
         const s = this.dayOf(ev.start);
-        const e = ev.end ? this.dayOf(ev.end) : '';
-        return e ? (s < me && e > ms) : (s >= ms && s < me);
+        const e = ev.extendedProps.endDate || s;
+        return s < me && e >= ms;
       });
     } else {
       this.agendaEvents = [];
@@ -402,12 +406,17 @@ export class UserCalenderComponent implements OnInit {
     this.refreshAgenda();
   }
 
+  // string version of the start date, safe for the template's date pipe
+  startOf(ev: CalendarEvent): string {
+    return this.dayOf(ev.start);
+  }
+
   openFromAgenda(ev: CalendarEvent) {
     const props = ev.extendedProps;
     this.eventNumber = props.eventNumber ?? 0;
     this.eventTitle = (ev.title as string) || '';
     this.eventStartDate = this.dayOf(ev.start);
-    this.eventEndDate = ev.end ? this.dayOf(ev.end) : '';
+    this.eventEndDate = props.endDate || '';
     this.eventLevel = props.calendar;
     this.eventDescription = props.description || '';
     this.eventLocation = props.location || '';
@@ -422,13 +431,12 @@ export class UserCalenderComponent implements OnInit {
     return this.calendarsEvents[ev.extendedProps.calendar] || 'warning';
   }
 
-  // multi-day if the (exclusive) end is more than one day after the start
   isMultiDay(ev: CalendarEvent): boolean {
-    return !!ev.end && this.dayOf(ev.end) > this.addDays(this.dayOf(ev.start), 1);
+    return !!ev.extendedProps.endDate && ev.extendedProps.endDate > this.dayOf(ev.start);
   }
 
   lastDayOf(ev: CalendarEvent): string {
-    return ev.end ? this.addDays(this.dayOf(ev.end), -1) : this.dayOf(ev.start);
+    return ev.extendedProps.endDate || this.dayOf(ev.start);
   }
 
   // ---------- helpers ----------
