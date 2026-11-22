@@ -15,11 +15,52 @@
   </div>
 </section>
 
+<!-- ================= LATEST UTSAVAM HIGHLIGHT ================= -->
+<section *ngIf="latestFolder" class="px-2 mb-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="bg-gradient-to-br from-[#F4F6FB] to-[#E8ECFF] dark:from-indigo-900/40 dark:to-indigo-800/40
+                rounded-2xl shadow-lg border-l-4 border-[#3B5BA9] overflow-hidden sm:flex">
+
+      <img *ngIf="coverOf(latestFolder)" [src]="coverOf(latestFolder)" [alt]="latestFolder.name"
+           class="w-full h-48 sm:h-auto sm:w-64 object-cover">
+
+      <div class="p-5 flex-1 flex flex-col justify-center">
+        <p class="text-xs uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-2">
+          ✨ Latest Utsavam
+        </p>
+        <h2 class="text-xl md:text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-100 mb-1">
+          {{ latestFolder.name }}
+        </h2>
+        <p class="text-base text-indigo-700 dark:text-indigo-300 font-medium mb-4">
+          {{ latestFolder.images.length }} photos
+        </p>
+
+        <button type="button" (click)="openLatest()"
+                class="self-start inline-flex items-center justify-center px-6 py-3 rounded-lg
+                       font-medium tracking-wide leading-tight text-lg
+                       text-indigo-700 dark:text-indigo-300
+                       border border-indigo-300 dark:border-indigo-700
+                       bg-white dark:bg-transparent
+                       hover:text-indigo-900 dark:hover:text-indigo-100
+                       hover:bg-indigo-50 dark:hover:bg-indigo-900/20
+                       transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          View Latest Photos →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= GALLERY LAYOUT ================= -->
 <div class="gallery-container">
 
   <!-- ================= MAIN CONTENT ================= -->
   <div class="gallery-content">
+
+    <!-- Plain-language instruction -->
+    <p class="text-lg text-indigo-700 font-medium mb-1">
+      👇 Tap an event below to see its photos
+    </p>
 
     <div
       *ngFor="let folder of folders; let i = index"
@@ -27,37 +68,56 @@
       [id]="'folder-' + i"
     >
 
-      <!-- Folder Header -->
-      <h2
-        class="folder-title flex justify-between items-center
-               text-lg font-medium text-indigo-700
-               cursor-pointer mt-4 pb-2 border-b border-gray-200"
-        tabindex="0"
-        role="button"
+      <!-- Event card: whole card is one big button -->
+      <button
+        type="button"
+        class="w-full flex items-center gap-4 text-left bg-white rounded-2xl shadow-lg
+               border border-[#3B5BA9]/10 p-3 mt-4
+               hover:shadow-xl active:scale-[0.99] transition
+               focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+        [class.ring-2]="folder.expanded"
+        [class.ring-indigo-300]="folder.expanded"
         [attr.aria-expanded]="folder.expanded"
         (click)="toggleFolder(folder)"
-        (keydown.enter)="toggleFolder(folder)"
-        (keydown.space)="toggleFolder(folder)"
       >
-        <span>
-          {{ folder.name }}
-          <span class="text-sm text-indigo-500 ml-2">
-            ({{ folder.images.length }} images)
-          </span>
-        </span>
+        <!-- Cover photo -->
+        <div class="w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-[#3B5BA9] to-[#6379C8]
+                    flex items-center justify-center text-3xl text-white">
+          <img *ngIf="coverOf(folder)" [src]="coverOf(folder)" [alt]="folder.name" loading="lazy"
+               class="w-full h-full object-cover">
+          <span *ngIf="!coverOf(folder)">🛕</span>
+        </div>
 
-        <span class="arrow" [class.open]="folder.expanded">▼</span>
-      </h2>
+        <!-- Text + clear action label -->
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            <span class="text-lg font-semibold tracking-wide leading-tight text-indigo-900">{{ folder.name }}</span>
+            <span *ngIf="isLatest(folder)"
+                  class="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide text-white
+                         bg-[#3B5BA9] animate-pulse">
+              Latest
+            </span>
+          </div>
+
+          <p class="text-base text-indigo-600 mb-2">{{ folder.images.length }} photos</p>
+
+          <span class="inline-flex items-center px-4 py-1.5 rounded-lg
+                       font-medium tracking-wide text-base
+                       text-indigo-700 border border-indigo-300">
+            {{ folder.expanded ? 'Hide Photos ▲' : 'View Photos ▼' }}
+          </span>
+        </div>
+      </button>
 
       <!-- Image Grid -->
       <div class="grid fade" *ngIf="folder.expanded">
         <div
           class="grid-item"
-          *ngFor="let img of folder.images; trackBy: trackByImg"
+          *ngFor="let img of folder.images; trackBy: trackByImg; let n = index"
         >
           <img
             [src]="img"
-            [alt]="folder.name + ' image'"
+            [alt]="folder.name + ' photo ' + (n + 1)"
             loading="lazy"
             class="cursor-pointer"
             (click)="openImage(img, folder)"
@@ -65,45 +125,63 @@
         </div>
       </div>
 
+      <!-- Close button at the bottom (no need to scroll back up) -->
+      <div *ngIf="folder.expanded" class="text-center mt-4">
+        <button type="button" (click)="toggleFolder(folder)"
+                class="inline-flex items-center justify-center px-6 py-2.5 rounded-lg
+                       font-medium tracking-wide text-base
+                       text-indigo-700 border border-indigo-300
+                       hover:text-indigo-900 hover:bg-indigo-50
+                       transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+          Hide Photos ▲
+        </button>
+      </div>
+
     </div>
   </div>
 
   <!-- ================= SIDEBAR ================= -->
   <aside class="sidebar">
-  <h3 class="text-indigo-700 font-medium mb-3">
-    Utsavams
-  </h3>
+    <h3 class="text-indigo-700 font-medium mb-3">
+      Utsavams
+    </h3>
 
-  <!-- YEAR FILTER -->
-  <div class="mb-4">
-    <label class="block text-sm text-indigo-600 mb-1">
-      Filter by year
-    </label>
-    <select
-      class="year-select"
-      #yearSelect
-      (change)="onYearChange(yearSelect.value)"
-    >
-      <option value="">All years</option>
-      <option *ngFor="let y of years" [value]="y">
-        {{ y }}
-      </option>
-    </select>
-  </div>
+    <!-- YEAR FILTER -->
+    <div class="mb-4">
+      <label class="block text-sm text-indigo-600 mb-1">
+        Filter by year
+      </label>
+      <select
+        class="year-select"
+        #yearSelect
+        (change)="onYearChange(yearSelect.value)"
+      >
+        <option value="">All years</option>
+        <option *ngFor="let y of years" [value]="y">
+          {{ y }}
+        </option>
+      </select>
+    </div>
 
-  <ul class="space-y-1">
-    <li
-      *ngFor="let folder of folders; let i = index"
-      class="px-3 py-2 flex justify-between items-center
-             text-indigo-700 hover:bg-gray-100 cursor-pointer rounded-md"
-      [class.active-folder]="folder.expanded"
-      (click)="scrollToFolder(folder)"
-    >
-      <span>{{ folder.name }}</span>
-      <span class="count">{{ folder.images.length }}</span>
-    </li>
-  </ul>
-</aside>
+    <ul class="space-y-1">
+      <li
+        *ngFor="let folder of folders; let i = index"
+        class="px-3 py-2 flex justify-between items-center
+               text-indigo-700 hover:bg-gray-100 cursor-pointer rounded-md"
+        [class.active-folder]="folder.expanded"
+        (click)="scrollToFolder(folder)"
+      >
+        <span>
+          {{ folder.name }}
+          <span *ngIf="isLatest(folder)" class="ml-1 text-xs font-bold text-[#3B5BA9]">• Latest</span>
+        </span>
+        <span class="count">{{ folder.images.length }}</span>
+      </li>
+    </ul>
+  </aside>
+
+</div>
+<!-- (gallery-container is now closed; it was left open in the pasted version) -->
 
 
 <!-- ================= IMAGE MODAL ================= -->
@@ -111,36 +189,53 @@
   *ngIf="selectedImage"
   class="fixed inset-0 bg-black bg-opacity-70
        flex justify-center items-center z-50 modal-enter"
+  (click)="closeImage()"
 >
 
-  <div class="relative">
+  <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
 
-    <!-- Image -->
-    <img
-      [src]="selectedImage"
-      class="max-h-[90vh] max-w-[90vw]
-             rounded-lg shadow-2xl select-none"
-      (touchstart)="onTouchStart($event)"
-      (touchend)="onTouchEnd($event)"
-    />
-
-    <!-- Image Counter -->
-    <div
-      class="absolute bottom-3 left-1/2 -translate-x-1/2
-             text-indigo-700 font-medium mb-3"
-    >
-      {{ currentIndex + 1 }} / {{ currentFolder?.images.length }}
-    </div>
-
-    <!-- Close Button -->
+    <!-- Close Button (large, labelled) -->
     <button
+      type="button"
       (click)="closeImage()"
       aria-label="Close image"
-      class="absolute top-2 right-2
+      class="absolute -top-12 right-0
              text-white bg-black/60 rounded-full
-             px-3 py-1 text-lg"
+             px-4 py-2 text-base font-medium"
     >
-      ✕
+      ✕ Close
     </button>
+
+    <!-- Image + side arrows -->
+    <div class="relative">
+      <img
+        [src]="selectedImage"
+        class="max-h-[78vh] max-w-[92vw]
+               rounded-lg shadow-2xl select-none"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+      />
+
+      <button type="button" (click)="prevImage()" aria-label="Previous photo"
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full
+                     bg-black/60 text-white text-2xl flex items-center justify-center
+                     active:scale-95 transition">
+        ‹
+      </button>
+      <button type="button" (click)="nextImage()" aria-label="Next photo"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full
+                     bg-black/60 text-white text-2xl flex items-center justify-center
+                     active:scale-95 transition">
+        ›
+      </button>
+    </div>
+
+    <!-- Counter + hint -->
+    <div class="mt-3 text-center">
+      <span class="inline-block px-4 py-1 rounded-full bg-white/90 text-indigo-700 font-medium">
+        {{ currentIndex + 1 }} / {{ currentFolder?.images.length }}
+      </span>
+      <p class="mt-2 text-sm text-white/80">Use the ‹ › buttons or swipe to see more photos</p>
+    </div>
   </div>
 </div>

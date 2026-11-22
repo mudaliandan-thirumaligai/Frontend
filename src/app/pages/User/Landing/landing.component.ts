@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -49,6 +49,10 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.scrollObserver.disconnect();
       this.scrollObserver = null;
     }
+    // NEW: make sure page scrolling is restored if the viewer was open
+    document.body.style.overflow = '';
+    clearTimeout(this.tapTimer);
+    clearTimeout(this.toastTimer);
   }
 
   // ─── Event fetching ────────────────────────────────────────────
@@ -190,5 +194,170 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     elements.forEach(el => this.scrollObserver!.observe(el));
+  }
+
+  // =====================================================================
+  // NEW — MOBILE LANDING: data + photo viewer
+  // =====================================================================
+
+  // Accordion sections for "Explore Our Heritage" (mobile)
+  openSection: string | null = 'about';
+
+  learnSections = [
+    { key: 'about', title: 'About Us', links: [
+      { label: 'About Thirumaligai',  link: '/about-thirumaaligai' },
+      { label: 'Varthamaana Swami',   link: '/about-swamy' },
+      { label: 'Our History',         link: '/aachariyargal' },
+      { label: 'Our Thirumaligais',   link: '/thirumaligais' },
+    ]},
+    { key: 'knowledge', title: 'Spiritual Knowledge', links: [
+      { label: 'Pothu Thaniyans',     link: '/pothu-thaniyans' },
+      { label: 'Thaniyans',           link: '/thaniyans' },
+      { label: 'Samashrayanam',       link: '/samashrayanam' },
+      { label: 'Vaazhi Thirunaamam',  link: '/vaazhi-thirunaamam' },
+      { label: 'Documents',           link: '/documents' },
+    ]},
+    { key: 'azhwargal', title: 'Azhwargal & Aachariyargal', links: [
+      { label: '12 Azhwargal',        link: '/alwargal' },
+      { label: 'Aachariyargal',       link: '/history' },
+    ]},
+    { key: 'media', title: 'Media Archive', links: [
+      { label: 'Photos',              link: '/gallery' },
+      { label: 'Videos',              link: '/videos' },
+    ]},
+  ];
+
+  toggleSection(key: string): void {
+    this.openSection = this.openSection === key ? null : key;
+  }
+
+  tabs = [
+    { icon: '🏠', label: 'Home',     link: '/' },
+    { icon: '📅', label: 'Events',   link: '/calendar' },
+    { icon: '🖼️', label: 'Photos',   link: '/gallery' },
+    { icon: '🗓️', label: 'Schedule', link: '/swamy-schedule' },
+    { icon: '🤲', label: 'Donate',   link: '/bank-info' },
+  ];
+
+  photos = [
+    { src: 'images/Permual_Photos/perumal_08.jpeg', caption: 'Sacred Essence' },
+    { src: 'images/Permual_Photos/perumal_09.jpeg', caption: 'Divine Blessings' },
+    { src: 'images/Permual_Photos/perumal_10.jpeg', caption: 'Spiritual Grace' },
+    { src: 'images/Permual_Photos/perumal_11.jpeg', caption: 'Holy Presence' },
+    { src: 'images/Permual_Photos/perumal_12.jpeg', caption: 'Eternal Light' },
+    { src: 'images/Permual_Photos/perumal_13.jpeg', caption: 'Divine Presence' },
+    { src: 'images/Permual_Photos/perumal_14.jpeg', caption: 'Blessed Moments' },
+    { src: 'images/Permual_Photos/perumal_15.jpeg', caption: 'Sacred Journey' },
+    { src: 'images/Permual_Photos/perumal_16.jpeg', caption: 'Spiritual Wisdom' },
+    { src: 'images/Permual_Photos/perumal_17.jpeg', caption: 'Divine Blessings' },
+    { src: 'images/Permual_Photos/perumal_18.jpeg', caption: 'Holy Moments' },
+    { src: 'images/Permual_Photos/perumal_19.jpeg', caption: 'Sacred Path' },
+  ];
+
+  // ---------- viewer state ----------
+  viewerIndex: number | null = null;
+  chromeVisible = true;
+  toast = '';
+
+  private lastTap = 0;
+  private tapTimer: any;
+  private toastTimer: any;
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private swiped = false;
+
+  // ---------- viewer actions ----------
+  openViewer(i: number): void {
+    this.viewerIndex = i;
+    this.chromeVisible = true;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ viewer: true }, ''); // Android back button closes the viewer
+    this.preloadNeighbours();
+  }
+
+  closeViewer(fromPopState = false): void {
+    if (this.viewerIndex === null) return;
+    this.viewerIndex = null;
+    document.body.style.overflow = '';
+    if (!fromPopState && history.state?.viewer) history.back();
+  }
+
+  @HostListener('window:popstate')
+  onPopState(): void { this.closeViewer(true); }
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void { this.closeViewer(); }
+
+  step(dir: 1 | -1): void {
+    if (this.viewerIndex === null) return;
+    this.viewerIndex = (this.viewerIndex + dir + this.photos.length) % this.photos.length;
+    this.preloadNeighbours();
+  }
+
+  private preloadNeighbours(): void {
+    if (this.viewerIndex === null) return;
+    const n = this.photos.length;
+    [1, -1].forEach(d => { new Image().src = this.photos[(this.viewerIndex! + d + n) % n].src; });
+  }
+
+  // ---------- gestures ----------
+  onTouchStart(e: TouchEvent): void {
+    this.touchStartX = e.touches[0].clientX;
+    this.touchStartY = e.touches[0].clientY;
+    this.swiped = false;
+  }
+
+  onTouchEnd(e: TouchEvent): void {
+    const zoomed = (window.visualViewport?.scale ?? 1) > 1.05;
+    if (zoomed || e.changedTouches.length !== 1) return; // let pinch/pan breathe
+    const dx = e.changedTouches[0].clientX - this.touchStartX;
+    const dy = e.changedTouches[0].clientY - this.touchStartY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      this.swiped = true;
+      this.step(dx < 0 ? 1 : -1);
+    } else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) { // swipe down to close
+      this.swiped = true;
+      this.closeViewer();
+    }
+  }
+
+  onImageTap(): void {
+    if (this.swiped) { this.swiped = false; return; }
+    const now = Date.now();
+    if (now - this.lastTap < 300) {            // double tap → download
+      clearTimeout(this.tapTimer);
+      this.lastTap = 0;
+      this.downloadCurrent();
+    } else {                                   // single tap → toggle bars (after double-tap window)
+      this.lastTap = now;
+      this.tapTimer = setTimeout(() => (this.chromeVisible = !this.chromeVisible), 300);
+    }
+  }
+
+  // ---------- download ----------
+  async downloadCurrent(): Promise<void> {
+    if (this.viewerIndex === null) return;
+    const p = this.photos[this.viewerIndex];
+    try {
+      const blob = await (await fetch(p.src)).blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = p.src.split('/').pop() || 'photo.jpeg';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      this.showToast('Saved ✓');
+    } catch {
+      window.open(p.src, '_blank'); // fallback: long-press to save
+      this.showToast('Long-press the image to save');
+    }
+  }
+
+  private showToast(msg: string): void {
+    this.toast = msg;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 1800);
   }
 }
