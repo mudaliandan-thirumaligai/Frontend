@@ -28,14 +28,14 @@ export class VideosComponent implements OnInit {
     this.mediaService.getVideos().subscribe({
       next: (data) => {
         this.videos = data.map(video => {
-          const youtubeId = video.youtubeLink
-            ? this.extractYoutubeId(video.youtubeLink)
+          const embedUrl = video.youtubeLink
+            ? this.getEmbedUrl(video.youtubeLink)
             : '';
 
           return {
             title: video.eventName,
             description: video.description,
-            url: youtubeId ? this.safe(youtubeId) : null
+            url: embedUrl ? this.safe(embedUrl) : null
           };
         });
       },
@@ -45,49 +45,97 @@ export class VideosComponent implements OnInit {
     });
   }
 
-
-  private safe(id: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${id}`
-    );
+  private safe(embedUrl: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
   }
 
-  private extractYoutubeId(url: string): string {
+  /**
+   * Converts any supported video link into an embeddable URL.
+   * Supports: YouTube (watch, live, shorts, embed, youtu.be, with any extra
+   * query params), Instagram (post / reel / tv), Facebook (videos, reels,
+   * fb.watch), Vimeo and Google Drive.
+   * Returns '' when the link is not recognised.
+   */
+  private getEmbedUrl(rawUrl: string): string {
     try {
-      const parsedUrl = new URL(url);
-      const hostname = parsedUrl.hostname.replace(/^www\./, '');
+      let link = (rawUrl || '').trim();
+      if (!link) return '';
 
-      // Short URL: youtu.be/VIDEO_ID
-      if (hostname === 'youtu.be') {
-        return parsedUrl.pathname.split('/').filter(Boolean)[0] || '';
+      // tolerate links pasted without https://
+      if (!/^https?:\/\//i.test(link)) {
+        link = 'https://' + link;
       }
 
-      // Standard YouTube URLs
-      if (
-        hostname === 'youtube.com' ||
-        hostname === 'm.youtube.com' ||
-        hostname === 'music.youtube.com'
-      ) {
-        // youtube.com/watch?v=VIDEO_ID
-        if (parsedUrl.pathname === '/watch') {
-          return parsedUrl.searchParams.get('v') || '';
+      const url = new URL(link);
+      const host = url.hostname.toLowerCase().replace(/^www\./, '');
+      const path = url.pathname;
+
+      // ---------- YouTube ----------
+      if (host === 'youtu.be') {
+        const id = path.split('/').filter(Boolean)[0] || '';
+        return this.youtubeEmbed(id);
+      }
+
+      if (host === 'youtube.com' || host.endsWith('.youtube.com') || host === 'youtube-nocookie.com') {
+        // youtube.com/watch?v=ID
+        if (path === '/watch' || path === '/watch/') {
+          return this.youtubeEmbed(url.searchParams.get('v') || '');
         }
 
-        // youtube.com/live/VIDEO_ID
-        // youtube.com/shorts/VIDEO_ID
-        // youtube.com/embed/VIDEO_ID
-        // youtube.com/v/VIDEO_ID
-        const match = parsedUrl.pathname.match(
-          /^\/(?:live|shorts|embed|v)\/([a-zA-Z0-9_-]{11})(?:\/|$)/
-        );
+        // youtube.com/live/ID, /shorts/ID, /embed/ID, /v/ID
+        const match = path.match(/^\/(?:live|shorts|embed|v)\/([a-zA-Z0-9_-]{11})/);
+        if (match) {
+          return this.youtubeEmbed(match[1]);
+        }
 
-        return match ? match[1] : '';
+        // fallback: ?v=ID on any other youtube path
+        return this.youtubeEmbed(url.searchParams.get('v') || '');
+      }
+
+      // ---------- Instagram ----------
+      if (host === 'instagram.com' || host.endsWith('.instagram.com')) {
+        // instagram.com/reel/CODE, /p/CODE, /tv/CODE, /reels/CODE, /username/reel/CODE
+        const match = path.match(/\/(p|reel|reels|tv)\/([A-Za-z0-9_-]+)/);
+        if (match) {
+          const type = match[1] === 'reels' ? 'reel' : match[1];
+          return `https://www.instagram.com/${type}/${match[2]}/embed`;
+        }
+        return '';
+      }
+
+      // ---------- Facebook ----------
+      if (host === 'fb.watch' || host === 'facebook.com' || host.endsWith('.facebook.com')) {
+        const clean = `${url.origin}${path}${url.search}`;
+        return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(clean)}&show_text=false`;
+      }
+
+      // ---------- Vimeo ----------
+      if (host === 'vimeo.com' || host === 'player.vimeo.com') {
+        const match = path.match(/(\d{6,})/);
+        if (match) {
+          const hash = url.searchParams.get('h');
+          return `https://player.vimeo.com/video/${match[1]}${hash ? '?h=' + hash : ''}`;
+        }
+        return '';
+      }
+
+      // ---------- Google Drive ----------
+      if (host === 'drive.google.com') {
+        const match = path.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        const id = match ? match[1] : url.searchParams.get('id') || '';
+        return id ? `https://drive.google.com/file/d/${id}/preview` : '';
       }
 
       return '';
     } catch {
       return '';
     }
+  }
+
+  private youtubeEmbed(id: string): string {
+    return /^[a-zA-Z0-9_-]{11}$/.test(id)
+      ? `https://www.youtube.com/embed/${id}`
+      : '';
   }
 
   openVideo(video: any) {

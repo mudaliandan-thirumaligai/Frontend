@@ -120,13 +120,24 @@ export class VideosAdminComponent implements OnInit {
       return;
     }
 
-    // Regex to allow major video providers
-    const videoRegex =
-      /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|vimeo\.com\/|dailymotion\.com\/video\/|drive\.google\.com\/file\/d\/|onedrive\.live\.com\/).*$/i;
+    // Allow every video link type the public Videos page can play:
+    // YouTube (watch, live, shorts, embed, youtu.be), Instagram (post/reel/tv),
+    // Facebook (videos, reels, fb.watch), Vimeo and Google Drive
+    const videoRegex = new RegExp(
+      '^(https?:\\/\\/)?([a-z0-9-]+\\.)*(' +
+        'youtube\\.com\\/(watch\\?(.*&)?v=|live\\/|shorts\\/|embed\\/|v\\/)|' +
+        'youtu\\.be\\/|' +
+        'instagram\\.com\\/(.*\\/)?(p|reel|reels|tv)\\/|' +
+        'facebook\\.com\\/|fb\\.watch\\/|' +
+        'vimeo\\.com\\/|' +
+        'drive\\.google\\.com\\/file\\/d\\/' +
+      ').*$',
+      'i'
+    );
 
-    if (!videoRegex.test(this.newVideoData.youtubeLink)) {
+    if (!videoRegex.test(this.newVideoData.youtubeLink.trim())) {
       this.toast.showError(
-        'Only video links are allowed (YouTube, Vimeo, Dailymotion, Google Drive, OneDrive)'
+        'Only video links are allowed (YouTube incl. live/shorts, Instagram, Facebook, Vimeo, Google Drive)'
       );
       return;
     }
