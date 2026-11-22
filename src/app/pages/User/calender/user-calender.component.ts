@@ -1,7 +1,7 @@
 import { FormsModule } from '@angular/forms';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { EventInput, CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -27,6 +27,8 @@ interface CalendarEvent extends EventInput {
 
 type EventColor = 'danger' | 'success' | 'primary' | 'warning';
 
+const MOBILE_BREAKPOINT = 768;
+
 @Component({
   selector: 'app-calender',
   standalone: true,
@@ -40,7 +42,7 @@ type EventColor = 'danger' | 'success' | 'primary' | 'warning';
   templateUrl: './user-calender.component.html',
   styles: ``
 })
-export class UserCalenderComponent {
+export class UserCalenderComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
@@ -73,6 +75,16 @@ export class UserCalenderComponent {
   isOpen = false;
   displayPromptBanner = false;
 
+  // ---------- Mobile agenda state ----------
+  isMobile = false;
+  selectedDateStr: string | null = null;     // 'YYYY-MM-DD' when a day is tapped
+  visibleMonthLabel = '';                    // 'YYYY-MM-01' of the month in view
+  agendaEvents: CalendarEvent[] = [];
+  nextEvent: CalendarEvent | null = null;
+  private allEvents: CalendarEvent[] = [];
+  private visibleMonthStart = '';            // inclusive
+  private visibleMonthEnd = '';              // exclusive
+
   calendarOptions!: CalendarOptions;
 
   private targetDateFromRoute: string | null = null;
@@ -81,23 +93,8 @@ export class UserCalenderComponent {
 
   ngOnInit() {
 
-    this.calendarOptions = {
-      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
-      selectable: true,
-      allDayMaintainDuration: true,
-      height: 'auto',
-      contentHeight: 500,
-      aspectRatio: 1.4,
-      events: [],
-      eventClick: (info) => this.handleEventClick(info),
-      eventContent: (arg) => this.renderEventContent(arg)
-    };
+    this.isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    this.calendarOptions = this.buildCalendarOptions();
 
     // Read params from landing page
     this.route.queryParams.subscribe(params => {
@@ -117,11 +114,69 @@ export class UserCalenderComponent {
     this.loadEventsFromAPI();
   }
 
+  // Switch layout if the screen crosses the breakpoint (rotate / resize)
+  @HostListener('window:resize')
+  onResize() {
+    const nowMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    if (nowMobile !== this.isMobile) {
+      this.isMobile = nowMobile;
+      this.selectedDateStr = null;
+      this.calendarOptions = {
+        ...this.buildCalendarOptions(),
+        events: this.calendarOptions.events
+      };
+      this.refreshAgenda();
+    }
+  }
+
+  private buildCalendarOptions(): CalendarOptions {
+
+    const base: CalendarOptions = {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      selectable: true,
+      allDayMaintainDuration: true,
+      height: 'auto',
+      contentHeight: 500,
+      aspectRatio: 1.4,
+      events: [],
+      eventClick: (info) => this.handleEventClick(info),
+      eventContent: (arg) => this.renderEventContent(arg)
+    };
+
+    if (!this.isMobile) {
+      return base;
+    }
+
+    // Mobile: compact month grid (colored markers only), tap a date -> agenda below
+    return {
+      ...base,
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'today'
+      },
+      contentHeight: 'auto',
+      aspectRatio: 1,
+      dayMaxEvents: 2,
+      dateClick: (info) => this.onDateClick(info.dateStr),
+      moreLinkClick: (arg) => {
+        this.onDateClick(this.toISO(arg.date));
+      },
+      datesSet: (arg) => this.onDatesSet(arg.view.currentStart, arg.view.currentEnd)
+    };
+  }
+
   loadEventsFromAPI() {
 
     this.eventService.getAllEvents().subscribe((data: any[]) => {
 
-      const formattedEvents: EventInput[] = data.map(event => ({
+      const formattedEvents: CalendarEvent[] = data.map(event => ({
         id: event.eventNumber.toString(),
         title: event.name,
         start: event.startDate,
@@ -139,7 +194,9 @@ export class UserCalenderComponent {
         }
       }));
 
+      this.allEvents = formattedEvents;
       this.calendarOptions.events = formattedEvents;
+      this.refreshAgenda();
 
       setTimeout(() => {
 
@@ -257,6 +314,17 @@ export class UserCalenderComponent {
     const level = eventInfo.event.extendedProps.calendar || 'others';
     const mappedColor = this.calendarsEvents[level] || 'warning';
 
+    // Mobile: just the colored marker (the title lives in the agenda cards below)
+    if (this.isMobile) {
+      return {
+        html: `
+          <div class="event-fc-color fc-bg-${mappedColor} flex items-center justify-center p-1 rounded-sm">
+            <span class="fc-daygrid-event-dot"></span>
+          </div>
+        `
+      };
+    }
+
     return {
       html: `
         <div class="event-fc-color fc-bg-${mappedColor} flex items-center gap-1 p-1 rounded-sm">
@@ -265,6 +333,120 @@ export class UserCalenderComponent {
         </div>
       `
     };
+  }
+
+  // =====================================================
+  // MOBILE AGENDA
+  // =====================================================
+
+  onDateClick(dateStr: string) {
+    this.selectedDateStr = dateStr.split('T')[0];
+    this.refreshAgenda();
+  }
+
+  onDatesSet(start: Date, end: Date) {
+    this.visibleMonthStart = this.toISO(start);
+    this.visibleMonthEnd = this.toISO(end);
+    this.visibleMonthLabel = this.visibleMonthStart;
+    // moving to another month resets the day filter
+    if (this.selectedDateStr &&
+        (this.selectedDateStr < this.visibleMonthStart || this.selectedDateStr >= this.visibleMonthEnd)) {
+      this.selectedDateStr = null;
+    }
+    // avoid ExpressionChanged errors: datesSet fires during change detection
+    Promise.resolve().then(() => this.refreshAgenda());
+  }
+
+  clearSelectedDate() {
+    this.selectedDateStr = null;
+    this.calendarComponent?.getApi().unselect();
+    this.refreshAgenda();
+  }
+
+  refreshAgenda() {
+
+    const sorted = [...this.allEvents].sort((a, b) =>
+      this.dayOf(a.start).localeCompare(this.dayOf(b.start)));
+
+    if (this.selectedDateStr) {
+      const d = this.selectedDateStr;
+      this.agendaEvents = sorted.filter(ev => {
+        const s = this.dayOf(ev.start);
+        const e = ev.end ? this.dayOf(ev.end) : '';
+        return e ? (s <= d && d < e) : s === d;   // end date is exclusive
+      });
+    } else if (this.visibleMonthStart) {
+      const ms = this.visibleMonthStart;
+      const me = this.visibleMonthEnd;
+      this.agendaEvents = sorted.filter(ev => {
+        const s = this.dayOf(ev.start);
+        const e = ev.end ? this.dayOf(ev.end) : '';
+        return e ? (s < me && e > ms) : (s >= ms && s < me);
+      });
+    } else {
+      this.agendaEvents = [];
+    }
+
+    // next event after the day being viewed (or after today)
+    const from = this.selectedDateStr || this.toISO(new Date());
+    this.nextEvent = sorted.find(ev => this.dayOf(ev.start) > from) || null;
+  }
+
+  jumpToNextEvent() {
+    if (!this.nextEvent) return;
+    const day = this.dayOf(this.nextEvent.start);
+    const api = this.calendarComponent.getApi();
+    api.gotoDate(day);
+    api.select(day);
+    this.selectedDateStr = day;
+    this.refreshAgenda();
+  }
+
+  openFromAgenda(ev: CalendarEvent) {
+    const props = ev.extendedProps;
+    this.eventNumber = props.eventNumber ?? 0;
+    this.eventTitle = (ev.title as string) || '';
+    this.eventStartDate = this.dayOf(ev.start);
+    this.eventEndDate = ev.end ? this.dayOf(ev.end) : '';
+    this.eventLevel = props.calendar;
+    this.eventDescription = props.description || '';
+    this.eventLocation = props.location || '';
+    this.eventTamilYear = props.tamilYear || '';
+    this.eventTamilMonth = props.tamilMonth || '';
+    this.eventGoogleDriveLink = props.googleDriveLink || '';
+    this.eventPathirikaiLink = props.pathirikai || '';
+    this.openModal();
+  }
+
+  colorFor(ev: CalendarEvent): EventColor {
+    return this.calendarsEvents[ev.extendedProps.calendar] || 'warning';
+  }
+
+  // multi-day if the (exclusive) end is more than one day after the start
+  isMultiDay(ev: CalendarEvent): boolean {
+    return !!ev.end && this.dayOf(ev.end) > this.addDays(this.dayOf(ev.start), 1);
+  }
+
+  lastDayOf(ev: CalendarEvent): string {
+    return ev.end ? this.addDays(this.dayOf(ev.end), -1) : this.dayOf(ev.start);
+  }
+
+  // ---------- helpers ----------
+  private dayOf(value: any): string {
+    if (!value) return '';
+    if (value instanceof Date) return this.toISO(value);
+    return String(value).split('T')[0];
+  }
+
+  private toISO(d: Date): string {
+    const m = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
+  }
+
+  private addDays(iso: string, n: number): string {
+    const [y, m, d] = iso.split('-').map(Number);
+    return this.toISO(new Date(y, m - 1, d + n));
   }
 
 }

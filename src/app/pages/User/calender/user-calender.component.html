@@ -9,7 +9,7 @@
       <div>
         <p class="font-semibold text-indigo-900 dark:text-indigo-100">Event Found!</p>
         <p class="text-sm text-indigo-800 dark:text-indigo-300 mt-1">
-          Click on the event name in the calendar to view full details
+          {{ isMobile ? 'Tap the event card below to view full details' : 'Click on the event name in the calendar to view full details' }}
         </p>
       </div>
     </div>
@@ -30,8 +30,11 @@
     <p class="mt-3 text-indigo-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
       View upcoming spiritual events, observances, and important dates.
     </p>
-    <p class="mt-2 text-indigo-500 italic text-sm md:text-base">
+    <p *ngIf="!isMobile" class="mt-2 text-indigo-500 italic text-sm md:text-base">
       Click on any event in the calendar to see more details.
+    </p>
+    <p *ngIf="isMobile" class="mt-2 text-indigo-500 italic text-sm md:text-base">
+      Tap a date to see its events, then tap an event card for details.
     </p>
 
     <div class="w-14 h-1 bg-indigo-300 mx-auto mt-5 rounded-full"></div>
@@ -43,6 +46,61 @@
     class="max-w-5xl mx-auto p-5 md:p-6 rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
     <div class="custom-calendar">
       <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE AGENDA (mobile only) ================= -->
+  <div *ngIf="isMobile"
+       class="max-w-5xl mx-auto mt-4 p-5 rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+
+    <!-- Agenda header -->
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-indigo-500 font-medium">
+          {{ selectedDateStr ? 'Events on' : 'Events this month' }}
+        </p>
+        <p class="mt-1 text-lg font-semibold text-indigo-800 dark:text-indigo-300 tracking-wide leading-relaxed">
+          {{ selectedDateStr ? (selectedDateStr | date:'fullDate') : (visibleMonthLabel | date:'MMMM y') }}
+        </p>
+      </div>
+      <button *ngIf="selectedDateStr" type="button" (click)="clearSelectedDate()"
+        class="flex-shrink-0 inline-flex items-center text-indigo-700 font-medium hover:text-indigo-900 transition px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Whole month
+      </button>
+    </div>
+
+    <!-- Event cards -->
+    <div class="mt-4 space-y-3" *ngIf="agendaEvents.length > 0; else emptyAgenda">
+      <button *ngFor="let ev of agendaEvents" type="button" (click)="openFromAgenda(ev)"
+        class="w-full text-left px-4 py-3 rounded-lg border border-indigo-300 dark:border-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        <div class="event-fc-color flex items-center gap-1 p-1 rounded-sm" [ngClass]="'fc-bg-' + colorFor(ev)">
+          <span class="fc-daygrid-event-dot"></span>
+          <span class="fc-event-title">{{ ev.title }}</span>
+        </div>
+        <p class="mt-2 text-sm text-indigo-600">
+          {{ ev.start | date:'mediumDate' }}<ng-container *ngIf="isMultiDay(ev)"> – {{ lastDayOf(ev) | date:'mediumDate' }}</ng-container>
+        </p>
+        <p *ngIf="ev.extendedProps.tamilMonth" class="mt-1 text-xs uppercase tracking-widest text-indigo-500 font-medium">
+          {{ ev.extendedProps.tamilMonth }}
+        </p>
+        <p class="mt-2 inline-flex items-center text-indigo-700 font-medium text-sm">
+          View details →
+        </p>
+      </button>
+    </div>
+
+    <ng-template #emptyAgenda>
+      <p class="mt-4 text-sm text-gray-500 italic">
+        No events {{ selectedDateStr ? 'on this day.' : 'this month.' }}
+      </p>
+    </ng-template>
+
+    <!-- Jump to next event -->
+    <div class="mt-5" *ngIf="nextEvent">
+      <button type="button" (click)="jumpToNextEvent()"
+        class="w-full inline-flex items-center justify-center text-indigo-700 font-medium hover:text-indigo-900 transition px-6 py-2.5 rounded-lg border border-indigo-300 dark:border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Next event: {{ nextEvent.title }} →
+      </button>
     </div>
   </div>
 
