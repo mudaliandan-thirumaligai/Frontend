@@ -8,7 +8,20 @@ interface Folder {
   name: string;
   images: string[];
   expanded: boolean;
-  year: number | null;   // NEW: newest year found in this utsavam (used to find the latest event)
+  year: number | null;   // year of this event (an event is now one name + one year)
+}
+
+// Events grouped under a year heading
+interface YearGroup {
+  year: number | null;
+  label: string;          // "2026" or "Other"
+  folders: Folder[];
+  photoCount: number;
+}
+
+interface YearOption {
+  year: number;
+  count: number;          // number of events in that year
 }
 
 @Component({
@@ -19,7 +32,11 @@ interface Folder {
   styleUrls: ['./gallery.component.css']
 })
 export class GalleryComponent implements OnInit {
-  folders: Folder[] = [];
+
+  allFolders: Folder[] = [];        // every event, newest year first
+  folders: Folder[] = [];           // events currently visible (after year filter)
+  yearGroups: YearGroup[] = [];     // visible events grouped by year
+  yearOptions: YearOption[] = [];   // chips for the year filter
 
   selectedImage: string | null = null;
   currentFolder: any = null;
@@ -41,7 +58,9 @@ export class GalleryComponent implements OnInit {
       .get<any[]>(`${environment.apiUrl}/gallery`)
       .subscribe(images => {
         this.years = this.extractYears(images);
-        this.folders = this.groupByUtsavam(images);
+        this.allFolders = this.groupByUtsavam(images);
+        this.yearOptions = this.buildYearOptions(this.allFolders);
+        this.applyFilter();
       });
   }
 
@@ -57,52 +76,95 @@ export class GalleryComponent implements OnInit {
     return Array.from(yearSet).sort((a, b) => b - a); // latest first
   }
 
-  onYearChange(yearValue: string) {
-    if (!yearValue) {
-      this.selectedYear = null;
-      this.loadAll();
-      return;
-    }
-
-    const year = Number(yearValue);
-    this.selectedYear = year;
-
-    this.http
-      .get<any[]>(`${environment.apiUrl}/gallery/search?year=${year}`)
-      .subscribe(images => {
-        this.folders = this.groupByUtsavam(images);
-      });
-  }
-
-  private groupByUtsavam(images: any[]): Folder[] {
-    const map = new Map<string, { urls: string[]; year: number | null }>();
-
-    images.forEach((img) => {
-      if (!map.has(img.utsavamName)) {
-        map.set(img.utsavamName, { urls: [], year: null });
-      }
-      const group = map.get(img.utsavamName)!;
-      group.urls.push(img.url);
-
-      const y = Number(img.year);
-      if (y && (group.year === null || y > group.year)) {
-        group.year = y;
+  private buildYearOptions(folders: Folder[]): YearOption[] {
+    const counts = new Map<number, number>();
+    folders.forEach(f => {
+      if (f.year !== null) {
+        counts.set(f.year, (counts.get(f.year) ?? 0) + 1);
       }
     });
+    return Array.from(counts.entries())
+      .map(([year, count]) => ({ year, count }))
+      .sort((a, b) => b.year - a.year);
+  }
 
-    return Array.from(map.entries()).map(([utsavamName, g], index) => ({
-      name: utsavamName,
+  // ─── Year filter ──────────────────────────────────────────────
+
+  /** Pick a year chip (null = all years). Filtering happens in the browser. */
+  selectYear(year: number | null) {
+    this.selectedYear = year;
+    this.applyFilter();
+  }
+
+  private applyFilter() {
+    this.folders = this.selectedYear === null
+      ? this.allFolders
+      : this.allFolders.filter(f => f.year === this.selectedYear);
+
+    this.yearGroups = this.buildYearGroups(this.folders);
+  }
+
+  private buildYearGroups(folders: Folder[]): YearGroup[] {
+    const map = new Map<number | null, Folder[]>();
+
+    folders.forEach(f => {
+      if (!map.has(f.year)) map.set(f.year, []);
+      map.get(f.year)!.push(f);
+    });
+
+    return Array.from(map.entries()).map(([year, list]) => ({
+      year,
+      label: year !== null ? String(year) : 'Other',
+      folders: list,
+      photoCount: list.reduce((sum, f) => sum + f.images.length, 0)
+    }));
+  }
+
+  trackByYear(_: number, group: YearGroup): number | string {
+    return group.year ?? 'other';
+  }
+
+  // ─── Grouping ─────────────────────────────────────────────────
+
+  /**
+   * One folder per event AND year, so the same utsavam held in
+   * different years shows up under each year instead of being merged.
+   */
+  private groupByUtsavam(images: any[]): Folder[] {
+    const map = new Map<string, { name: string; urls: string[]; year: number | null }>();
+
+    images.forEach((img) => {
+      const y = Number(img.year) || null;
+      const key = `${img.utsavamName}|${y ?? ''}`;
+
+      if (!map.has(key)) {
+        map.set(key, { name: img.utsavamName, urls: [], year: y });
+      }
+      map.get(key)!.urls.push(img.url);
+    });
+
+    const folders: Folder[] = Array.from(map.values()).map(g => ({
+      name: g.name,
       images: g.urls,
       year: g.year,
-      expanded: index === 0, // first group open
+      expanded: false,
     }));
+
+    // newest year first; undated events last (sort is stable, API order kept inside a year)
+    folders.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+
+    if (folders.length) {
+      folders[0].expanded = true; // newest event open
+    }
+
+    return folders;
   }
 
   trackByImg(_: number, img: string): string {
     return img;
   }
 
-  // ─── Latest event (NEW) ───────────────────────────────────────
+  // ─── Latest event ─────────────────────────────────────────────
 
   /**
    * Newest utsavam = the folder with the highest year.
@@ -111,15 +173,15 @@ export class GalleryComponent implements OnInit {
    * shows a misleading "latest" banner).
    */
   get latestFolder(): Folder | null {
-    if (!this.folders.length || this.selectedYear !== null) return null;
-    return this.folders.reduce(
+    if (!this.allFolders.length || this.selectedYear !== null) return null;
+    return this.allFolders.reduce(
       (best, f) => ((f.year ?? 0) > (best.year ?? 0) ? f : best),
-      this.folders[0]
+      this.allFolders[0]
     );
   }
 
   isLatest(folder: Folder): boolean {
-    return !!this.latestFolder && folder.name === this.latestFolder.name;
+    return !!this.latestFolder && folder === this.latestFolder;
   }
 
   coverOf(folder: Folder | null): string | null {
@@ -134,10 +196,14 @@ export class GalleryComponent implements OnInit {
 
   // ─── Folders ──────────────────────────────────────────────────
 
+  /** DOM id used for scrolling (index in the visible list). */
+  folderId(folder: Folder): string {
+    return `folder-${this.folders.indexOf(folder)}`;
+  }
+
   toggleFolder(folder: Folder) {
     folder.expanded = !folder.expanded;
-    // FIX: the old code used querySelector(`#${folder.name}`), which throws for
-    // names with spaces/special characters. Scroll by index id instead,
+    // Scroll by index id (names with spaces/special characters break querySelector),
     // and only when opening.
     if (folder.expanded) {
       this.scrollToFolder(folder);
@@ -148,8 +214,7 @@ export class GalleryComponent implements OnInit {
     if (!folder.expanded) folder.expanded = true;
 
     setTimeout(() => {
-      const index = this.folders.indexOf(folder);
-      const element = document.getElementById(`folder-${index}`);
+      const element = document.getElementById(this.folderId(folder));
       element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
   }

@@ -26,7 +26,7 @@
 
       <div class="p-5 flex-1 flex flex-col justify-center">
         <p class="text-xs uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-2">
-          ✨ Latest Utsavam
+          ✨ Latest Utsavam<ng-container *ngIf="latestFolder.year"> · {{ latestFolder.year }}</ng-container>
         </p>
         <h2 class="text-xl md:text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-100 mb-1">
           {{ latestFolder.name }}
@@ -57,181 +57,209 @@
   <!-- ================= MAIN CONTENT ================= -->
   <div class="gallery-content">
 
-    <!-- Plain-language instruction -->
-    <p class="text-lg text-indigo-700 font-medium mb-1">
-      👇 Tap an event below to see its photos
-    </p>
+    <!-- ================= YEAR FILTER ================= -->
+    <div *ngIf="yearOptions.length" class="mb-2">
+      <p class="text-xs uppercase tracking-widest text-indigo-500 font-medium mb-2">
+        Filter by year
+      </p>
 
-    <div
-      *ngFor="let folder of folders; let i = index"
-      class="folder-section"
-      [id]="'folder-' + i"
-    >
-
-      <!-- Event card: whole card is one big button -->
-      <button
-        type="button"
-        class="w-full flex items-center gap-4 text-left bg-white rounded-2xl shadow-lg
-               border border-[#3B5BA9]/10 p-3 mt-4
-               hover:shadow-xl active:scale-[0.99] transition
-               focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
-        [class.ring-2]="folder.expanded"
-        [class.ring-indigo-300]="folder.expanded"
-        [attr.aria-expanded]="folder.expanded"
-        (click)="toggleFolder(folder)"
-      >
-        <!-- Cover photo -->
-        <div class="w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-[#3B5BA9] to-[#6379C8]
-                    flex items-center justify-center text-3xl text-white">
-          <img *ngIf="coverOf(folder)" [src]="coverOf(folder)" [alt]="folder.name" loading="lazy"
-               class="w-full h-full object-cover">
-          <span *ngIf="!coverOf(folder)">🛕</span>
-        </div>
-
-        <!-- Text + clear action label -->
-        <div class="flex-1 min-w-0">
-          <div class="flex flex-wrap items-center gap-2 mb-1">
-            <span class="text-lg font-semibold tracking-wide leading-tight text-indigo-900">{{ folder.name }}</span>
-            <span *ngIf="isLatest(folder)"
-                  class="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide text-white
-                         bg-[#3B5BA9] animate-pulse">
-              Latest
-            </span>
-          </div>
-
-          <p class="text-base text-indigo-600 mb-2">{{ folder.images.length }} photos</p>
-
-          <span class="inline-flex items-center px-4 py-1.5 rounded-lg
-                       font-medium tracking-wide text-base
-                       text-indigo-700 border border-indigo-300">
-            {{ folder.expanded ? 'Hide Photos ▲' : 'View Photos ▼' }}
-          </span>
-        </div>
-      </button>
-
-      <!-- Image Grid -->
-      <div class="grid fade" *ngIf="folder.expanded">
-        <div
-          class="grid-item"
-          *ngFor="let img of folder.images; trackBy: trackByImg; let n = index"
-        >
-          <img
-            [src]="img"
-            [alt]="folder.name + ' photo ' + (n + 1)"
-            loading="lazy"
-            class="cursor-pointer"
-            (click)="openImage(img, folder)"
-          />
-        </div>
-      </div>
-
-      <!-- Close button at the bottom (no need to scroll back up) -->
-      <div *ngIf="folder.expanded" class="text-center mt-4">
-        <button type="button" (click)="toggleFolder(folder)"
-                class="inline-flex items-center justify-center px-6 py-2.5 rounded-lg
-                       font-medium tracking-wide text-base
-                       text-indigo-700 border border-indigo-300
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter events by year">
+        <!-- Same look as the other buttons on this page; the selected one gets the same ring as an opened event card -->
+        <button type="button"
+                (click)="selectYear(null)"
+                [attr.aria-pressed]="selectedYear === null"
+                class="inline-flex items-center justify-center min-h-[44px] px-4 py-1.5 rounded-lg
+                       font-medium tracking-wide text-base text-indigo-700 border border-indigo-300
                        hover:text-indigo-900 hover:bg-indigo-50
-                       transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
-          Hide Photos ▲
+                       transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+                [class.ring-2]="selectedYear === null"
+                [class.ring-indigo-300]="selectedYear === null"
+                [class.bg-indigo-50]="selectedYear === null"
+                [class.font-bold]="selectedYear === null">
+          {{ selectedYear === null ? '✓ ' : '' }}All years
+        </button>
+
+        <button *ngFor="let opt of yearOptions"
+                type="button"
+                (click)="selectYear(opt.year)"
+                [attr.aria-pressed]="selectedYear === opt.year"
+                class="inline-flex items-center justify-center min-h-[44px] px-4 py-1.5 rounded-lg
+                       font-medium tracking-wide text-base text-indigo-700 border border-indigo-300
+                       hover:text-indigo-900 hover:bg-indigo-50
+                       transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+                [class.ring-2]="selectedYear === opt.year"
+                [class.ring-indigo-300]="selectedYear === opt.year"
+                [class.bg-indigo-50]="selectedYear === opt.year"
+                [class.font-bold]="selectedYear === opt.year">
+          {{ selectedYear === opt.year ? '✓ ' : '' }}{{ opt.year }}
         </button>
       </div>
 
+      <!-- Plain-language status so it's clear what is being shown -->
+      <p class="mt-3 text-base text-indigo-600">
+        Showing {{ folders.length }} {{ folders.length === 1 ? 'event' : 'events' }}
+        {{ selectedYear ? 'from ' + selectedYear : 'from all years' }}
+      </p>
+    </div>
+
+    <!-- Plain-language instruction -->
+    <p class="text-lg text-indigo-700 font-medium mt-4 mb-1">
+      👇 Tap an event below to see its photos
+    </p>
+
+    <!-- Nothing to show -->
+    <p *ngIf="!folders.length" class="py-10 text-center text-indigo-500">
+      No events found{{ selectedYear ? ' for ' + selectedYear : '' }}.
+    </p>
+
+    <!-- ================= YEAR GROUPS ================= -->
+    <div *ngFor="let group of yearGroups; trackBy: trackByYear" class="mt-6">
+
+      <!-- Year heading -->
+      <div class="flex items-center gap-3">
+        <h2 class="text-2xl font-semibold tracking-wide text-indigo-900">
+          {{ group.label }}
+        </h2>
+        <span class="text-sm md:text-base text-indigo-600">
+          {{ group.folders.length }} {{ group.folders.length === 1 ? 'event' : 'events' }} · {{ group.photoCount }} photos
+        </span>
+        <div class="flex-1 h-px bg-indigo-100"></div>
+      </div>
+
+      <div
+        *ngFor="let folder of group.folders"
+        class="folder-section"
+        [id]="folderId(folder)"
+      >
+
+        <!-- Event card: whole card is one big button -->
+        <button
+          type="button"
+          class="w-full flex items-center gap-4 text-left bg-white rounded-2xl shadow-lg
+                 border border-[#3B5BA9]/10 p-3 mt-4
+                 hover:shadow-xl active:scale-[0.99] transition
+                 focus:outline-none focus:ring-2 focus:ring-indigo-300/40"
+          [class.ring-2]="folder.expanded"
+          [class.ring-indigo-300]="folder.expanded"
+          [attr.aria-expanded]="folder.expanded"
+          (click)="toggleFolder(folder)"
+        >
+          <!-- Cover photo -->
+          <div class="w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-[#3B5BA9] to-[#6379C8]
+                      flex items-center justify-center text-3xl text-white">
+            <img *ngIf="coverOf(folder)" [src]="coverOf(folder)" [alt]="folder.name" loading="lazy"
+                 class="w-full h-full object-cover">
+            <span *ngIf="!coverOf(folder)">🛕</span>
+          </div>
+
+          <!-- Text + clear action label -->
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="text-lg font-semibold tracking-wide leading-tight text-indigo-900">{{ folder.name }}</span>
+              <span *ngIf="isLatest(folder)"
+                    class="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide text-white
+                           bg-[#3B5BA9] animate-pulse">
+                Latest
+              </span>
+            </div>
+
+            <p class="text-base text-indigo-600 mb-2">
+              <ng-container *ngIf="folder.year">{{ folder.year }} · </ng-container>{{ folder.images.length }} photos
+            </p>
+
+            <span class="inline-flex items-center px-4 py-1.5 rounded-lg
+                         font-medium tracking-wide text-base
+                         text-indigo-700 border border-indigo-300">
+              {{ folder.expanded ? 'Hide Photos ▲' : 'View Photos ▼' }}
+            </span>
+          </div>
+        </button>
+
+        <!-- Image Grid -->
+        <div class="grid fade" *ngIf="folder.expanded">
+          <div
+            class="grid-item"
+            *ngFor="let img of folder.images; trackBy: trackByImg; let n = index"
+          >
+            <img
+              [src]="img"
+              [alt]="folder.name + ' photo ' + (n + 1)"
+              loading="lazy"
+              class="cursor-pointer"
+              (click)="openImage(img, folder)"
+            />
+          </div>
+        </div>
+
+        <!-- Close button at the bottom (no need to scroll back up) -->
+        <div *ngIf="folder.expanded" class="text-center mt-4">
+          <button type="button" (click)="toggleFolder(folder)"
+                  class="inline-flex items-center justify-center px-6 py-2.5 rounded-lg
+                         font-medium tracking-wide text-base
+                         text-indigo-700 border border-indigo-300
+                         hover:text-indigo-900 hover:bg-indigo-50
+                         transition focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            Hide Photos ▲
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- ================= SIDEBAR ================= -->
-  <!-- <aside class="sidebar">
-
-    <div class="mb-4">
-      <label class="block text-sm text-indigo-600 mb-1">
-        Filter by year
-      </label>
-      <select
-        class="year-select"
-        #yearSelect
-        (change)="onYearChange(yearSelect.value)"
-      >
-        <option value="">All years</option>
-        <option *ngFor="let y of years" [value]="y">
-          {{ y }}
-        </option>
-      </select>
-    </div>
-
-    <ul class="space-y-1">
-      <li
-        *ngFor="let folder of folders; let i = index"
-        class="px-3 py-2 flex justify-between items-center
-               text-indigo-700 hover:bg-gray-100 cursor-pointer rounded-md"
-        [class.active-folder]="folder.expanded"
-        (click)="scrollToFolder(folder)"
-      >
-        <span>
-          {{ folder.name }}
-          <span *ngIf="isLatest(folder)" class="ml-1 text-xs font-bold text-[#3B5BA9]">• Latest</span>
-        </span>
-        <span class="count">{{ folder.images.length }}</span>
-      </li>
-    </ul>
-  </aside>
-
-</div> -->
-<!-- (gallery-container is now closed; it was left open in the pasted version) -->
-
+</div>
 
 <!-- ================= IMAGE MODAL ================= -->
+<!-- Swipe works anywhere on the dark area (touch handlers live here, NOT on the image, so photos never skip twice) -->
 <div
   *ngIf="selectedImage"
   class="fixed inset-0 bg-black bg-opacity-70
-       flex justify-center items-center z-50 modal-enter"
+       flex justify-center items-center z-50 modal-enter touch-pan-y"
   (click)="closeImage()"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
 >
 
-  <div class="relative flex flex-col items-center" (click)="$event.stopPropagation()">
+  <div class="relative flex flex-col items-center px-3" (click)="$event.stopPropagation()">
 
-    <!-- Close Button (large, labelled) -->
-    <button
-      type="button"
-      (click)="closeImage()"
-      aria-label="Close image"
-      class="absolute -top-12 right-0
-             text-white bg-black/60 rounded-full
-             px-4 py-2 text-base font-medium"
-    >
-      ✕ Close
-    </button>
+    <!-- Photo -->
+    <img
+      [src]="selectedImage"
+      class="max-h-[62vh] max-w-[92vw]
+             rounded-lg shadow-2xl select-none"
+    />
 
-    <!-- Image + side arrows -->
-    <div class="relative">
-      <img
-        [src]="selectedImage"
-        class="max-h-[78vh] max-w-[92vw]
-               rounded-lg shadow-2xl select-none"
-        (touchstart)="onTouchStart($event)"
-        (touchend)="onTouchEnd($event)"
-      />
-
+    <!-- Controls live below the photo, in easy thumb reach, so nothing sits at the top of the screen -->
+    <div class="mt-4 flex items-center justify-center gap-3">
       <button type="button" (click)="prevImage()" aria-label="Previous photo"
-              class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full
-                     bg-black/60 text-white text-2xl flex items-center justify-center
-                     active:scale-95 transition">
+              class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 rounded-lg
+                     text-xl text-white border border-white/40
+                     hover:bg-white/10 active:scale-95 transition
+                     focus:outline-none focus:ring-2 focus:ring-white/40">
         ‹
       </button>
+
+      <span class="inline-block px-4 py-2 rounded-full bg-white/90 text-indigo-700 font-medium">
+        {{ currentIndex + 1 }} / {{ currentFolder?.images?.length }}
+      </span>
+
       <button type="button" (click)="nextImage()" aria-label="Next photo"
-              class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full
-                     bg-black/60 text-white text-2xl flex items-center justify-center
-                     active:scale-95 transition">
+              class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 rounded-lg
+                     text-xl text-white border border-white/40
+                     hover:bg-white/10 active:scale-95 transition
+                     focus:outline-none focus:ring-2 focus:ring-white/40">
         ›
       </button>
     </div>
 
-    <!-- Counter + hint -->
-    <div class="mt-3 text-center">
-      <span class="inline-block px-4 py-1 rounded-full bg-white/90 text-indigo-700 font-medium">
-        {{ currentIndex + 1 }} / {{ currentFolder?.images.length }}
-      </span>
-      <p class="mt-2 text-sm text-white/80">Use the ‹ › buttons or swipe to see more photos</p>
-    </div>
+    <button type="button" (click)="closeImage()" aria-label="Close image"
+            class="mt-3 inline-flex items-center justify-center min-h-[44px] px-6 rounded-lg
+                   text-base font-medium text-white border border-white/40
+                   hover:bg-white/10 transition
+                   focus:outline-none focus:ring-2 focus:ring-white/40">
+      ✕ Close
+    </button>
+
+    <p class="mt-2 text-sm text-white/80 text-center">Swipe left or right, or tap the arrows, to see more photos</p>
   </div>
 </div>
