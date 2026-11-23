@@ -1,0 +1,65 @@
+/* Functional baseline only: large tap targets, high contrast. Theme later. */
+:host { display: block; }
+
+.admin {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #111;
+}
+
+h1 { font-size: 28px; margin: 0 0 8px; }
+
+.form { display: flex; flex-direction: column; }
+
+label { font-weight: 600; margin: 16px 0 6px; }
+
+input,
+button {
+  font-size: 18px;
+  min-height: 48px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+input { border: 2px solid #333; border-radius: 6px; }
+
+button {
+  margin-top: 16px;
+  font-weight: 700;
+  border: 2px solid #111;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button.primary { background: #111; color: #fff; }
+button.secondary { background: #fff; color: #111; }
+button[disabled], input[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.hint { font-size: 15px; color: #444; margin: 4px 0; }
+
+.message {
+  margin-top: 16px;
+  padding: 12px;
+  border: 2px solid #333;
+  border-radius: 6px;
+}
+.message.ok { border-color: #1b7a1b; }
+.message.error { border-color: #b00020; }
+
+.file-list { list-style: none; padding: 0; margin: 16px 0 0; }
+
+.file {
+  border: 2px solid #888;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 8px 0;
+}
+.file.done { border-color: #1b7a1b; }
+.file.failed { border-color: #b00020; }
+.file-name { font-weight: 600; word-break: break-all; }
+
+progress { width: 100%; height: 16px; } 

@@ -30,6 +30,7 @@ export class AdminSidebarComponent {
     { label: 'Calendar', route: '/admin/calendar' },
     { label: 'Change Password', route: '/admin/change-pwd' },
     { label: 'Documents', route: '/admin/documents' },
+    { label: '  Gallery', route: '/admin/gallery' },
     { label: 'Shishya Info', route: '/admin/shishya-info' },
     { label: 'Swamy Schedule', route: '/admin/swamy-schedule' },
     { label: 'Videos', route: '/admin/videos' },

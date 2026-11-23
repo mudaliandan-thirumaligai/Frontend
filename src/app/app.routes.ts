@@ -5,7 +5,7 @@ import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.compon
 
 //Admin Pages
 import { AdminCalenderComponent } from './pages/Admin/calender/admin-calender.component';
-
+import { AdminGallery } from './pages/Admin/gallery/gallery.component';
 //Admin Auth Pages
 import { AddNewAdmin } from './pages/Admin/Auth/Add-New-Admin/new-admin.component';
 import { ChangePasswordComponent } from './pages/Admin/Auth/Change-Password/change-pwd.component';
@@ -80,6 +80,7 @@ export const routes: Routes = [
       { path: 'addUser', component: AddNewAdmin },
       { path: 'change-pwd', component: ChangePasswordComponent },
       { path: 'documents', component: DocumentsComponentAdmin },
+       { path: 'gallery', component: AdminGallery },
       { path: 'swamy-schedule', component: SwamyScheduleAdminComponent },
       { path: 'videos', component: VideosAdminComponent },
       { path: 'shishya-info', component: ShishyaListComponent }

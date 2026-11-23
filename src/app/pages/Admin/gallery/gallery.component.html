@@ -1,0 +1,147 @@
+<main class="admin">
+  <h1>Gallery admin</h1>
+
+  <h2>Add photos</h2>
+
+  <form class="form" (submit)="$event.preventDefault(); upload()">
+    <label for="utsavam-name">Utsavam name</label>
+    <input
+      id="utsavam-name"
+      type="text"
+      placeholder="e.g. Diwali Food Drive"
+      [value]="utsavamName()"
+      (input)="onUtsavam($event)"
+      [disabled]="busy()"
+    />
+
+    <div class="row">
+      <div class="col">
+        <label for="location">Location</label>
+        <input
+          id="location"
+          type="text"
+          placeholder="e.g. Chennai"
+          [value]="location()"
+          (input)="onLocation($event)"
+          [disabled]="busy()"
+        />
+      </div>
+      <div class="col year">
+        <label for="year">Year</label>
+        <input
+          id="year"
+          type="number"
+          inputmode="numeric"
+          min="1900"
+          max="2100"
+          [value]="year()"
+          (input)="onYear($event)"
+          [disabled]="busy()"
+        />
+      </div>
+    </div>
+
+    <label for="photo-input">Choose photos</label>
+    <!-- No "capture" attribute: phones offer both camera and gallery -->
+    <input
+      #picker
+      id="photo-input"
+      type="file"
+      accept="image/*"
+      multiple
+      (change)="onFiles($event)"
+      [disabled]="busy()"
+    />
+    <p class="hint">{{ selectedText() }}</p>
+
+    @if (formError()) {
+      <div class="message error" role="alert">{{ formError() }}</div>
+    }
+
+    <div class="actions">
+      <button type="submit" class="primary" [disabled]="busy()">
+        {{ busy() ? 'Uploading…' : 'Upload' }}
+      </button>
+
+      @if (failedJobs().length > 0 && !busy()) {
+        <button type="button" class="secondary" (click)="retryFailed()">
+          Try the failed photos again
+        </button>
+      }
+    </div>
+  </form>
+
+  @if (jobs().length > 0) {
+    <div
+      class="message"
+      [class.ok]="finished() && failedJobs().length === 0"
+      [class.error]="finished() && failedJobs().length > 0"
+      role="status"
+      aria-live="polite"
+    >
+      {{ summaryText() }}
+    </div>
+
+    @if (serverMessage()) {
+      <div class="message server" [class.error]="serverMessageIsError()" [class.ok]="!serverMessageIsError()">
+        {{ serverMessage() }}
+      </div>
+    }
+
+    <ul class="file-list">
+      @for (job of jobs(); track job.id) {
+        <li class="file" [class.done]="job.stage === 'done'" [class.failed]="job.stage === 'failed'">
+          <div class="file-name">{{ job.name }}</div>
+          <div class="hint">{{ job.sizeText }}</div>
+          <progress max="100" [value]="job.progress"></progress>
+          <div class="hint">{{ job.statusText }}</div>
+        </li>
+      }
+    </ul>
+  }
+
+  <section class="manage">
+    <h2>Manage photos</h2>
+
+    <input
+      type="search"
+      placeholder="Search by event, location or year"
+      [value]="search()"
+      (input)="onSearch($event)"
+    />
+
+    @if (photosError()) {
+      <div class="message error" role="alert">{{ photosError() }}</div>
+    }
+    @if (deleteMessage()) {
+      <div class="message ok" role="status">{{ deleteMessage() }}</div>
+    }
+
+    @if (photosLoading()) {
+      <p class="hint">Loading photos…</p>
+    } @else if (visiblePhotos().length === 0) {
+      <p class="hint">No photos found.</p>
+    } @else {
+      <p class="hint">{{ visiblePhotos().length }} photo(s)</p>
+      <ul class="grid">
+        @for (p of visiblePhotos(); track p._id) {
+          <li class="card">
+            <img [src]="p.url" [alt]="p.name" loading="lazy" />
+            <div class="meta">
+              <div class="file-name">{{ p.name }}</div>
+              <div class="hint">{{ p.utsavamName }} · {{ p.year }} · {{ p.location }}</div>
+            </div>
+            <button
+              type="button"
+              class="danger"
+              (click)="deletePhoto(p)"
+              [disabled]="deletingId() !== null"
+            >
+              {{ deletingId() === p._id ? 'Deleting…' : 'Delete' }}
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</main>
