@@ -1,14 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, forkJoin, of } from 'rxjs';
 import { PageBreadcrumbComponent } from '../../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { environment } from '../../../environment/environment';
 
 interface Folder {
+  key: string;             // stable id: "event:<id>" or "name:<utsavam>|<year>"
+  eventId: string | null;  // set when the photos are linked to an event
   name: string;
   images: string[];
   expanded: boolean;
-  year: number | null;   // year of this event (an event is now one name + one year)
+  year: number | null;
+  dateText: string;        // "12 Nov 2026" or "12 – 14 Nov 2026" (linked events only)
+  location: string;
+  sortTime: number;        // newest first inside a year
 }
 
 // Events grouped under a year heading
@@ -24,6 +31,23 @@ interface YearOption {
   count: number;          // number of events in that year
 }
 
+interface GalleryPhoto {
+  url: string;
+  utsavamName: string;
+  year?: number;
+  location?: string;
+  // the API sends an id string; tolerate a populated object just in case
+  eventId?: string | { _id: string } | null;
+}
+
+interface EventInfo {
+  _id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  location?: string;
+}
+
 @Component({
   selector: 'app-gallery',
   standalone: true,
@@ -33,7 +57,7 @@ interface YearOption {
 })
 export class GalleryComponent implements OnInit {
 
-  allFolders: Folder[] = [];        // every event, newest year first
+  allFolders: Folder[] = [];        // every event, newest first
   folders: Folder[] = [];           // events currently visible (after year filter)
   yearGroups: YearGroup[] = [];     // visible events grouped by year
   yearOptions: YearOption[] = [];   // chips for the year filter
@@ -44,36 +68,47 @@ export class GalleryComponent implements OnInit {
   isClosing = false;
   touchStartX = 0;
   touchEndX = 0;
-  years: number[] = [];
   selectedYear: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.loadAll();
   }
 
+  /**
+   * Photos and events are loaded together. If the events request fails the page
+   * still works: linked photos are then grouped by their event id using the
+   * name stored on the photo.
+   */
   loadAll() {
-    this.http
-      .get<any[]>(`${environment.apiUrl}/gallery`)
-      .subscribe(images => {
-        this.years = this.extractYears(images);
-        this.allFolders = this.groupByUtsavam(images);
-        this.yearOptions = this.buildYearOptions(this.allFolders);
-        this.applyFilter();
-      });
+    forkJoin({
+      photos: this.http
+        .get<GalleryPhoto[]>(`${environment.apiUrl}/gallery`)
+        .pipe(catchError(() => of([] as GalleryPhoto[]))),
+      events: this.http
+        .get<any>(`${environment.apiUrl}/events`)
+        .pipe(catchError(() => of(null))),
+    }).subscribe(({ photos, events }) => {
+      this.allFolders = this.buildFolders(photos ?? [], this.toEventList(events));
+      this.yearOptions = this.buildYearOptions(this.allFolders);
+      this.applyFilter();
+      this.openFromLink();
+    });
   }
 
-  private extractYears(images: any[]): number[] {
-    const yearSet = new Set<number>();
+  /** Accepts a plain array or a wrapped { events | data } response; null = request failed. */
+  private toEventList(res: any): EventInfo[] | null {
+    if (res === null || res === undefined) return null;
+    if (Array.isArray(res)) return res;
+    if (Array.isArray(res.events)) return res.events;
+    if (Array.isArray(res.data)) return res.data;
+    return null;
+  }
 
-    images.forEach(img => {
-      if (img.year) {
-        yearSet.add(Number(img.year));
-      }
-    });
-
-    return Array.from(yearSet).sort((a, b) => b - a); // latest first
+  private idOf(eventId: GalleryPhoto['eventId']): string | null {
+    if (!eventId) return null;
+    return typeof eventId === 'string' ? eventId : eventId._id ?? null;
   }
 
   private buildYearOptions(folders: Folder[]): YearOption[] {
@@ -124,34 +159,56 @@ export class GalleryComponent implements OnInit {
     return group.year ?? 'other';
   }
 
+  trackByFolder(_: number, folder: Folder): string {
+    return folder.key;
+  }
+
   // ─── Grouping ─────────────────────────────────────────────────
 
   /**
-   * One folder per event AND year, so the same utsavam held in
-   * different years shows up under each year instead of being merged.
+   * - Photos linked to an event are grouped by that event (its name, dates and
+   *   location come from the event itself).
+   * - Photos not linked to anything (or whose event was deleted) are grouped
+   *   by utsavam name + year, exactly as before.
    */
-  private groupByUtsavam(images: any[]): Folder[] {
-    const map = new Map<string, { name: string; urls: string[]; year: number | null }>();
+  private buildFolders(photos: GalleryPhoto[], events: EventInfo[] | null): Folder[] {
+    const eventById = new Map<string, EventInfo>((events ?? []).map(e => [e._id, e]));
+    const map = new Map<string, Folder>();
 
-    images.forEach((img) => {
-      const y = Number(img.year) || null;
-      const key = `${img.utsavamName}|${y ?? ''}`;
+    photos.forEach(img => {
+      const evId = this.idOf(img.eventId);
+      const linkedEvent = evId ? eventById.get(evId) : undefined;
+      // events === null means the events request failed: trust the link anyway
+      const isLinked = !!evId && (linkedEvent !== undefined || events === null);
 
-      if (!map.has(key)) {
-        map.set(key, { name: img.utsavamName, urls: [], year: y });
+      const key = isLinked
+        ? `event:${evId}`
+        : `name:${img.utsavamName}|${Number(img.year) || ''}`;
+
+      let folder = map.get(key);
+      if (!folder) {
+        folder = isLinked
+          ? this.folderForEvent(img, evId!, linkedEvent)
+          : {
+              key,
+              eventId: null,
+              name: img.utsavamName,
+              images: [],
+              expanded: false,
+              year: Number(img.year) || null,
+              dateText: '',
+              location: img.location ?? '',
+              sortTime: 0,
+            };
+        map.set(key, folder);
       }
-      map.get(key)!.urls.push(img.url);
+      folder.images.push(img.url);
     });
 
-    const folders: Folder[] = Array.from(map.values()).map(g => ({
-      name: g.name,
-      images: g.urls,
-      year: g.year,
-      expanded: false,
-    }));
+    const folders = Array.from(map.values());
 
-    // newest year first; undated events last (sort is stable, API order kept inside a year)
-    folders.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+    // newest year first, then newest event inside the year; undated events last
+    folders.sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || b.sortTime - a.sortTime);
 
     if (folders.length) {
       folders[0].expanded = true; // newest event open
@@ -160,24 +217,71 @@ export class GalleryComponent implements OnInit {
     return folders;
   }
 
+  private folderForEvent(img: GalleryPhoto, eventId: string, ev: EventInfo | undefined): Folder {
+    const start = ev ? new Date(ev.startDate) : null;
+    const validStart = start && !isNaN(start.getTime()) ? start : null;
+    return {
+      key: `event:${eventId}`,
+      eventId,
+      name: ev?.name ?? img.utsavamName,
+      images: [],
+      expanded: false,
+      // the event's own start year, falling back to the year stored on the photo
+      year: validStart ? validStart.getFullYear() : Number(img.year) || null,
+      dateText: ev ? this.formatDates(ev.startDate, ev.endDate) : '',
+      location: ev?.location || img.location || '',
+      sortTime: validStart ? validStart.getTime() : 0,
+    };
+  }
+
+  /** "12 Nov 2026" for a one-day event, "12 – 14 Nov 2026" or "30 Nov – 2 Dec 2026" for longer ones. */
+  private formatDates(startIso: string, endIso: string): string {
+    const s = new Date(startIso);
+    const e = new Date(endIso);
+    if (isNaN(s.getTime())) return '';
+
+    const fmt = (d: Date, opts: Intl.DateTimeFormatOptions) => d.toLocaleDateString('en-IN', opts);
+    const full = (d: Date) => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+
+    if (isNaN(e.getTime()) || s.toDateString() === e.toDateString()) return full(s);
+
+    if (s.getFullYear() === e.getFullYear()) {
+      const sameMonth = s.getMonth() === e.getMonth();
+      const left = sameMonth ? String(s.getDate()) : fmt(s, { day: 'numeric', month: 'short' });
+      return `${left} – ${full(e)}`;
+    }
+    return `${full(s)} – ${full(e)}`;
+  }
+
   trackByImg(_: number, img: string): string {
     return img;
+  }
+
+  // ─── Deep link from the events page: /gallery?event=<event _id> ───
+
+  private openFromLink() {
+    const id = this.route.snapshot.queryParamMap.get('event');
+    if (!id) return;
+
+    const target = this.allFolders.find(f => f.eventId === id);
+    if (!target) return; // no photos for that event yet: just show the normal page
+
+    this.selectedYear = null;          // make sure the event is not hidden by a year filter
+    this.applyFilter();
+    this.allFolders.forEach(f => (f.expanded = false));
+    this.scrollToFolder(target);       // expands it and scrolls to it
   }
 
   // ─── Latest event ─────────────────────────────────────────────
 
   /**
-   * Newest utsavam = the folder with the highest year.
-   * If two share a year, the one that comes first from the API wins.
+   * Newest event = the first one after sorting (newest year, then newest start date).
    * Hidden while a year filter is active (so a filtered list never
    * shows a misleading "latest" banner).
    */
   get latestFolder(): Folder | null {
     if (!this.allFolders.length || this.selectedYear !== null) return null;
-    return this.allFolders.reduce(
-      (best, f) => ((f.year ?? 0) > (best.year ?? 0) ? f : best),
-      this.allFolders[0]
-    );
+    return this.allFolders[0];
   }
 
   isLatest(folder: Folder): boolean {
@@ -216,7 +320,7 @@ export class GalleryComponent implements OnInit {
     setTimeout(() => {
       const element = document.getElementById(this.folderId(folder));
       element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+    }, 100);
   }
 
   // ─── Image viewer ─────────────────────────────────────────────

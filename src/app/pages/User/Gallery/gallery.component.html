@@ -31,6 +31,15 @@
         <h2 class="text-xl md:text-2xl font-semibold tracking-wide leading-tight text-indigo-900 dark:text-indigo-100 mb-1">
           {{ latestFolder.name }}
         </h2>
+
+        <!-- Date and place come from the linked event -->
+        <p *ngIf="latestFolder.dateText || latestFolder.location"
+           class="text-sm md:text-base text-indigo-600 dark:text-indigo-300 mb-1">
+          <span *ngIf="latestFolder.dateText">📅 {{ latestFolder.dateText }}</span>
+          <span *ngIf="latestFolder.dateText && latestFolder.location"> · </span>
+          <span *ngIf="latestFolder.location">📍 {{ latestFolder.location }}</span>
+        </p>
+
         <p class="text-base text-indigo-700 dark:text-indigo-300 font-medium mb-4">
           {{ latestFolder.images.length }} photos
         </p>
@@ -64,7 +73,6 @@
       </p>
 
       <div class="flex flex-wrap gap-2" role="group" aria-label="Filter events by year">
-        <!-- Same look as the other buttons on this page; the selected one gets the same ring as an opened event card -->
         <button type="button"
                 (click)="selectYear(null)"
                 [attr.aria-pressed]="selectedYear === null"
@@ -92,17 +100,16 @@
                 [class.bg-indigo-50]="selectedYear === opt.year"
                 [class.font-bold]="selectedYear === opt.year">
           {{ selectedYear === opt.year ? '✓ ' : '' }}{{ opt.year }}
+          <span class="ml-1 text-sm font-normal text-indigo-500">({{ opt.count }})</span>
         </button>
       </div>
 
-      <!-- Plain-language status so it's clear what is being shown -->
       <p class="mt-3 text-base text-indigo-600">
         Showing {{ folders.length }} {{ folders.length === 1 ? 'event' : 'events' }}
         {{ selectedYear ? 'from ' + selectedYear : 'from all years' }}
       </p>
     </div>
 
-    <!-- Plain-language instruction -->
     <p class="text-lg text-indigo-700 font-medium mt-4 mb-1">
       👇 Tap an event below to see its photos
     </p>
@@ -127,7 +134,7 @@
       </div>
 
       <div
-        *ngFor="let folder of group.folders"
+        *ngFor="let folder of group.folders; trackBy: trackByFolder"
         class="folder-section"
         [id]="folderId(folder)"
       >
@@ -163,8 +170,16 @@
               </span>
             </div>
 
+            <!-- Event date + location (linked events only; empty for old name-grouped photos) -->
+            <p *ngIf="folder.dateText" class="text-sm sm:text-base text-indigo-700">
+              📅 {{ folder.dateText }}
+            </p>
+            <p *ngIf="folder.location" class="text-sm sm:text-base text-indigo-600">
+              📍 {{ folder.location }}
+            </p>
+
             <p class="text-base text-indigo-600 mb-2">
-              <ng-container *ngIf="folder.year">{{ folder.year }} · </ng-container>{{ folder.images.length }} photos
+              <ng-container *ngIf="folder.year && !folder.dateText">{{ folder.year }} · </ng-container>{{ folder.images.length }} photos
             </p>
 
             <span class="inline-flex items-center px-4 py-1.5 rounded-lg
@@ -229,8 +244,13 @@
              rounded-lg shadow-2xl select-none"
     />
 
-    <!-- Controls live below the photo, in easy thumb reach, so nothing sits at the top of the screen -->
-    <div class="mt-4 flex items-center justify-center gap-3">
+    <!-- Event name above the controls -->
+    <p *ngIf="currentFolder?.name" class="mt-3 text-white/90 text-center font-medium">
+      {{ currentFolder.name }}
+    </p>
+
+    <!-- Controls live below the photo, in easy thumb reach -->
+    <div class="mt-3 flex items-center justify-center gap-3">
       <button type="button" (click)="prevImage()" aria-label="Previous photo"
               class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 rounded-lg
                      text-xl text-white border border-white/40
