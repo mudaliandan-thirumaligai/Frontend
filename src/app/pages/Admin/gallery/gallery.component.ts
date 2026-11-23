@@ -7,9 +7,12 @@ import {
   HttpError,
   SignatureResponse,
 } from '../../../service/gallery-admin.service';
+// Adjust this path if your folder depth differs
+import { ToastService } from '../../../shared/services/toast.service';
 
 const CONCURRENCY = 3;
 const MAX_RETRIES = 2; // 2 retries = up to 3 attempts per photo
+const PAGE_SIZE = 20;
 
 type Stage = 'waiting' | 'compressing' | 'uploading' | 'ready' | 'saving' | 'done' | 'failed';
 
@@ -49,14 +52,16 @@ function baseName(filename: string): string {
 
 @Component({
   selector: 'app-admin-gallery',
-  imports: [],
+  imports: [], // add PageBreadcrumbComponent here when you enable the breadcrumb
   templateUrl: './gallery.component.html',
-  styleUrl: './gallery.component.css',
+  // gallery.component.css is no longer needed: everything uses Tailwind now
 })
 export class AdminGallery {
   private readonly api = inject(GalleryAdminService);
+  private readonly toast = inject(ToastService);
 
   // form state
+  readonly showAddForm = signal(false);
   readonly utsavamName = signal('');
   readonly location = signal('');
   readonly year = signal(String(new Date().getFullYear()));
@@ -65,18 +70,19 @@ export class AdminGallery {
   // upload state
   readonly jobs = signal<UploadJob[]>([]);
   readonly busy = signal(false);
-  readonly formError = signal('');
-  readonly serverMessage = signal('');
-  readonly serverMessageIsError = signal(false);
   readonly finished = signal(false);
 
   // manage (list + delete) state
   readonly photos = signal<GalleryPhoto[]>([]);
   readonly photosLoading = signal(false);
-  readonly photosError = signal('');
-  readonly deleteMessage = signal('');
   readonly deletingId = signal<string | null>(null);
+  readonly bulkDeleting = signal(false);
   readonly search = signal('');
+  readonly filterYear = signal('all');
+  readonly filterEvent = signal('all');
+  readonly page = signal(0);
+  readonly selected = signal<Set<string>>(new Set());
+  readonly previewUrl = signal<string | null>(null);
 
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
 
@@ -91,14 +97,42 @@ export class AdminGallery {
     const failed = this.failedJobs();
     if (!this.finished()) return `Saved ${this.doneCount()} of ${total}…`;
     if (failed.length === 0) return `All ${total} photos were added successfully.`;
-    return `${this.doneCount()} of ${total} photos added. ${failed.length} did NOT save. Press "Try the failed photos again".`;
+    return `${this.doneCount()} of ${total} photos added. ${failed.length} did NOT save. Press "Retry Failed".`;
   });
-  readonly visiblePhotos = computed(() => {
+
+  // filters
+  readonly years = computed(() =>
+    [...new Set(this.photos().map((p) => String(p.year)))].sort((a, b) => Number(b) - Number(a))
+  );
+  readonly events = computed(() => {
+    const y = this.filterYear();
+    const src = y === 'all' ? this.photos() : this.photos().filter((p) => String(p.year) === y);
+    return [...new Set(src.map((p) => p.utsavamName))].sort((a, b) => a.localeCompare(b));
+  });
+  readonly filteredPhotos = computed(() => {
     const q = this.search().trim().toLowerCase();
-    if (!q) return this.photos();
-    return this.photos().filter((p) =>
-      `${p.name} ${p.utsavamName} ${p.location} ${p.year}`.toLowerCase().includes(q)
+    const y = this.filterYear();
+    const e = this.filterEvent();
+    return this.photos().filter(
+      (p) =>
+        (y === 'all' || String(p.year) === y) &&
+        (e === 'all' || p.utsavamName === e) &&
+        (!q || `${p.name} ${p.utsavamName} ${p.location} ${p.year}`.toLowerCase().includes(q))
     );
+  });
+
+  // pagination + selection
+  readonly totalPages = computed(() => Math.max(1, Math.ceil(this.filteredPhotos().length / PAGE_SIZE)));
+  readonly currentPage = computed(() => Math.min(this.page(), this.totalPages() - 1));
+  readonly pagedPhotos = computed(() => {
+    const start = this.currentPage() * PAGE_SIZE;
+    return this.filteredPhotos().slice(start, start + PAGE_SIZE);
+  });
+  readonly selectedCount = computed(() => this.selected().size);
+  readonly allOnPageSelected = computed(() => {
+    const list = this.pagedPhotos();
+    const sel = this.selected();
+    return list.length > 0 && list.every((p) => sel.has(p._id));
   });
 
   private caches = new Map<number, JobCache>();
@@ -113,7 +147,6 @@ export class AdminGallery {
   onUtsavam(e: Event) { this.utsavamName.set((e.target as HTMLInputElement).value); }
   onLocation(e: Event) { this.location.set((e.target as HTMLInputElement).value); }
   onYear(e: Event) { this.year.set((e.target as HTMLInputElement).value); }
-  onSearch(e: Event) { this.search.set((e.target as HTMLInputElement).value); }
   onFiles(e: Event) {
     const list = Array.from((e.target as HTMLInputElement).files ?? []).filter((f) =>
       f.type.startsWith('image/')
@@ -121,22 +154,70 @@ export class AdminGallery {
     this.files.set(list);
   }
 
+  onSearch(e: Event) {
+    this.search.set((e.target as HTMLInputElement).value);
+    this.page.set(0);
+  }
+  onFilterYear(e: Event) {
+    this.filterYear.set((e.target as HTMLSelectElement).value);
+    this.filterEvent.set('all'); // the event list depends on the year
+    this.page.set(0);
+  }
+  onFilterEvent(e: Event) {
+    this.filterEvent.set((e.target as HTMLSelectElement).value);
+    this.page.set(0);
+  }
+
+  /* ---------------------------- list helpers ---------------------------- */
+  goTo(p: number) {
+    this.page.set(Math.max(0, Math.min(p, this.totalPages() - 1)));
+  }
+
+  /** Small Cloudinary thumbnail so a page of 20 loads fast. Falls back to the original URL. */
+  thumb(url: string): string {
+    return url.includes('/upload/') ? url.replace('/upload/', '/upload/w_96,h_96,c_fill,q_auto,f_auto/') : url;
+  }
+
+  isSelected(id: string) { return this.selected().has(id); }
+  toggleOne(id: string) {
+    this.selected.update((s) => {
+      const n = new Set(s);
+      n.has(id) ? n.delete(id) : n.add(id);
+      return n;
+    });
+  }
+  togglePage() {
+    const all = this.allOnPageSelected();
+    this.selected.update((s) => {
+      const n = new Set(s);
+      this.pagedPhotos().forEach((p) => (all ? n.delete(p._id) : n.add(p._id)));
+      return n;
+    });
+  }
+  selectAllFiltered() { this.selected.set(new Set(this.filteredPhotos().map((p) => p._id))); }
+  clearSelection() { this.selected.set(new Set()); }
+
   /* ------------------------------ upload actions ------------------------------ */
+  closeForm() {
+    if (this.busy()) return;
+    this.showAddForm.set(false);
+    this.jobs.set([]);
+    this.finished.set(false);
+  }
+
   async upload() {
     if (this.busy()) return;
-    this.formError.set('');
-    this.serverMessage.set('');
 
     const utsavamName = this.utsavamName().trim();
     const location = this.location().trim();
     const year = Number(this.year());
 
-    if (!utsavamName) return this.formError.set('Please type the utsavam name.');
-    if (!location) return this.formError.set('Please type the location.');
+    if (!utsavamName) return this.toast.showError('Please type the utsavam name.');
+    if (!location) return this.toast.showError('Please type the location.');
     if (!Number.isInteger(year) || year < 1900 || year > 2100) {
-      return this.formError.set('Please type a valid year, for example 2026.');
+      return this.toast.showError('Please type a valid year, for example 2026.');
     }
-    if (this.files().length === 0) return this.formError.set('Please choose at least one photo.');
+    if (this.files().length === 0) return this.toast.showError('Please choose at least one photo.');
 
     this.currentMeta = { utsavamName, location, year };
 
@@ -162,7 +243,6 @@ export class AdminGallery {
     if (this.busy() || !this.currentMeta) return;
     const ids = this.failedJobs().map((j) => j.id);
     if (ids.length === 0) return;
-    this.serverMessage.set('');
     this.finished.set(false);
     await this.run(ids);
   }
@@ -170,32 +250,64 @@ export class AdminGallery {
   /* ------------------------------ manage actions ------------------------------ */
   async loadPhotos() {
     this.photosLoading.set(true);
-    this.photosError.set('');
     try {
       this.photos.set(await this.api.getPhotos());
+      // drop selections that no longer exist
+      const ids = new Set(this.photos().map((p) => p._id));
+      this.selected.update((s) => new Set([...s].filter((id) => ids.has(id))));
     } catch (err) {
-      this.photosError.set((err as Error).message);
+      this.toast.showError((err as Error).message || 'Failed to load photos');
     } finally {
       this.photosLoading.set(false);
     }
   }
 
   async deletePhoto(p: GalleryPhoto) {
-    if (this.deletingId()) return;
+    if (this.deletingId() || this.bulkDeleting()) return;
     if (!confirm(`Delete "${p.name}" from ${p.utsavamName} (${p.year})? This cannot be undone.`)) return;
 
     this.deletingId.set(p._id);
-    this.photosError.set('');
-    this.deleteMessage.set('');
     try {
       const res = await this.api.deletePhoto(p._id);
-      this.photos.update((list) => list.filter((x) => x._id !== p._id));
-      this.deleteMessage.set(res?.message || 'Photo deleted.');
+      this.removeLocally(p._id);
+      this.toast.showSuccess(res?.message || 'Photo deleted.');
     } catch (err) {
-      this.photosError.set((err as Error).message);
+      this.toast.showError((err as Error).message || 'Failed to delete photo');
     } finally {
       this.deletingId.set(null);
     }
+  }
+
+  async deleteSelected() {
+    const ids = [...this.selected()];
+    if (ids.length === 0 || this.deletingId() || this.bulkDeleting()) return;
+    if (!confirm(`Delete ${ids.length} selected photo(s)? This cannot be undone.`)) return;
+
+    this.bulkDeleting.set(true);
+    let ok = 0;
+    let failed = 0;
+    for (const id of ids) {
+      try {
+        await this.api.deletePhoto(id);
+        this.removeLocally(id);
+        ok++;
+      } catch {
+        failed++;
+      }
+    }
+    this.bulkDeleting.set(false);
+
+    if (failed === 0) this.toast.showSuccess(`${ok} photo(s) deleted.`);
+    else this.toast.showError(`${ok} deleted, ${failed} failed. The failed ones are still selected, try again.`);
+  }
+
+  private removeLocally(id: string) {
+    this.photos.update((list) => list.filter((x) => x._id !== id));
+    this.selected.update((s) => {
+      const n = new Set(s);
+      n.delete(id);
+      return n;
+    });
   }
 
   /* ------------------------------ pipeline ------------------------------ */
@@ -218,10 +330,14 @@ export class AdminGallery {
     } finally {
       this.busy.set(false);
       this.finished.set(true);
+
       if (this.failedJobs().length === 0) {
+        this.toast.showSuccess(`All ${this.jobs().length} photos were added successfully.`);
         this.files.set([]);
         const el = this.picker()?.nativeElement;
         if (el) el.value = '';
+      } else {
+        this.toast.showError(`${this.failedJobs().length} photo(s) did not save. Use "Retry Failed".`);
       }
       this.loadPhotos(); // refresh the Manage list
     }
@@ -280,22 +396,17 @@ export class AdminGallery {
     };
 
     try {
-      const res = await this.api.saveBulk(body);
+      await this.api.saveBulk(body);
       ids.forEach((id) => this.patch(id, { stage: 'done', statusText: 'Done ✔', progress: 100 }));
-      if (typeof res?.message === 'string') {
-        this.serverMessage.set(res.message);
-        this.serverMessageIsError.set(false);
-      }
     } catch (err) {
       const message = (err as Error)?.message || 'Unknown error';
       // The server deletes these images from Cloudinary when a save fails,
       // so forget them: a retry must upload them again.
       ids.forEach((id) => {
         this.caches.get(id)!.uploaded = undefined;
-        this.patch(id, { stage: 'failed', statusText: 'Not saved. Press "Try again".', progress: 0 });
+        this.patch(id, { stage: 'failed', statusText: 'Not saved. Press "Retry Failed".', progress: 0 });
       });
-      this.serverMessage.set(message);
-      this.serverMessageIsError.set(true);
+      this.toast.showError(message);
     }
   }
 

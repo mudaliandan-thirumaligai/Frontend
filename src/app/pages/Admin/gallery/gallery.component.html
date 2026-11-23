@@ -1,147 +1,334 @@
-<main class="admin">
-  <h1>Gallery admin</h1>
+<!-- Uncomment once PageBreadcrumbComponent is added to this component's `imports` -->
+<!-- <app-page-breadcrumb pageTitle="Gallery Management"></app-page-breadcrumb> -->
 
-  <h2>Add photos</h2>
+<section class="px-4 py-4 max-w-6xl mx-auto">
 
-  <form class="form" (submit)="$event.preventDefault(); upload()">
-    <label for="utsavam-name">Utsavam name</label>
-    <input
-      id="utsavam-name"
-      type="text"
-      placeholder="e.g. Diwali Food Drive"
-      [value]="utsavamName()"
-      (input)="onUtsavam($event)"
-      [disabled]="busy()"
-    />
+  <!-- Header + Add Button -->
+<!-- Header + Add Button -->
+<div class="flex justify-between items-center my-4">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+      Gallery Management
+    </h1>
+    <p class="mt-1 text-sm text-indigo-600/80 dark:text-indigo-400/80">
+      Click on an image to enlarge it
+    </p>
+  </div>
 
-    <div class="row">
-      <div class="col">
-        <label for="location">Location</label>
-        <input
-          id="location"
-          type="text"
-          placeholder="e.g. Chennai"
-          [value]="location()"
-          (input)="onLocation($event)"
-          [disabled]="busy()"
-        />
-      </div>
-      <div class="col year">
-        <label for="year">Year</label>
-        <input
-          id="year"
-          type="number"
-          inputmode="numeric"
-          min="1900"
-          max="2100"
-          [value]="year()"
-          (input)="onYear($event)"
-          [disabled]="busy()"
-        />
-      </div>
-    </div>
+  @if (!showAddForm()) {
+    <button (click)="showAddForm.set(true)"
+            type="button"
+            class="inline-flex items-center text-indigo-700 font-medium
+                   hover:text-indigo-900 transition
+                   px-6 py-3 rounded-lg
+                   border border-indigo-300 dark:border-indigo-700
+                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      + Add Photos
+    </button>
+  }
+</div>
 
-    <label for="photo-input">Choose photos</label>
-    <!-- No "capture" attribute: phones offer both camera and gallery -->
-    <input
-      #picker
-      id="photo-input"
-      type="file"
-      accept="image/*"
-      multiple
-      (change)="onFiles($event)"
-      [disabled]="busy()"
-    />
-    <p class="hint">{{ selectedText() }}</p>
+  <!-- ===================== Add Photos Form ===================== -->
+  @if (showAddForm()) {
+    <div class="my-4 p-4 border rounded-lg bg-white/10 dark:bg-[#1A1F2B]/60 backdrop-blur-sm">
 
-    @if (formError()) {
-      <div class="message error" role="alert">{{ formError() }}</div>
-    }
+      <h3 class="font-medium text-indigo-700 mb-2">
+        New Photos Details
+      </h3>
 
-    <div class="actions">
-      <button type="submit" class="primary" [disabled]="busy()">
-        {{ busy() ? 'Uploading…' : 'Upload' }}
-      </button>
+      <form class="space-y-3" (submit)="$event.preventDefault(); upload()">
 
-      @if (failedJobs().length > 0 && !busy()) {
-        <button type="button" class="secondary" (click)="retryFailed()">
-          Try the failed photos again
-        </button>
+        <input type="text"
+               placeholder="Utsavam name (e.g. Diwali Food Drive)"
+               [value]="utsavamName()"
+               (input)="onUtsavam($event)"
+               [disabled]="busy()"
+               class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                      bg-white/10 dark:bg-[#1A1F2B]/60
+                      text-indigo-700 dark:text-indigo-300
+                      placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                      focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+        <div class="flex gap-3">
+          <input type="text"
+                 placeholder="Location (e.g. Chennai)"
+                 [value]="location()"
+                 (input)="onLocation($event)"
+                 [disabled]="busy()"
+                 class="flex-1 min-w-0 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+          <input type="number"
+                 inputmode="numeric"
+                 min="1900" max="2100"
+                 placeholder="Year"
+                 [value]="year()"
+                 (input)="onYear($event)"
+                 [disabled]="busy()"
+                 class="w-28 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                        bg-white/10 dark:bg-[#1A1F2B]/60
+                        text-indigo-700 dark:text-indigo-300
+                        placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                        focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+        </div>
+
+        <!-- No "capture" attribute: phones offer both camera and gallery -->
+        <div>
+          <input #picker
+                 type="file"
+                 accept="image/*"
+                 multiple
+                 (change)="onFiles($event)"
+                 [disabled]="busy()"
+                 class="w-full text-sm text-indigo-700 dark:text-indigo-300
+                        file:mr-3 file:px-4 file:py-2 file:rounded-lg file:border
+                        file:border-indigo-300 dark:file:border-indigo-700
+                        file:bg-transparent file:text-indigo-700 dark:file:text-indigo-300
+                        file:font-medium file:cursor-pointer hover:file:bg-indigo-50"/>
+          <p class="text-sm text-indigo-700/70 dark:text-indigo-300/70 mt-1">{{ selectedText() }}</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button type="submit"
+                  [disabled]="busy()"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            {{ busy() ? 'Uploading…' : 'Upload →' }}
+          </button>
+
+          @if (failedJobs().length > 0 && !busy()) {
+            <button type="button"
+                    (click)="retryFailed()"
+                    class="inline-flex items-center text-indigo-700 font-medium
+                           hover:text-indigo-900 transition
+                           px-6 py-3 rounded-lg
+                           border border-indigo-300 dark:border-indigo-700
+                           focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+              Retry Failed ({{ failedJobs().length }})
+            </button>
+          }
+
+          <button type="button"
+                  (click)="closeForm()"
+                  [disabled]="busy()"
+                  class="inline-flex items-center text-indigo-700 font-medium
+                         hover:text-indigo-900 transition
+                         px-6 py-3 rounded-lg
+                         border border-indigo-300 dark:border-indigo-700
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+            {{ finished() ? 'Close' : 'Cancel' }}
+          </button>
+        </div>
+      </form>
+
+      <!-- Upload progress -->
+      @if (jobs().length > 0) {
+        <div class="mt-4">
+          <p class="text-sm font-medium text-indigo-700 dark:text-indigo-300 mb-2" role="status" aria-live="polite">
+            {{ summaryText() }}
+          </p>
+
+          <ul class="max-h-64 overflow-y-auto divide-y divide-indigo-300/40 border border-indigo-300/40 rounded-lg">
+            @for (job of jobs(); track job.id) {
+              <li class="px-3 py-2">
+                <div class="flex justify-between gap-3 text-sm">
+                  <span class="truncate font-medium text-indigo-700 dark:text-indigo-300">{{ job.name }}</span>
+                  <span class="shrink-0"
+                        [class.text-green-600]="job.stage === 'done'"
+                        [class.text-red-600]="job.stage === 'failed'"
+                        [class.text-indigo-700/70]="job.stage !== 'done' && job.stage !== 'failed'">
+                    {{ job.stage === 'done' ? 'Done ✔' : job.stage === 'failed' ? 'Failed' : job.progress + '%' }}
+                  </span>
+                </div>
+                <div class="h-1.5 mt-1 rounded-full bg-indigo-100 dark:bg-indigo-900/40 overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-300"
+                       [class.bg-indigo-600]="job.stage !== 'failed'"
+                       [class.bg-red-500]="job.stage === 'failed'"
+                       [style.width.%]="job.progress"></div>
+                </div>
+                <p class="text-xs text-indigo-700/70 dark:text-indigo-300/70 mt-1">
+                  {{ job.sizeText }} · {{ job.statusText }}
+                </p>
+              </li>
+            }
+          </ul>
+        </div>
       }
     </div>
-  </form>
+  }
 
-  @if (jobs().length > 0) {
-    <div
-      class="message"
-      [class.ok]="finished() && failedJobs().length === 0"
-      [class.error]="finished() && failedJobs().length > 0"
-      role="status"
-      aria-live="polite"
-    >
-      {{ summaryText() }}
-    </div>
+  <!-- ===================== Manage Photos ===================== -->
 
-    @if (serverMessage()) {
-      <div class="message server" [class.error]="serverMessageIsError()" [class.ok]="!serverMessageIsError()">
-        {{ serverMessage() }}
-      </div>
+  <!-- Filters -->
+  <div class="my-4 flex flex-wrap gap-3">
+
+    <select (change)="onFilterYear($event)"
+            class="w-full md:w-auto px-4 py-2 rounded-lg
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   bg-white/10 dark:bg-[#1A1F2B]/60
+                   text-indigo-700 dark:text-indigo-300
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="all" [selected]="filterYear() === 'all'">All Years</option>
+      @for (y of years(); track y) {
+        <option [value]="y" [selected]="filterYear() === y">{{ y }}</option>
+      }
+    </select>
+
+    <select (change)="onFilterEvent($event)"
+            class="w-full md:w-auto px-4 py-2 rounded-lg
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   bg-white/10 dark:bg-[#1A1F2B]/60
+                   text-indigo-700 dark:text-indigo-300
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="all" [selected]="filterEvent() === 'all'">All Utsavams</option>
+      @for (e of events(); track e) {
+        <option [value]="e" [selected]="filterEvent() === e">{{ e }}</option>
+      }
+    </select>
+
+    <input type="text"
+           [value]="search()"
+           (input)="onSearch($event)"
+           placeholder="Search by name, event or location..."
+           class="w-full md:w-auto md:flex-1 px-4 py-2 rounded-lg
+                  border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                  bg-white/10 dark:bg-[#1A1F2B]/60
+                  text-indigo-700 dark:text-indigo-300
+                  placeholder-indigo-700/50 dark:placeholder-indigo-300/50
+                  focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+    <button (click)="loadPhotos()"
+            type="button"
+            class="inline-flex items-center text-indigo-700 font-medium
+                   hover:text-indigo-900 transition
+                   px-6 py-3 rounded-lg
+                   border border-indigo-300 dark:border-indigo-700
+                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+      Reload Photos
+    </button>
+  </div>
+
+  <!-- Selection / count bar -->
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 my-3 text-sm text-indigo-700 dark:text-indigo-300">
+    <label class="inline-flex items-center gap-2 cursor-pointer">
+      <input type="checkbox"
+             [checked]="allOnPageSelected()"
+             (change)="togglePage()"
+             [disabled]="pagedPhotos().length === 0"
+             class="h-4 w-4 accent-indigo-700"/>
+      Select page
+    </label>
+
+    <span>
+      {{ filteredPhotos().length }} of {{ photos().length }} photo(s)
+    </span>
+
+    @if (selectedCount() > 0) {
+      <span class="font-medium">{{ selectedCount() }} selected</span>
+
+      @if (selectedCount() < filteredPhotos().length) {
+        <button type="button" (click)="selectAllFiltered()" class="underline underline-offset-4 hover:text-indigo-900">
+          Select all {{ filteredPhotos().length }}
+        </button>
+      }
+      <button type="button" (click)="clearSelection()" class="underline underline-offset-4 hover:text-indigo-900">
+        Clear
+      </button>
+
+      <button type="button"
+              (click)="deleteSelected()"
+              [disabled]="bulkDeleting()"
+              class="inline-flex items-center font-medium px-4 py-2 rounded-lg
+                     text-red-600 border border-red-300 hover:bg-red-50 hover:text-red-700
+                     disabled:opacity-50 disabled:cursor-not-allowed transition
+                     focus:outline-none focus:ring-2 focus:ring-red-300/40">
+        {{ bulkDeleting() ? 'Deleting…' : 'Delete Selected (' + selectedCount() + ')' }}
+      </button>
     }
+  </div>
 
-    <ul class="file-list">
-      @for (job of jobs(); track job.id) {
-        <li class="file" [class.done]="job.stage === 'done'" [class.failed]="job.stage === 'failed'">
-          <div class="file-name">{{ job.name }}</div>
-          <div class="hint">{{ job.sizeText }}</div>
-          <progress max="100" [value]="job.progress"></progress>
-          <div class="hint">{{ job.statusText }}</div>
+  <!-- Compact list -->
+  @if (photosLoading()) {
+    <p class="text-indigo-700 dark:text-indigo-300 py-6 text-center">Loading photos…</p>
+  } @else if (filteredPhotos().length === 0) {
+    <p class="text-indigo-700 dark:text-indigo-300 py-6 text-center">No photos found.</p>
+  } @else {
+    <ul class="border border-gray-300 rounded-lg divide-y divide-gray-200 dark:divide-white/10 text-indigo-700 dark:text-indigo-300">
+      @for (p of pagedPhotos(); track p._id) {
+        <li class="flex items-center gap-3 px-3 py-2 hover:bg-indigo-50 dark:hover:bg-white/[0.05] transition"
+            [class.bg-indigo-50]="isSelected(p._id)">
+
+          <input type="checkbox"
+                 [checked]="isSelected(p._id)"
+                 (change)="toggleOne(p._id)"
+                 [attr.aria-label]="'Select ' + p.name"
+                 class="h-4 w-4 shrink-0 accent-indigo-700"/>
+
+          <button type="button" (click)="previewUrl.set(p.url)" aria-label="Preview photo" class="shrink-0">
+            <img [src]="thumb(p.url)" [alt]="p.name" loading="lazy"
+                 class="h-12 w-12 rounded-lg object-cover border border-indigo-300/40"/>
+          </button>
+
+          <div class="min-w-0 flex-1">
+            <p class="truncate font-medium text-sm md:text-base">{{ p.name }}</p>
+            <p class="truncate text-xs md:text-sm text-indigo-700/70 dark:text-indigo-300/70">
+              {{ p.utsavamName }} · {{ p.year }} · {{ p.location }}
+            </p>
+          </div>
+
+          <button type="button"
+                  (click)="deletePhoto(p)"
+                  [disabled]="deletingId() !== null || bulkDeleting()"
+                  class="shrink-0 inline-flex items-center font-medium px-4 py-2 rounded-lg
+                         text-red-600 border border-red-300 hover:bg-red-50 hover:text-red-700
+                         disabled:opacity-50 disabled:cursor-not-allowed transition
+                         focus:outline-none focus:ring-2 focus:ring-red-300/40">
+            {{ deletingId() === p._id ? '…' : 'Delete' }}
+          </button>
         </li>
       }
     </ul>
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="flex items-center justify-center gap-3 my-4 text-indigo-700 dark:text-indigo-300">
+        <button type="button"
+                (click)="goTo(currentPage() - 1)"
+                [disabled]="currentPage() === 0"
+                class="inline-flex items-center font-medium px-5 py-2 rounded-lg
+                       border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-50
+                       disabled:opacity-40 disabled:cursor-not-allowed transition">
+          ← Prev
+        </button>
+        <span class="text-sm">Page {{ currentPage() + 1 }} of {{ totalPages() }}</span>
+        <button type="button"
+                (click)="goTo(currentPage() + 1)"
+                [disabled]="currentPage() >= totalPages() - 1"
+                class="inline-flex items-center font-medium px-5 py-2 rounded-lg
+                       border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-50
+                       disabled:opacity-40 disabled:cursor-not-allowed transition">
+          Next →
+        </button>
+      </div>
+    }
   }
+</section>
 
-  <section class="manage">
-    <h2>Manage photos</h2>
-
-    <input
-      type="search"
-      placeholder="Search by event, location or year"
-      [value]="search()"
-      (input)="onSearch($event)"
-    />
-
-    @if (photosError()) {
-      <div class="message error" role="alert">{{ photosError() }}</div>
-    }
-    @if (deleteMessage()) {
-      <div class="message ok" role="status">{{ deleteMessage() }}</div>
-    }
-
-    @if (photosLoading()) {
-      <p class="hint">Loading photos…</p>
-    } @else if (visiblePhotos().length === 0) {
-      <p class="hint">No photos found.</p>
-    } @else {
-      <p class="hint">{{ visiblePhotos().length }} photo(s)</p>
-      <ul class="grid">
-        @for (p of visiblePhotos(); track p._id) {
-          <li class="card">
-            <img [src]="p.url" [alt]="p.name" loading="lazy" />
-            <div class="meta">
-              <div class="file-name">{{ p.name }}</div>
-              <div class="hint">{{ p.utsavamName }} · {{ p.year }} · {{ p.location }}</div>
-            </div>
-            <button
-              type="button"
-              class="danger"
-              (click)="deletePhoto(p)"
-              [disabled]="deletingId() !== null"
-            >
-              {{ deletingId() === p._id ? 'Deleting…' : 'Delete' }}
-            </button>
-          </li>
-        }
-      </ul>
-    }
-  </section>
-</main>
+<!-- Preview -->
+@if (previewUrl()) {
+  <div class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+       (click)="previewUrl.set(null)">
+    <button type="button" aria-label="Close preview"
+            class="absolute top-4 right-4 w-10 h-10 text-2xl text-white"
+            (click)="previewUrl.set(null)">✕</button>
+    <img [src]="previewUrl()!" alt="Preview" class="max-h-[90vh] max-w-full object-contain rounded-lg"/>
+  </div>
+}
