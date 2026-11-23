@@ -2,9 +2,11 @@ import { Component, ElementRef, computed, inject, signal, viewChild } from '@ang
 import {
   BulkCreateGalleryDto,
   CloudinaryResult,
+  EventOption,
   GalleryAdminService,
   GalleryPhoto,
   HttpError,
+  NewEventPayload,
   SignatureResponse,
 } from '../../../service/gallery-admin.service';
 // Adjust this path if your folder depth differs
@@ -15,6 +17,8 @@ const MAX_RETRIES = 2; // 2 retries = up to 3 attempts per photo
 const PAGE_SIZE = 20;
 
 type Stage = 'waiting' | 'compressing' | 'uploading' | 'ready' | 'saving' | 'done' | 'failed';
+type LinkFilter = 'all' | 'linked' | 'unlinked';
+type LinkMode = 'existing' | 'new';
 
 interface EventMeta {
   utsavamName: string;
@@ -54,7 +58,6 @@ function baseName(filename: string): string {
   selector: 'app-admin-gallery',
   imports: [], // add PageBreadcrumbComponent here when you enable the breadcrumb
   templateUrl: './gallery.component.html',
-  // gallery.component.css is no longer needed: everything uses Tailwind now
 })
 export class AdminGallery {
   private readonly api = inject(GalleryAdminService);
@@ -71,6 +74,8 @@ export class AdminGallery {
   readonly jobs = signal<UploadJob[]>([]);
   readonly busy = signal(false);
   readonly finished = signal(false);
+  /** ids of photos saved by the current upload session (used for "Link these to an event") */
+  readonly justUploadedIds = signal<string[]>([]);
 
   // manage (list + delete) state
   readonly photos = signal<GalleryPhoto[]>([]);
@@ -80,9 +85,57 @@ export class AdminGallery {
   readonly search = signal('');
   readonly filterYear = signal('all');
   readonly filterEvent = signal('all');
+  readonly filterLink = signal<LinkFilter>('all');
   readonly page = signal(0);
   readonly selected = signal<Set<string>>(new Set());
   readonly previewUrl = signal<string | null>(null);
+
+  // event linking state
+  readonly eventList = signal<EventOption[]>([]);
+  readonly eventById = computed(() => new Map(this.eventList().map((e) => [e._id, e])));
+  readonly linkOpen = signal(false);
+  readonly linkMode = signal<LinkMode>('existing');
+  readonly linkEventId = signal('');
+  readonly linkSuggestedIds = signal<string[]>([]);
+  readonly linkBusy = signal(false);
+  readonly newName = signal('');
+  readonly newLocation = signal('');
+  readonly newStart = signal('');
+  readonly newEnd = signal('');
+  readonly newLevel = signal('utsavam');
+
+  // year / month filters inside the "Existing event" dropdown
+  readonly linkYear = signal('all');
+  readonly linkMonth = signal('all'); // 'all' or '0'..'11'
+  readonly months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  readonly linkYears = computed(() =>
+    [...new Set(this.eventList().map((e) => new Date(e.startDate).getFullYear()))]
+      .filter((y) => !isNaN(y))
+      .sort((a, b) => b - a)
+  );
+
+  private matchesLinkFilter(e: EventOption): boolean {
+    const d = new Date(e.startDate);
+    if (isNaN(d.getTime())) return this.linkYear() === 'all' && this.linkMonth() === 'all';
+    const y = this.linkYear();
+    const m = this.linkMonth();
+    return (y === 'all' || String(d.getFullYear()) === y) && (m === 'all' || String(d.getMonth()) === m);
+  }
+
+  readonly suggestedEvents = computed(() => {
+    const ids = new Set(this.linkSuggestedIds());
+    return this.eventList().filter((e) => ids.has(e._id) && this.matchesLinkFilter(e));
+  });
+  readonly otherEvents = computed(() => {
+    const ids = new Set(this.linkSuggestedIds());
+    return [...this.eventList()]
+      .filter((e) => !ids.has(e._id) && this.matchesLinkFilter(e))
+      .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+  });
+  readonly visibleEventCount = computed(() => this.suggestedEvents().length + this.otherEvents().length);
 
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
 
@@ -113,10 +166,12 @@ export class AdminGallery {
     const q = this.search().trim().toLowerCase();
     const y = this.filterYear();
     const e = this.filterEvent();
+    const l = this.filterLink();
     return this.photos().filter(
       (p) =>
         (y === 'all' || String(p.year) === y) &&
         (e === 'all' || p.utsavamName === e) &&
+        (l === 'all' || (l === 'linked') === !!p.eventId) &&
         (!q || `${p.name} ${p.utsavamName} ${p.location} ${p.year}`.toLowerCase().includes(q))
     );
   });
@@ -141,12 +196,15 @@ export class AdminGallery {
 
   constructor() {
     this.loadPhotos();
+    this.loadEvents(true);
   }
 
   /* ---------------------------- input handlers ---------------------------- */
-  onUtsavam(e: Event) { this.utsavamName.set((e.target as HTMLInputElement).value); }
-  onLocation(e: Event) { this.location.set((e.target as HTMLInputElement).value); }
-  onYear(e: Event) { this.year.set((e.target as HTMLInputElement).value); }
+  val(e: Event): string { return (e.target as HTMLInputElement | HTMLSelectElement).value; }
+
+  onUtsavam(e: Event) { this.utsavamName.set(this.val(e)); }
+  onLocation(e: Event) { this.location.set(this.val(e)); }
+  onYear(e: Event) { this.year.set(this.val(e)); }
   onFiles(e: Event) {
     const list = Array.from((e.target as HTMLInputElement).files ?? []).filter((f) =>
       f.type.startsWith('image/')
@@ -155,16 +213,20 @@ export class AdminGallery {
   }
 
   onSearch(e: Event) {
-    this.search.set((e.target as HTMLInputElement).value);
+    this.search.set(this.val(e));
     this.page.set(0);
   }
   onFilterYear(e: Event) {
-    this.filterYear.set((e.target as HTMLSelectElement).value);
+    this.filterYear.set(this.val(e));
     this.filterEvent.set('all'); // the event list depends on the year
     this.page.set(0);
   }
   onFilterEvent(e: Event) {
-    this.filterEvent.set((e.target as HTMLSelectElement).value);
+    this.filterEvent.set(this.val(e));
+    this.page.set(0);
+  }
+  onFilterLink(e: Event) {
+    this.filterLink.set(this.val(e) as LinkFilter);
     this.page.set(0);
   }
 
@@ -197,12 +259,25 @@ export class AdminGallery {
   selectAllFiltered() { this.selected.set(new Set(this.filteredPhotos().map((p) => p._id))); }
   clearSelection() { this.selected.set(new Set()); }
 
+  eventName(p: GalleryPhoto): string {
+    return p.eventId ? this.eventById().get(p.eventId)?.name ?? 'Linked event' : '';
+  }
+
+  eventLabel(e: EventOption): string {
+    const s = new Date(e.startDate);
+    const when = isNaN(s.getTime())
+      ? ''
+      : ` · ${s.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+    return `${e.name}${when}`;
+  }
+
   /* ------------------------------ upload actions ------------------------------ */
   closeForm() {
     if (this.busy()) return;
     this.showAddForm.set(false);
     this.jobs.set([]);
     this.finished.set(false);
+    this.justUploadedIds.set([]);
   }
 
   async upload() {
@@ -223,6 +298,7 @@ export class AdminGallery {
 
     this.caches.clear();
     this.finished.set(false);
+    this.justUploadedIds.set([]);
     const jobs: UploadJob[] = this.files().map((file, i) => {
       this.caches.set(i, { file });
       return {
@@ -259,6 +335,14 @@ export class AdminGallery {
       this.toast.showError((err as Error).message || 'Failed to load photos');
     } finally {
       this.photosLoading.set(false);
+    }
+  }
+
+  async loadEvents(silent = false) {
+    try {
+      this.eventList.set(await this.api.getEvents());
+    } catch (err) {
+      if (!silent) this.toast.showError((err as Error).message || 'Failed to load events');
     }
   }
 
@@ -308,6 +392,131 @@ export class AdminGallery {
       n.delete(id);
       return n;
     });
+    this.justUploadedIds.update((l) => l.filter((x) => x !== id));
+  }
+
+  /* ------------------------------ event linking ------------------------------ */
+
+  /** Opens the dialog for the selected photos (or for the given ids, e.g. the photos just uploaded). */
+  async openLink(ids?: string[]) {
+    if (ids?.length) this.selected.set(new Set(ids));
+    const chosen = this.photos().filter((p) => this.selected().has(p._id));
+    if (chosen.length === 0) return;
+
+    const first = chosen[0];
+    this.linkMode.set('existing');
+    this.linkEventId.set('');
+    this.linkSuggestedIds.set([]);
+    this.newName.set(first.utsavamName);
+    this.newLocation.set(first.location);
+    this.newStart.set('');
+    this.newEnd.set('');
+    this.newLevel.set('utsavam');
+    this.clearLinkFilters();
+    this.linkOpen.set(true);
+
+    await this.loadEvents(true); // always show the latest events
+    try {
+      const suggestions = await this.api.suggestEvents(first.utsavamName, first.year);
+      this.linkSuggestedIds.set(suggestions.map((e) => e._id));
+      if (suggestions.length > 0) this.linkEventId.set(suggestions[0]._id);
+    } catch {
+      /* suggestions are optional; the full list is still available */
+    }
+  }
+
+  closeLink() {
+    if (this.linkBusy()) return;
+    this.linkOpen.set(false);
+  }
+
+  onLinkYear(e: Event) {
+    this.linkYear.set(this.val(e));
+    this.dropHiddenChoice();
+  }
+  onLinkMonth(e: Event) {
+    this.linkMonth.set(this.val(e));
+    this.dropHiddenChoice();
+  }
+  clearLinkFilters() {
+    this.linkYear.set('all');
+    this.linkMonth.set('all');
+  }
+
+  /** If the chosen event is hidden by the year/month filter, clear the choice so it can't be linked by mistake. */
+  private dropHiddenChoice() {
+    const id = this.linkEventId();
+    if (id && !this.suggestedEvents().some((e) => e._id === id) && !this.otherEvents().some((e) => e._id === id)) {
+      this.linkEventId.set('');
+    }
+  }
+
+  async submitLink() {
+    const ids = [...this.selected()];
+    if (ids.length === 0 || this.linkBusy()) return;
+
+    let payload: NewEventPayload | null = null;
+    if (this.linkMode() === 'existing') {
+      if (!this.linkEventId()) return this.toast.showError('Please choose an event.');
+    } else {
+      const name = this.newName().trim();
+      const start = this.newStart();
+      const end = this.newEnd();
+      if (!name) return this.toast.showError('Please type the event name.');
+      if (!start || !end) return this.toast.showError('Please choose the start and end dates.');
+      if (end < start) return this.toast.showError('The end date cannot be before the start date.');
+      payload = {
+        name,
+        startDate: start,
+        endDate: end,
+        location: this.newLocation().trim() || undefined,
+        eventLevel: this.newLevel(),
+      };
+    }
+
+    this.linkBusy.set(true);
+    try {
+      let eventId: string;
+      if (payload) {
+        const res = await this.api.linkNewEvent(ids, payload);
+        eventId = res.event._id;
+        this.toast.showSuccess(res.message || 'Event created and photos linked.');
+      } else {
+        eventId = this.linkEventId();
+        const res = await this.api.linkPhotos(ids, eventId);
+        this.toast.showSuccess(res.message || 'Photos linked.');
+      }
+
+      const done = new Set(ids);
+      this.photos.update((list) => list.map((p) => (done.has(p._id) ? { ...p, eventId } : p)));
+      this.justUploadedIds.update((l) => l.filter((x) => !done.has(x)));
+      this.clearSelection();
+      this.linkOpen.set(false);
+      this.loadEvents(true); // pick up a newly created event
+    } catch (err) {
+      this.toast.showError((err as Error).message || 'Could not link the photos');
+    } finally {
+      this.linkBusy.set(false);
+    }
+  }
+
+  async unlinkSelected() {
+    const ids = [...this.selected()];
+    if (ids.length === 0 || this.linkBusy()) return;
+    if (!confirm(`Remove ${ids.length} selected photo(s) from their event? The photos stay in the gallery.`)) return;
+
+    this.linkBusy.set(true);
+    try {
+      const res = await this.api.unlinkPhotos(ids);
+      const done = new Set(ids);
+      this.photos.update((list) => list.map((p) => (done.has(p._id) ? { ...p, eventId: null } : p)));
+      this.toast.showSuccess(res.message || 'Photos unlinked.');
+      this.clearSelection();
+    } catch (err) {
+      this.toast.showError((err as Error).message || 'Could not unlink the photos');
+    } finally {
+      this.linkBusy.set(false);
+    }
   }
 
   /* ------------------------------ pipeline ------------------------------ */
@@ -396,8 +605,11 @@ export class AdminGallery {
     };
 
     try {
-      await this.api.saveBulk(body);
+      const res = await this.api.saveBulk(body);
       ids.forEach((id) => this.patch(id, { stage: 'done', statusText: 'Done ✔', progress: 100 }));
+      // remember the saved photos so the admin can link them to an event straight away
+      const newIds = (res.photos ?? []).map((p) => p._id);
+      if (newIds.length) this.justUploadedIds.update((l) => [...new Set([...l, ...newIds])]);
     } catch (err) {
       const message = (err as Error)?.message || 'Unknown error';
       // The server deletes these images from Cloudinary when a save fails,

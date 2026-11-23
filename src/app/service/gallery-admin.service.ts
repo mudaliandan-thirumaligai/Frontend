@@ -39,6 +39,12 @@ export interface BulkCreateGalleryDto {
   photos: BulkPhoto[];
 }
 
+/** Response of POST /gallery/admin/bulk (photos = every photo of the batch, with ids). */
+export interface BulkSaveResponse {
+  message?: string;
+  photos?: { _id: string; name: string; url: string }[];
+}
+
 /** A photo already saved in the gallery (what GET /gallery returns). */
 export interface GalleryPhoto {
   _id: string;
@@ -47,6 +53,27 @@ export interface GalleryPhoto {
   utsavamName: string;
   year: number;
   location: string;
+  eventId?: string | null;
+}
+
+/** An event as returned by GET /events. */
+export interface EventOption {
+  _id: string;
+  eventNumber?: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  location?: string;
+  eventLevel?: string;
+}
+
+/** Fields the admin fills in to create an event from the link dialog. */
+export interface NewEventPayload {
+  name: string;
+  startDate: string; // yyyy-MM-dd
+  endDate: string; // yyyy-MM-dd
+  location?: string;
+  eventLevel?: string;
 }
 
 export class HttpError extends Error {
@@ -62,6 +89,7 @@ export class HttpError extends Error {
 export class GalleryAdminService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.apiUrl + '/gallery';
+  private readonly eventsUrl = environment.apiUrl + '/events';
 
   /* ---------------------------- gallery API ---------------------------- */
   getPhotos(): Promise<GalleryPhoto[]> {
@@ -81,8 +109,46 @@ export class GalleryAdminService {
     );
   }
 
-  saveBulk(body: BulkCreateGalleryDto): Promise<{ message?: string }> {
-    return this.call(this.http.post<{ message?: string }>(`${this.baseUrl}/admin/bulk`, body));
+  saveBulk(body: BulkCreateGalleryDto): Promise<BulkSaveResponse> {
+    return this.call(this.http.post<BulkSaveResponse>(`${this.baseUrl}/admin/bulk`, body));
+  }
+
+  /* ---------------------------- event linking ---------------------------- */
+  getEvents(): Promise<EventOption[]> {
+    return this.call(this.http.get<EventOption[]>(this.eventsUrl));
+  }
+
+  /** Existing events whose name matches the utsavam name and whose start date is in that year. */
+  suggestEvents(utsavamName: string, year: number): Promise<EventOption[]> {
+    return this.call(
+      this.http.get<EventOption[]>(`${this.baseUrl}/admin/event-suggestions`, {
+        params: { utsavamName, year: String(year) },
+      })
+    );
+  }
+
+  linkPhotos(photoIds: string[], eventId: string): Promise<{ message?: string }> {
+    return this.call(
+      this.http.post<{ message?: string }>(`${this.baseUrl}/admin/link`, { photoIds, eventId })
+    );
+  }
+
+  linkNewEvent(
+    photoIds: string[],
+    event: NewEventPayload
+  ): Promise<{ message?: string; event: EventOption }> {
+    return this.call(
+      this.http.post<{ message?: string; event: EventOption }>(
+        `${this.baseUrl}/admin/link-new-event`,
+        { photoIds, event }
+      )
+    );
+  }
+
+  unlinkPhotos(photoIds: string[]): Promise<{ message?: string }> {
+    return this.call(
+      this.http.post<{ message?: string }>(`${this.baseUrl}/admin/unlink`, { photoIds })
+    );
   }
 
   /* ---------------------------- images ---------------------------- */

@@ -4,29 +4,28 @@
 <section class="px-4 py-4 max-w-6xl mx-auto">
 
   <!-- Header + Add Button -->
-<!-- Header + Add Button -->
-<div class="flex justify-between items-center my-4">
-  <div>
-    <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
-      Gallery Management
-    </h1>
-    <p class="mt-1 text-sm text-indigo-600/80 dark:text-indigo-400/80">
-      Click on an image to enlarge it
-    </p>
-  </div>
+  <div class="flex justify-between items-center my-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-semibold text-indigo-900">
+        Gallery Management
+      </h1>
+      <p class="mt-1 text-sm text-indigo-600/80 dark:text-indigo-400/80">
+        Click on an image to enlarge it
+      </p>
+    </div>
 
-  @if (!showAddForm()) {
-    <button (click)="showAddForm.set(true)"
-            type="button"
-            class="inline-flex items-center text-indigo-700 font-medium
-                   hover:text-indigo-900 transition
-                   px-6 py-3 rounded-lg
-                   border border-indigo-300 dark:border-indigo-700
-                   focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
-      + Add Photos
-    </button>
-  }
-</div>
+    @if (!showAddForm()) {
+      <button (click)="showAddForm.set(true)"
+              type="button"
+              class="inline-flex items-center text-indigo-700 font-medium
+                     hover:text-indigo-900 transition
+                     px-6 py-3 rounded-lg
+                     border border-indigo-300 dark:border-indigo-700
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        + Add Photos
+      </button>
+    }
+  </div>
 
   <!-- ===================== Add Photos Form ===================== -->
   @if (showAddForm()) {
@@ -160,12 +159,49 @@
               </li>
             }
           </ul>
+
+          <!-- Offer to link the photos that were just saved -->
+          @if (justUploadedIds().length > 0 && !busy()) {
+            <div class="mt-3 flex flex-wrap items-center gap-3 p-3 rounded-lg
+                        border border-indigo-300 dark:border-indigo-700 bg-indigo-50/50 dark:bg-white/[0.04]">
+              <p class="text-sm text-indigo-700 dark:text-indigo-300">
+                {{ justUploadedIds().length }} new photo(s) saved. Link them to an event?
+              </p>
+              <button type="button"
+                      (click)="openLink(justUploadedIds())"
+                      class="inline-flex items-center text-indigo-700 font-medium
+                             hover:text-indigo-900 transition px-4 py-2 rounded-lg
+                             border border-indigo-300 dark:border-indigo-700">
+                Link to event
+              </button>
+              <button type="button"
+                      (click)="justUploadedIds.set([])"
+                      class="text-sm underline underline-offset-4 text-indigo-700 dark:text-indigo-300 hover:text-indigo-900">
+                Not now
+              </button>
+            </div>
+          }
         </div>
       }
     </div>
   }
 
   <!-- ===================== Manage Photos ===================== -->
+
+  <!-- How to link photos to an event -->
+  <details class="my-4 rounded-lg border border-indigo-300/40 dark:border-indigo-700/40 px-4 py-3
+                  text-sm text-indigo-700 dark:text-indigo-300">
+    <summary class="cursor-pointer font-medium">How to link photos to an event</summary>
+    <ol class="list-decimal pl-5 mt-2 space-y-1">
+      <li>Tick the photos you want to link. You can pick photos from different uploads, and use
+          <b>Select page</b> or <b>Select all</b> for many at once. Tip: use the "Not linked to an event" filter to find the ones still left.</li>
+      <li>Press <b>Link to Event</b> in the bar that appears.</li>
+      <li>Choose <b>Existing event</b> (filter by year and month, then pick it) or <b>+ New event</b> (fill in the name and dates).</li>
+      <li>Press <b>Link photos</b> (or <b>Create event &amp; link</b>). Linked photos show up in that event's gallery.</li>
+      <li>Linked by mistake? Tick the photos and press <b>Unlink</b>. The photos stay in the gallery.</li>
+    </ol>
+    <p class="mt-2">Right after you upload photos, a prompt also appears so you can link that batch straight away.</p>
+  </details>
 
   <!-- Filters -->
   <div class="my-4 flex flex-wrap gap-3">
@@ -192,6 +228,17 @@
       @for (e of events(); track e) {
         <option [value]="e" [selected]="filterEvent() === e">{{ e }}</option>
       }
+    </select>
+
+    <select (change)="onFilterLink($event)"
+            class="w-full md:w-auto px-4 py-2 rounded-lg
+                   border border-[#6379C8]/40 dark:border-[#5362A8]/40
+                   bg-white/10 dark:bg-[#1A1F2B]/60
+                   text-indigo-700 dark:text-indigo-300
+                   focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+      <option value="all" [selected]="filterLink() === 'all'">Linked &amp; not linked</option>
+      <option value="unlinked" [selected]="filterLink() === 'unlinked'">Not linked to an event</option>
+      <option value="linked" [selected]="filterLink() === 'linked'">Linked to an event</option>
     </select>
 
     <input type="text"
@@ -244,8 +291,28 @@
       </button>
 
       <button type="button"
+              (click)="openLink()"
+              [disabled]="bulkDeleting() || linkBusy()"
+              class="inline-flex items-center font-medium px-4 py-2 rounded-lg
+                     text-indigo-700 border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-50
+                     disabled:opacity-50 disabled:cursor-not-allowed transition
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Link to Event ({{ selectedCount() }})
+      </button>
+
+      <button type="button"
+              (click)="unlinkSelected()"
+              [disabled]="bulkDeleting() || linkBusy()"
+              class="inline-flex items-center font-medium px-4 py-2 rounded-lg
+                     text-indigo-700 border border-indigo-300 dark:border-indigo-700 hover:bg-indigo-50
+                     disabled:opacity-50 disabled:cursor-not-allowed transition
+                     focus:outline-none focus:ring-2 focus:ring-indigo-300/40">
+        Unlink
+      </button>
+
+      <button type="button"
               (click)="deleteSelected()"
-              [disabled]="bulkDeleting()"
+              [disabled]="bulkDeleting() || linkBusy()"
               class="inline-flex items-center font-medium px-4 py-2 rounded-lg
                      text-red-600 border border-red-300 hover:bg-red-50 hover:text-red-700
                      disabled:opacity-50 disabled:cursor-not-allowed transition
@@ -282,6 +349,13 @@
             <p class="truncate text-xs md:text-sm text-indigo-700/70 dark:text-indigo-300/70">
               {{ p.utsavamName }} · {{ p.year }} · {{ p.location }}
             </p>
+            @if (p.eventId) {
+              <p class="truncate text-xs text-green-700 dark:text-green-400">
+                Linked to event: {{ eventName(p) }}
+              </p>
+            } @else {
+              <p class="truncate text-xs text-indigo-700/50 dark:text-indigo-300/50">Not linked to an event</p>
+            }
           </div>
 
           <button type="button"
@@ -321,6 +395,208 @@
     }
   }
 </section>
+
+<!-- ===================== Link to event dialog ===================== -->
+@if (linkOpen()) {
+  <div class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+       (click)="closeLink()">
+    <div class="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg p-5
+                bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300 shadow-xl"
+         role="dialog" aria-modal="true" aria-label="Link photos to an event"
+         (click)="$event.stopPropagation()">
+
+      <h3 class="text-lg font-semibold text-indigo-900 dark:text-indigo-200">Link photos to an event</h3>
+      <p class="text-sm mt-1 text-indigo-700/70 dark:text-indigo-300/70">
+        {{ selectedCount() }} photo(s) selected. They will show up in that event's gallery.
+      </p>
+
+      <!-- Instructions -->
+      <div class="mt-3 p-3 rounded-lg text-sm bg-indigo-50/60 dark:bg-white/[0.05]
+                  border border-indigo-300/40 dark:border-indigo-700/40">
+        @if (linkMode() === 'existing') {
+          <p class="font-medium mb-1">How to link to an existing event</p>
+          <ol class="list-decimal pl-5 space-y-0.5">
+            <li>Optionally narrow the list with <b>Year</b> and <b>Month</b>.</li>
+            <li>Choose the event from the <b>Choose an event</b> list.</li>
+            <li>Press <b>Link photos</b>. The photos will appear in that event's gallery.</li>
+          </ol>
+        } @else {
+          <p class="font-medium mb-1">How to create a new event and link</p>
+          <ol class="list-decimal pl-5 space-y-0.5">
+            <li>Check the event name and location (filled in from the photos).</li>
+            <li>Choose the start date, end date and event level.</li>
+            <li>Press <b>Create event &amp; link</b>. The event is created and all selected photos are linked to it.</li>
+          </ol>
+        }
+        <p class="mt-1 text-indigo-700/70 dark:text-indigo-300/70">
+          Not the right event? Switch between "Existing event" and "+ New event" above.
+        </p>
+      </div>
+
+      <!-- Mode switch -->
+      <div class="flex gap-2 mt-4">
+        <button type="button"
+                (click)="linkMode.set('existing')"
+                [class.bg-indigo-50]="linkMode() === 'existing'"
+                [class.font-semibold]="linkMode() === 'existing'"
+                class="flex-1 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700 transition">
+          Existing event
+        </button>
+        <button type="button"
+                (click)="linkMode.set('new')"
+                [class.bg-indigo-50]="linkMode() === 'new'"
+                [class.font-semibold]="linkMode() === 'new'"
+                class="flex-1 px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700 transition">
+          + New event
+        </button>
+      </div>
+
+      @if (linkMode() === 'existing') {
+        <div class="mt-4 space-y-2">
+          <!-- Year / month filter -->
+          <div class="flex flex-wrap gap-2">
+            <select (change)="onLinkYear($event)"
+                    [disabled]="linkBusy()"
+                    aria-label="Filter events by year"
+                    class="flex-1 min-w-[7rem] px-3 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                           bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                           focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+              <option value="all" [selected]="linkYear() === 'all'">All years</option>
+              @for (y of linkYears(); track y) {
+                <option [value]="y" [selected]="linkYear() === '' + y">{{ y }}</option>
+              }
+            </select>
+
+            <select (change)="onLinkMonth($event)"
+                    [disabled]="linkBusy()"
+                    aria-label="Filter events by month"
+                    class="flex-1 min-w-[8rem] px-3 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                           bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                           focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+              <option value="all" [selected]="linkMonth() === 'all'">All months</option>
+              @for (m of months; track $index) {
+                <option [value]="'' + $index" [selected]="linkMonth() === '' + $index">{{ m }}</option>
+              }
+            </select>
+
+            @if (linkYear() !== 'all' || linkMonth() !== 'all') {
+              <button type="button" (click)="clearLinkFilters()"
+                      class="text-sm underline underline-offset-4 px-1 hover:text-indigo-900">
+                Clear filters
+              </button>
+            }
+          </div>
+
+          <select (change)="linkEventId.set(val($event))"
+                  [disabled]="linkBusy()"
+                  class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                         bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                         focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+            <option value="" [selected]="!linkEventId()">Choose an event…</option>
+            @if (suggestedEvents().length > 0) {
+              <optgroup label="Same name and year as the photos">
+                @for (e of suggestedEvents(); track e._id) {
+                  <option [value]="e._id" [selected]="linkEventId() === e._id">{{ eventLabel(e) }}</option>
+                }
+              </optgroup>
+            }
+            <optgroup label="All events">
+              @for (e of otherEvents(); track e._id) {
+                <option [value]="e._id" [selected]="linkEventId() === e._id">{{ eventLabel(e) }}</option>
+              }
+            </optgroup>
+          </select>
+
+          @if (eventList().length === 0) {
+            <p class="text-sm text-indigo-700/70 dark:text-indigo-300/70">
+              No events found. Use "+ New event" to create one.
+            </p>
+          } @else if (visibleEventCount() === 0) {
+            <p class="text-sm text-indigo-700/70 dark:text-indigo-300/70">
+              No events match this year and month. Change or clear the filters, or use "+ New event".
+            </p>
+          } @else if (suggestedEvents().length === 0 && linkYear() === 'all' && linkMonth() === 'all') {
+            <p class="text-sm text-indigo-700/70 dark:text-indigo-300/70">
+              No event has the same name and year as these photos. Pick any event, or create a new one.
+            </p>
+          }
+        </div>
+      } @else {
+        <div class="mt-4 space-y-3">
+          <input type="text"
+                 placeholder="Event name"
+                 [value]="newName()"
+                 (input)="newName.set(val($event))"
+                 [disabled]="linkBusy()"
+                 class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                        bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                        placeholder-indigo-700/50 focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+          <input type="text"
+                 placeholder="Location"
+                 [value]="newLocation()"
+                 (input)="newLocation.set(val($event))"
+                 [disabled]="linkBusy()"
+                 class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                        bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                        placeholder-indigo-700/50 focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+
+          <div class="flex gap-3">
+            <label class="flex-1 text-sm">
+              Start date
+              <input type="date"
+                     [value]="newStart()"
+                     (input)="newStart.set(val($event))"
+                     [disabled]="linkBusy()"
+                     class="mt-1 w-full px-3 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                            bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+            </label>
+            <label class="flex-1 text-sm">
+              End date
+              <input type="date"
+                     [value]="newEnd()"
+                     [min]="newStart()"
+                     (input)="newEnd.set(val($event))"
+                     [disabled]="linkBusy()"
+                     class="mt-1 w-full px-3 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                            bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                            focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"/>
+            </label>
+          </div>
+
+          <select (change)="newLevel.set(val($event))"
+                  [disabled]="linkBusy()"
+                  class="w-full px-4 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                         bg-white dark:bg-[#1A1F2B] text-indigo-700 dark:text-indigo-300
+                         focus:outline-none focus:ring-2 focus:ring-indigo-700 transition">
+            <option value="utsavam" [selected]="newLevel() === 'utsavam'">Utsavam</option>
+            <option value="thirunakchathiram" [selected]="newLevel() === 'thirunakchathiram'">Thirunakchathiram</option>
+            <option value="theerthem" [selected]="newLevel() === 'theerthem'">Theerthem</option>
+            <option value="others" [selected]="newLevel() === 'others'">Others</option>
+          </select>
+        </div>
+      }
+
+      <div class="flex justify-end gap-2 mt-5">
+        <button type="button"
+                (click)="closeLink()"
+                [disabled]="linkBusy()"
+                class="px-5 py-2 rounded-lg border border-indigo-300 dark:border-indigo-700
+                       disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-50 transition">
+          Cancel
+        </button>
+        <button type="button"
+                (click)="submitLink()"
+                [disabled]="linkBusy()"
+                class="px-5 py-2 rounded-lg font-medium bg-indigo-700 text-white hover:bg-indigo-800
+                       disabled:opacity-50 disabled:cursor-not-allowed transition">
+          {{ linkBusy() ? 'Saving…' : linkMode() === 'new' ? 'Create event & link' : 'Link photos' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
 
 <!-- Preview -->
 @if (previewUrl()) {
